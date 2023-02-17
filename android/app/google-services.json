@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "856390478931",
+    "project_id": "boboloc-58242",
+    "storage_bucket": "boboloc-58242.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:856390478931:android:97748052007c355356aaa6",
+        "android_client_info": {
+          "package_name": "com.example.boboloc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "856390478931-lp8514frj9i48lq15dg37h5iccp33p4f.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB9iu9XixZhMdSQoXBovtXVLXV8y3BhXmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "856390478931-lp8514frj9i48lq15dg37h5iccp33p4f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
