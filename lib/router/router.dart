@@ -48,8 +48,8 @@ class MyRouter {
         path: '/car_contract_form',
         name: 'car_contract_form',
         builder: (BuildContext context, GoRouterState state) {
-          Map<String, String> currentCarDatas2 = state.queryParams;
-          return ContractFormPage(carDatas: currentCarDatas2);
+          Map<String, String> currentCarDatas = state.queryParams;
+          return ContractFormPage(carDatas: currentCarDatas);
         },
       ),
       GoRoute(

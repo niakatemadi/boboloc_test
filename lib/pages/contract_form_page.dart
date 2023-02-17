@@ -1,5 +1,6 @@
 import 'package:boboloc/database/database.dart';
 import 'package:boboloc/models/user_model.dart';
+import 'package:boboloc/utils/my_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -260,8 +261,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
 
                             return ElevatedButton(
                                 onPressed: () async {
-                                  print(userDatas.name);
-                                  print(widget.carDatas['car_brand']);
+                                  print('oook');
+                                  await MyFunctions().generatorPdf(
+                                      nom: 'karl', prenom: 'Lagarfiel');
+                                  print('kkk');
                                 },
                                 child: const Text('Générer le contrat'));
                           } else if (snapshot.hasError) {
