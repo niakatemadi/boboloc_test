@@ -1,11 +1,10 @@
 import 'package:boboloc/database/database.dart';
+import 'package:boboloc/models/car_contract_model.dart';
 import 'package:boboloc/models/user_model.dart';
 import 'package:boboloc/utils/my_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:go_router/go_router.dart';
 
 class ContractFormPage extends StatefulWidget {
   ContractFormPage({super.key, required this.carDatas});
@@ -30,11 +29,18 @@ class _ContractFormPageState extends State<ContractFormPage> {
   String _price = '';
   String _currentKilometer = '';
   String _exceedKilometer = '';
+  late Uint8List _licenseDriverRecto;
+  late Uint8List _licenseDriververso;
+  late Uint8List _identityCardRecto;
+  late Uint8List _identityCardVerso;
+  String _kilometerAllowed = '';
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     String carBrand = widget.carDatas['car_brand']!;
+    String carModel = 'modelss';
+    String carRegistrationNumber = widget.carDatas['car_registration_number']!;
     var currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       appBar: AppBar(title: Text('Contrat de location : $carBrand')),
@@ -143,16 +149,43 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       thickness: 5,
                     ),
                     OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          Uint8List identityCardRectoPicked =
+                              await MyFunctions().pickImageFromgallery();
+
+                          setState(() {
+                            _identityCardRecto = identityCardRectoPicked;
+                          });
+                        },
                         child: const Text("Carte d'identité recto")),
                     OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          Uint8List identityCardVersoPicked =
+                              await MyFunctions().pickImageFromgallery();
+                          setState(() {
+                            _identityCardVerso = identityCardVersoPicked;
+                          });
+                        },
                         child: const Text("Carte d'identité verso")),
                     OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          Uint8List licenseDriverRectoPicked =
+                              await MyFunctions().pickImageFromgallery();
+
+                          setState(() {
+                            _licenseDriverRecto = licenseDriverRectoPicked;
+                          });
+                        },
                         child: const Text("Permis de conduire recto")),
                     OutlinedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          Uint8List licenseDriverversoPicked =
+                              await MyFunctions().pickImageFromgallery();
+
+                          setState(() {
+                            _licenseDriververso = licenseDriverversoPicked;
+                          });
+                        },
                         child: const Text("Permis de conduire verso")),
                     const Text(
                       'Informations du véhicule',
@@ -248,10 +281,9 @@ class _ContractFormPageState extends State<ContractFormPage> {
                         }),
                     const SizedBox(height: 5),
                     const Divider(
-                      height: 10,
-                      color: Color.fromARGB(255, 26, 91, 213),
-                      thickness: 5,
-                    ),
+                        height: 10,
+                        color: Color.fromARGB(255, 26, 91, 213),
+                        thickness: 5),
                     FutureBuilder(
                       future: Database(userId: currentUserId).getUserDetails(),
                       builder: ((context, snapshot) {
@@ -261,10 +293,44 @@ class _ContractFormPageState extends State<ContractFormPage> {
 
                             return ElevatedButton(
                                 onPressed: () async {
-                                  print('oook');
                                   await MyFunctions().generatorPdf(
-                                      nom: 'karl', prenom: 'Lagarfiel');
-                                  print('kkk');
+                                      contractDatas: CarContractModel(
+                                          renterName: _name,
+                                          renterFirstName: _firstName,
+                                          renterAdresse: _adresse,
+                                          renterCity: _city,
+                                          renterEmail: _email,
+                                          renterIdentityCardRecto:
+                                              _identityCardRecto,
+                                          renterIdentityCardVerso:
+                                              _identityCardVerso,
+                                          renterLicenseDriverVerso:
+                                              _licenseDriververso,
+                                          renterLicenseDriverRecto:
+                                              _licenseDriverRecto,
+                                          renterPhoneNumber: _phoneNumber,
+                                          renterPostalCode: _postalCode,
+                                          rentEndDay: _endLocationDate,
+                                          rentPrice: _price,
+                                          rentStartDay: _startLocationDate,
+                                          rentalDeposit: _caution,
+                                          numberOfRentDays: _daysOfLocation,
+                                          kilometerAllowed: _kilometerAllowed,
+                                          currentCarKilometer:
+                                              _currentKilometer,
+                                          priceExceedKilometer:
+                                              _exceedKilometer,
+                                          ownerAdresse: userDatas.adresse,
+                                          ownerCompanyName:
+                                              userDatas.companyName,
+                                          ownerEmail: userDatas.email,
+                                          ownerFirstName: userDatas.firstName,
+                                          ownerName: userDatas.name,
+                                          ownerPhoneNumber: '07 00 00 00 00',
+                                          carBrand: carBrand,
+                                          carModel: carModel,
+                                          carRegistrationNumber:
+                                              carRegistrationNumber));
                                 },
                                 child: const Text('Générer le contrat'));
                           } else if (snapshot.hasError) {

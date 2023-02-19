@@ -1,11 +1,13 @@
+import 'package:flutter/foundation.dart';
+
 class CarContractModel {
   // renter datas
   String renterName;
   String renterFirstName;
-  String renterIdentityCardRecto;
-  String? renterIdentityCardVerso;
-  String renterLicenseDriverRecto;
-  String? renterLicenseDriverVerso;
+  Uint8List renterIdentityCardRecto;
+  Uint8List? renterIdentityCardVerso;
+  Uint8List renterLicenseDriverRecto;
+  Uint8List? renterLicenseDriverVerso;
   String renterAdresse;
   String renterCity;
   String renterPostalCode;

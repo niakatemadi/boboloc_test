@@ -1,6 +1,5 @@
 import 'package:boboloc/models/user_connexion_model.dart';
 import 'package:boboloc/pages/cars_list_page.dart';
-import 'package:boboloc/pages/create_new_car_page.dart';
 import 'package:boboloc/pages/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

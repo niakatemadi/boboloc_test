@@ -1,7 +1,5 @@
 import 'package:boboloc/database/authentication.dart';
-import 'package:boboloc/database/database.dart';
 import 'package:boboloc/models/user_model.dart';
-import 'package:boboloc/pages/sign_in_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 

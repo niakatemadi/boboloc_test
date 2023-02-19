@@ -1,11 +1,6 @@
 import 'package:boboloc/database/authentication.dart';
 import 'package:boboloc/models/user_connexion_model.dart';
-import 'package:boboloc/pages/create_new_car_page.dart';
-import 'package:boboloc/pages/sign_in_page.dart';
-import 'package:boboloc/pages/sign_up_page.dart';
-import 'package:boboloc/pages/wrapper/wrapper_page.dart';
 import 'package:boboloc/router/router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';

@@ -1,4 +1,6 @@
+import 'dart:ffi';
 import 'dart:io';
+import 'package:boboloc/models/car_contract_model.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
@@ -21,8 +23,56 @@ class MyFunctions {
     return directory;
   }
 
-  Future<void> generatorPdf(
-      {required String nom, required String prenom}) async {
+  Future<Uint8List> pickImageFromgallery() async {
+    final ImagePicker imagePicker = ImagePicker();
+
+    //pick image from gallery, it will return XFile
+    final XFile? imagePicked =
+        await imagePicker.pickImage(source: ImageSource.gallery);
+
+    //Convert image path to file
+    File imagePickedPathConvertedToFile = File(imagePicked!.path);
+
+    // Convert file to bytes
+
+    return await imagePickedPathConvertedToFile.readAsBytes();
+  }
+
+  Future<void> generatorPdf({required CarContractModel contractDatas}) async {
+    String carBrand = contractDatas.carBrand;
+
+    String carModel = contractDatas.carModel;
+    String carRegistrationNumber = contractDatas.carRegistrationNumber;
+    String currentCarKilometer = contractDatas.currentCarKilometer;
+    String kilometerAllowed = contractDatas.kilometerAllowed;
+    String numberOfRentDays = contractDatas.numberOfRentDays;
+    String ownerAdresse = contractDatas.ownerAdresse;
+    String ownerCompanyName = contractDatas.ownerCompanyName;
+    String ownerEmail = contractDatas.ownerEmail;
+    String ownerFirstName = contractDatas.ownerFirstName;
+    String ownerName = contractDatas.ownerName;
+    String ownerPhoneNumber = contractDatas.ownerPhoneNumber;
+    String priceExceedKilometer = contractDatas.priceExceedKilometer;
+    String rentEndDay = contractDatas.rentEndDay;
+
+    String rentPrice = contractDatas.rentPrice;
+    String rentStartDay = contractDatas.rentStartDay;
+    String rentalDeposit = contractDatas.rentalDeposit;
+    String renterAdresse = contractDatas.renterAdresse;
+    String renterCity = contractDatas.renterCity;
+
+    String? renterEmail = contractDatas.renterEmail;
+    String renterFirstName = contractDatas.renterFirstName;
+    String renterName = contractDatas.renterName;
+    String? renterPhoneNumber = contractDatas.renterPhoneNumber;
+    String renterPostalCode = contractDatas.renterPostalCode;
+    Uint8List renterIdentityCardRecto = contractDatas.renterIdentityCardRecto;
+    Uint8List? renterIdentityCardVerso = contractDatas.renterIdentityCardVerso;
+    Uint8List renterLicenseDriverRecto = contractDatas.renterLicenseDriverRecto;
+    Uint8List? renterLicenseDriverVerso =
+        contractDatas.renterLicenseDriverVerso;
+
+    print('kss');
     final font = await rootBundle.load("fonts/roboto-medium.ttf");
     final ttf = pw.Font.ttf(font);
 
@@ -44,18 +94,7 @@ class MyFunctions {
 
     //debut de test
 
-    final ImagePicker imagePicker = ImagePicker();
-
-    //pick image from gallery, it will return XFile
-    final XFile? imagePicked =
-        await imagePicker.pickImage(source: ImageSource.gallery);
-
-    //Convert image path to file
-    File imagePickedPathConvertedToFile = File(imagePicked!.path);
-
-    // Convert file to bytes
-    Uint8List imagePickedPathConvertedTobytes =
-        await imagePickedPathConvertedToFile.readAsBytes();
+    Uint8List imagePickedPathConvertedTobytes = await pickImageFromgallery();
 
     pdf.addPage(
       pw.MultiPage(
@@ -73,7 +112,7 @@ class MyFunctions {
                     pw.Text('Entre les soussignés :',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                     pw.Text(
-                      'Monsieur ---, né le --- à --- de nationalité ---, demaurant ---.',
+                      'Monsieur $renterFirstName, $renterName, demaurant $renterAdresse.',
                     )
                   ],
                 ),
@@ -87,7 +126,7 @@ class MyFunctions {
                         crossAxisAlignment: pw.CrossAxisAlignment.end,
                         children: [
                           pw.Text(
-                            "Ci après le \"Loueur\",",
+                            " Ci après le \"Locataire\",",
                           ),
                           pw.Text(
                             "D'une part,",
@@ -99,7 +138,7 @@ class MyFunctions {
                     pw.Text('Et :',
                         style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
                     pw.Text(
-                      'Monsieur ---, né le --- à --- de nationalité ---, demaurant ---.',
+                      'Monsieur $ownerFirstName, $ownerName, demaurant $ownerAdresse.',
                     )
                   ],
                 ),
@@ -110,7 +149,7 @@ class MyFunctions {
                         crossAxisAlignment: pw.CrossAxisAlignment.end,
                         children: [
                           pw.Text(
-                            "Ci après le \"Locataire\",",
+                            "Ci après le \"Loueur\"",
                           ),
                           pw.Text(
                             "D'autre part,",
@@ -132,7 +171,7 @@ class MyFunctions {
                               color: PdfColor(0.2, 0.4, 0.4, 1))),
                       pw.SizedBox(height: 10),
                       pw.Text(
-                          "Le loueur met à disposition du locataire, un véhicule de marque ---, immatriculé ---, à titre onéreux et à compter du --- Kilométrage du véhicule :--- kms "),
+                          "Le loueur met à disposition du locataire, un véhicule de marque $carBrand, immatriculé $carRegistrationNumber, à titre onéreux et à compter du $rentStartDay Kilométrage du véhicule :$currentCarKilometer kms "),
                       pw.SizedBox(height: 10),
                       pw.Text("1.2 - Etat du véhicule ",
                           style: const pw.TextStyle(
@@ -146,14 +185,19 @@ class MyFunctions {
                               color: PdfColor(0.2, 0.4, 0.4, 1))),
                       pw.SizedBox(height: 10),
                       pw.Text(
-                          "Les parties s'entendent sur un prix de location --- euros par jour (calendaires). Ce prix comprend un forfait de --- kms pour la durée du contrat. "),
+                          "Les parties s'entendent sur un prix de location $rentPrice euros. Ce prix comprend un forfait de $kilometerAllowed kms pour la durée du contrat. "),
+                      pw.SizedBox(height: 10),
+                      pw.Text(
+                          "Nombre de jours de location : $numberOfRentDays jours.",
+                          style: const pw.TextStyle(
+                              color: PdfColor(0.2, 0.4, 0.4, 1))),
                       pw.SizedBox(height: 10),
                       pw.Text("1.4 - Kilométrage supplémentaires ",
                           style: const pw.TextStyle(
                               color: PdfColor(0.2, 0.4, 0.4, 1))),
                       pw.SizedBox(height: 10),
                       pw.Text(
-                          "Tout kilomètre réalisé au-delà du forfait indiqué à l'article 1.3 du présent contrat sera facturé au prix de --- euros. "),
+                          "Tout kilomètre réalisé au-delà du forfait indiqué à l'article 1.3 du présent contrat sera facturé au prix de $priceExceedKilometer euros. "),
                       pw.SizedBox(height: 10),
                       pw.Text("1.5 - Durée et restitution de la voiture ",
                           style: const pw.TextStyle(
@@ -167,7 +211,7 @@ class MyFunctions {
                               color: PdfColor(0.2, 0.4, 0.4, 1))),
                       pw.SizedBox(height: 5),
                       pw.Text(
-                          "Les parties conviennent expressément que tout litige pouvant naître de l'exécution du présent contratrelèvera de la compétence du tribunal de commerce de --- ."),
+                          "Les parties conviennent expressément que tout litige pouvant naître de l'exécution du présent contratrelèvera de la compétence du tribunal de commerce de Pontoise ."),
                       pw.Text(
                           "Fait en deux exemplaires originaux remis à chacune des parties,"),
                       pw.SizedBox(height: 10),
@@ -179,7 +223,22 @@ class MyFunctions {
                           height: 200,
                           width: 200,
                           child: pw.Image(
-                              pw.MemoryImage(imagePickedPathConvertedTobytes))),
+                              pw.MemoryImage(renterIdentityCardRecto))),
+                      pw.Container(
+                          height: 200,
+                          width: 200,
+                          child: pw.Image(
+                              pw.MemoryImage(renterIdentityCardVerso!))),
+                      pw.Container(
+                          height: 200,
+                          width: 200,
+                          child: pw.Image(
+                              pw.MemoryImage(renterLicenseDriverRecto))),
+                      pw.Container(
+                          height: 200,
+                          width: 200,
+                          child: pw.Image(
+                              pw.MemoryImage(renterLicenseDriverVerso!))),
                       pw.SizedBox(height: 15),
                       pw.Text(
                           "Fait en deux exemplaires originaux remis à chacune des parties, "),
@@ -198,7 +257,7 @@ class MyFunctions {
     final output = await getDirectoryImage();
 
     if (output != null) {
-      final file = File("${output.path}/testImage0445.pdf");
+      final file = File("${output.path}/testImage2233.pdf");
       await file.writeAsBytes(await pdf.save());
     }
   }

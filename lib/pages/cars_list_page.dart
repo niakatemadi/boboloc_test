@@ -1,5 +1,4 @@
 import 'package:boboloc/database/database.dart';
-import 'package:boboloc/pages/car_details_page.dart';
 import 'package:boboloc/widgets/my_list_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -27,7 +26,7 @@ class _CarsListPageState extends State<CarsListPage> {
       body: Column(
         children: [
           Container(
-            height: 220,
+            height: 175,
             color: Color.fromARGB(255, 227, 228, 230),
           ),
           Container(

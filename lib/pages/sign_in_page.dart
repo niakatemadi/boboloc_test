@@ -1,9 +1,5 @@
 import 'package:boboloc/database/authentication.dart';
-import 'package:boboloc/database/database.dart';
-import 'package:boboloc/pages/sign_up_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:go_router/go_router.dart';
 
 class SignInPage extends StatefulWidget {

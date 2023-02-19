@@ -1,4 +1,3 @@
-import 'package:boboloc/models/car_model.dart';
 import 'package:boboloc/pages/car_details_page.dart';
 import 'package:boboloc/pages/cars_list_page.dart';
 import 'package:boboloc/pages/contract_form_page.dart';
