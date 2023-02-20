@@ -1,6 +1,7 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'package:boboloc/models/car_contract_model.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
@@ -77,174 +78,397 @@ class MyFunctions {
     final ttf = pw.Font.ttf(font);
 
     final pdf = pw.Document();
-    final headers = ['Le locataire', 'Le loueur'];
-    final users = [
-      "signature précédée de la mention manuscrite bon pour accord ",
-      "signature précédée de la mention manuscrite bon pour accord "
-    ];
-
-    final datas = [
-      [
-        "signature précédée de la mention manuscrite bon pour accord ",
-        "signature précédée de la mention manuscrite bon pour accord "
-      ]
-    ];
-
-    //final datas = users.map((user) => [user.name, user.age]).toList();
-
-    //debut de test
 
     Uint8List imagePickedPathConvertedTobytes = await pickImageFromgallery();
 
+    pw.TableRow tableRowCustomerName = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Nom :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(renterName)),
+    ]);
+
+    pw.TableRow tableRowCustomerFirstName = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Prénom :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text(renterFirstName)),
+    ]);
+
+    pw.TableRow tableRowCustomerAdresse = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Adresse :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text(renterAdresse)),
+    ]);
+
+    pw.TableRow tableRowCustomerCity = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Ville :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(renterCity)),
+    ]);
+
+    pw.TableRow tableRowCustomerPhoneNumber = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Téléphone :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text(renterPhoneNumber!)),
+    ]);
+
+    pw.TableRow tableRowCustomerPostalCode = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Code postal :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text(renterPostalCode)),
+    ]);
+
+    pw.TableRow tableRowCarBrand = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Marque :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(carBrand)),
+    ]);
+
+    pw.TableRow tableRowCarModel = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Modèle :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(carModel)),
+    ]);
+
+    pw.TableRow tableRowCarRegistrationNumber = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Immatriculation :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text(carRegistrationNumber)),
+    ]);
+
+    pw.TableRow tableRowCarTitle = pw.TableRow(children: [
+      pw.Container(
+        decoration: const pw.BoxDecoration(color: PdfColors.grey),
+        child: pw.Padding(
+            padding: const pw.EdgeInsets.all(10.0),
+            child: pw.Text('Identification du véhicule',
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold))),
+      )
+    ]);
+
+    pw.TableRow tableRowCustomerTitle = pw.TableRow(children: [
+      pw.Container(
+          decoration: const pw.BoxDecoration(color: PdfColors.grey),
+          child: pw.Padding(
+              padding: const pw.EdgeInsets.all(10.0),
+              child: pw.Text('Identification du locataire',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+    ]);
+
+    pw.TableRow tableRowGeneralDetails = pw.TableRow(children: [
+      pw.Container(
+          decoration: const pw.BoxDecoration(color: PdfColors.grey),
+          child: pw.Padding(
+              padding: const pw.EdgeInsets.all(10.0),
+              child: pw.Text('Informations générales',
+                  style: pw.TextStyle(fontWeight: pw.FontWeight.bold)))),
+    ]);
+
+    pw.TableRow tableRowDepart = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Départ :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(rentStartDay)),
+    ]);
+
+    pw.TableRow tableRowRetour = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Retour :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(rentEndDay)),
+    ]);
+    pw.TableRow tableRowPrice = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Tarif :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text('$rentPrice euros')),
+    ]);
+    pw.TableRow tableRowCurrentKilometer = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Kilomètre au départ :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text('$currentCarKilometer Km')),
+    ]);
+
+    pw.TableRow tableRowCustomerSignature = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Signature du locataire :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(padding: const pw.EdgeInsets.all(10.0), child: pw.Text('')),
+    ]);
+
+    pw.TableRow tableRowOwnerSignature = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Signature du loueur :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(padding: const pw.EdgeInsets.all(10.0), child: pw.Text('')),
+    ]);
+
+    pw.TableRow tableRowCarKilometerAllowed = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Kilométre autorisé :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text('$kilometerAllowed Km')),
+    ]);
+
+    pw.TableRow tableRowCaution = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Caution :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text('$rentalDeposit euros')),
+    ]);
+
+    pw.TableRow tableRowRentDays = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('Jours de location :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text('$numberOfRentDays jours')),
+    ]);
+
+    pw.TableRow tableRowCustomerLicenseDriverNumber = pw.TableRow(children: [
+      pw.Padding(
+        padding: const pw.EdgeInsets.all(10.0),
+        child: pw.Text('N° de permis :',
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.Padding(
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text('75524456')),
+    ]);
+
+    print('pdf created');
     pdf.addPage(
       pw.MultiPage(
           build: (pw.Context context) => [
-                pw.Center(
-                    child: pw.Text("Contrat de location de voiture",
-                        style: pw.TextStyle(
-                            color: const PdfColor(0.2, 0.4, 0.4, 1),
-                            font: ttf,
-                            fontSize: 20))),
+                pw.Container(
+                    child: pw.Column(children: [
+                  pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Column(children: [
+                          pw.Text('Boboloc',
+                              style: pw.TextStyle(
+                                  fontSize: 30, fontWeight: pw.FontWeight.bold))
+                        ]),
+                        pw.Column(children: [
+                          pw.Text('Contrat de location',
+                              style: pw.TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: pw.FontWeight.bold)),
+                          pw.Row(children: [
+                            pw.Text(
+                              'N° de contrat : ',
+                            ),
+                            pw.Container(child: pw.Text('875269'))
+                          ])
+                        ])
+                      ]),
+                  pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Column(children: [
+                          pw.SizedBox(height: 30),
+                          pw.Table(
+                              border:
+                                  pw.TableBorder.all(color: PdfColors.black),
+                              children: [
+                                tableRowCustomerTitle,
+                              ]),
+                          pw.Table(
+                              border:
+                                  pw.TableBorder.all(color: PdfColors.black),
+                              children: [
+                                tableRowCustomerName,
+                                tableRowCustomerFirstName,
+                                tableRowCustomerPhoneNumber,
+                                tableRowCustomerAdresse,
+                                tableRowCustomerCity,
+                                tableRowCustomerPostalCode,
+                                tableRowCustomerLicenseDriverNumber
+                              ])
+                        ]),
+                        pw.Column(children: [
+                          pw.SizedBox(height: 30),
+                          pw.Table(children: [tableRowGeneralDetails]),
+                          pw.Table(
+                              border:
+                                  pw.TableBorder.all(color: PdfColors.black),
+                              children: [
+                                tableRowDepart,
+                                tableRowRetour,
+                                tableRowCaution,
+                                tableRowRentDays,
+                                tableRowCarKilometerAllowed,
+                                tableRowPrice,
+                                tableRowCurrentKilometer,
+                              ]),
+                        ]),
+                      ])
+                ])),
                 pw.SizedBox(height: 20),
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Entre les soussignés :',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    pw.Text(
-                      'Monsieur $renterFirstName, $renterName, demaurant $renterAdresse.',
-                    )
-                  ],
-                ),
-                pw.SizedBox(
-                  height: 10,
-                ),
-                pw.Container(
-                    width: 500,
-                    decoration: const pw.BoxDecoration(),
-                    child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.end,
-                        children: [
-                          pw.Text(
-                            " Ci après le \"Locataire\",",
-                          ),
-                          pw.Text(
-                            "D'une part,",
-                          )
-                        ])),
-                pw.Column(
-                  crossAxisAlignment: pw.CrossAxisAlignment.start,
-                  children: [
-                    pw.Text('Et :',
-                        style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-                    pw.Text(
-                      'Monsieur $ownerFirstName, $ownerName, demaurant $ownerAdresse.',
-                    )
-                  ],
-                ),
-                pw.Container(
-                    width: 500,
-                    decoration: const pw.BoxDecoration(),
-                    child: pw.Column(
-                        crossAxisAlignment: pw.CrossAxisAlignment.end,
-                        children: [
-                          pw.Text(
-                            "Ci après le \"Loueur\"",
-                          ),
-                          pw.Text(
-                            "D'autre part,",
-                          )
-                        ])),
-                pw.SizedBox(height: 10),
-                pw.Container(
-                    width: 500,
-                    child: pw.Text(
-                        'Le loueur et le locataire étant ensemble désignés les "parties" et individuellement une "partie"')),
-                pw.SizedBox(height: 10),
-                pw.Column(
-                    crossAxisAlignment: pw.CrossAxisAlignment.start,
+                pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
-                      pw.Text('IL A ETE CONVENU CE QUI SUIT ;'),
-                      pw.SizedBox(height: 10),
-                      pw.Text("1.1 - Nature et date d'effet du contrat ",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 10),
+                      pw.Column(children: [
+                        pw.Table(
+                            border: pw.TableBorder.all(color: PdfColors.black),
+                            children: [
+                              tableRowCarTitle,
+                            ]),
+                        pw.Table(
+                            border: pw.TableBorder.all(color: PdfColors.black),
+                            children: [
+                              tableRowCarModel,
+                              tableRowCarBrand,
+                              tableRowCarRegistrationNumber,
+                            ]),
+                        pw.SizedBox(height: 15),
+                        pw.Container(
+                            width: 200,
+                            child: pw.Text(
+                                "Le présent contrat est établie au moment de la prise en charge du véhicule. Il est indissociable du contrat de location. Ce dernier fait foi entre les deux parties.")),
+                      ]),
+                      pw.Container(
+                          height: 220,
+                          width: 275,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.grey))
+                    ]),
+                pw.Container(
+                    width: 482,
+                    height: 83,
+                    child: pw.Column(children: [
                       pw.Text(
-                          "Le loueur met à disposition du locataire, un véhicule de marque $carBrand, immatriculé $carRegistrationNumber, à titre onéreux et à compter du $rentStartDay Kilométrage du véhicule :$currentCarKilometer kms "),
-                      pw.SizedBox(height: 10),
-                      pw.Text("1.2 - Etat du véhicule ",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 10),
-                      pw.Text(
-                          "Lors de la remise du véhicule et lors de sa restitution, un procès-verbal de l'état du véhicule sera établi entre le locataire et le loueur. Le véhicule devra être restitué le même état que lors de sa remise. Toutes les détériorations sur le véhicule constatées sur le PV de sortie seront à la charge du locataire. Le locataire certifie être en possession du permis l'autorisant à conduire le présent véhicule. "),
-                      pw.SizedBox(height: 10),
-                      pw.Text("1.3 - Prix de la location du de la voiture",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 10),
-                      pw.Text(
-                          "Les parties s'entendent sur un prix de location $rentPrice euros. Ce prix comprend un forfait de $kilometerAllowed kms pour la durée du contrat. "),
-                      pw.SizedBox(height: 10),
-                      pw.Text(
-                          "Nombre de jours de location : $numberOfRentDays jours.",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 10),
-                      pw.Text("1.4 - Kilométrage supplémentaires ",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 10),
-                      pw.Text(
-                          "Tout kilomètre réalisé au-delà du forfait indiqué à l'article 1.3 du présent contrat sera facturé au prix de $priceExceedKilometer euros. "),
-                      pw.SizedBox(height: 10),
-                      pw.Text("1.5 - Durée et restitution de la voiture ",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 10),
-                      pw.Text(
-                          "Le contrat est à durée indéterminée. Il pourra y être mis fin par chacune des parties à tout moment en adressant un courrier recommandé en respectant un préavis d'un mois."),
-                      pw.SizedBox(height: 10),
-                      pw.Text("1.7 - Clause en cas de litige",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 5),
-                      pw.Text(
-                          "Les parties conviennent expressément que tout litige pouvant naître de l'exécution du présent contratrelèvera de la compétence du tribunal de commerce de Pontoise ."),
-                      pw.Text(
-                          "Fait en deux exemplaires originaux remis à chacune des parties,"),
-                      pw.SizedBox(height: 10),
-                      pw.Text("1.8 - Pièces justificatifs du locataire",
-                          style: const pw.TextStyle(
-                              color: PdfColor(0.2, 0.4, 0.4, 1))),
-                      pw.SizedBox(height: 10),
+                          "Le loueur met à disposition le véhicule mentionné ci-dessus au locataire préalablement identifié. Les parties conviennent expressément que tout litige pouvant naître de l'exécution du présent contrat relèvera de la compétence d'un tribunal de commerce.Ce contrat est fait en deux exemplaires originaux remis à chacune des parties."),
+                      pw.Row(children: [
+                        pw.Text('Le loueur : '),
+                        pw.Text('$ownerName '),
+                        pw.Text('$ownerFirstName '),
+                        pw.Text('Demeurant à '),
+                        pw.Text('$ownerAdresse .'),
+                      ]),
+                    ])),
+                pw.Row(children: [
+                  pw.Text('Loueur mandaté par la société : '),
+                  pw.Text('$ownerCompanyName.')
+                ]),
+                pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    children: [
+                      pw.Table(children: [
+                        tableRowOwnerSignature,
+                      ]),
+                      pw.Table(children: [tableRowCustomerSignature])
+                    ]),
+                pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    children: [
                       pw.Container(
                           height: 200,
-                          width: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.grey),
                           child: pw.Image(
-                              pw.MemoryImage(renterIdentityCardRecto))),
+                            pw.MemoryImage(renterIdentityCardRecto),
+                          )),
                       pw.Container(
                           height: 200,
-                          width: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.grey),
                           child: pw.Image(
-                              pw.MemoryImage(renterIdentityCardVerso!))),
+                            pw.MemoryImage(renterIdentityCardVerso!),
+                          ))
+                    ]),
+                pw.SizedBox(height: 20),
+                pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    children: [
                       pw.Container(
                           height: 200,
-                          width: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.grey),
                           child: pw.Image(
-                              pw.MemoryImage(renterLicenseDriverRecto))),
+                            pw.MemoryImage(renterLicenseDriverRecto),
+                          )),
                       pw.Container(
                           height: 200,
-                          width: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.grey),
                           child: pw.Image(
-                              pw.MemoryImage(renterLicenseDriverVerso!))),
-                      pw.SizedBox(height: 15),
-                      pw.Text(
-                          "Fait en deux exemplaires originaux remis à chacune des parties, "),
-                      pw.Text("A ---, le --- "),
-                      pw.SizedBox(height: 10),
-                      pw.Table.fromTextArray(headers: headers, data: datas),
+                            pw.MemoryImage(renterLicenseDriverVerso!),
+                          ))
                     ])
               ]),
     );
@@ -257,7 +481,7 @@ class MyFunctions {
     final output = await getDirectoryImage();
 
     if (output != null) {
-      final file = File("${output.path}/testImage2233.pdf");
+      final file = File("${output.path}/testImage9987.pdf");
       await file.writeAsBytes(await pdf.save());
     }
   }

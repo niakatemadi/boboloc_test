@@ -269,6 +269,19 @@ class _ContractFormPageState extends State<ContractFormPage> {
                     const SizedBox(height: 5),
                     TextFormField(
                         decoration: const InputDecoration(
+                            hintText: 'Kilomètres autorisé'),
+                        onChanged: (value) {
+                          _kilometerAllowed = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return "Entrer le nombre de kilomètre autorisé";
+                          }
+                          return null;
+                        }),
+                    const SizedBox(height: 5),
+                    TextFormField(
+                        decoration: const InputDecoration(
                             hintText: 'Prix du kilomètre dépassé'),
                         onChanged: (value) {
                           _exceedKilometer = value;
