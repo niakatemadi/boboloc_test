@@ -1,10 +1,12 @@
 import 'package:boboloc/database/database.dart';
+import 'package:boboloc/models/bdd_car_contract_model.dart';
 import 'package:boboloc/models/car_contract_model.dart';
 import 'package:boboloc/models/user_model.dart';
 import 'package:boboloc/utils/my_functions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 
 class ContractFormPage extends StatefulWidget {
   ContractFormPage({super.key, required this.carDatas});
@@ -35,12 +37,20 @@ class _ContractFormPageState extends State<ContractFormPage> {
   late Uint8List _identityCardVerso;
   String _kilometerAllowed = '';
 
+  var _rentEndDay;
+  var _rentEndMonth;
+  var _rentEndYear;
+  var date = DateTime.now();
+  var _rentStartDay;
+  var _rentStartMonth;
+  var _rentStartYear;
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     String carBrand = widget.carDatas['car_brand']!;
     String carModel = 'modelss';
     String carRegistrationNumber = widget.carDatas['car_registration_number']!;
+    String carId = widget.carDatas['id_car']!;
     var currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       appBar: AppBar(title: Text('Contrat de location : $carBrand')),
@@ -69,6 +79,56 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       },
                     ),
                     const SizedBox(height: 5),
+                    ElevatedButton(
+                        onPressed: () {
+                          showDatePicker(
+                                  context: context,
+                                  initialDate: DateTime.now(),
+                                  firstDate: DateTime(2010),
+                                  lastDate: DateTime(2030))
+                              .then((value) {
+                            setState(() {
+                              var datePicked = value;
+                              _rentStartMonth = datePicked!.month;
+                              _rentStartYear = datePicked.year;
+                              _rentStartDay = datePicked.day;
+                            });
+                          });
+                        },
+                        child: Text('date')),
+                    const SizedBox(height: 5),
+                    Text('Jour : $_rentStartDay'),
+                    Text('Mois : $_rentStartMonth'),
+                    Text('Année : $_rentStartYear'),
+                    const SizedBox(height: 5),
+                    Container(
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            var limitDay = await MyFunctions()
+                                .getLimitDay(monthPicked: _rentStartMonth);
+
+                            showDatePicker(
+                                    context: context,
+                                    initialDate: DateTime(_rentStartYear,
+                                        _rentStartMonth, _rentStartDay),
+                                    firstDate: DateTime(_rentStartYear,
+                                        _rentStartMonth, _rentStartDay),
+                                    lastDate: DateTime(_rentStartYear,
+                                        _rentStartMonth, limitDay!))
+                                .then((value) {
+                              setState(() {
+                                var datePicked = value;
+                                _rentEndMonth = datePicked!.month;
+                                _rentEndYear = datePicked.year;
+                                _rentEndDay = datePicked.day;
+                              });
+                            });
+                          },
+                          child: Text('date fin')),
+                    ),
+                    Text('Jour : $_rentEndDay'),
+                    Text('Mois : $_rentEndMonth'),
+                    Text('Année : $_rentEndYear'),
                     TextFormField(
                         decoration: const InputDecoration(hintText: 'Prénom'),
                         onChanged: (value) {
@@ -306,44 +366,69 @@ class _ContractFormPageState extends State<ContractFormPage> {
 
                             return ElevatedButton(
                                 onPressed: () async {
-                                  await MyFunctions().generatorPdf(
-                                      contractDatas: CarContractModel(
-                                          renterName: _name,
-                                          renterFirstName: _firstName,
-                                          renterAdresse: _adresse,
-                                          renterCity: _city,
-                                          renterEmail: _email,
-                                          renterIdentityCardRecto:
-                                              _identityCardRecto,
-                                          renterIdentityCardVerso:
-                                              _identityCardVerso,
-                                          renterLicenseDriverVerso:
-                                              _licenseDriververso,
-                                          renterLicenseDriverRecto:
-                                              _licenseDriverRecto,
-                                          renterPhoneNumber: _phoneNumber,
-                                          renterPostalCode: _postalCode,
-                                          rentEndDay: _endLocationDate,
-                                          rentPrice: _price,
-                                          rentStartDay: _startLocationDate,
-                                          rentalDeposit: _caution,
-                                          numberOfRentDays: _daysOfLocation,
-                                          kilometerAllowed: _kilometerAllowed,
-                                          currentCarKilometer:
-                                              _currentKilometer,
-                                          priceExceedKilometer:
-                                              _exceedKilometer,
-                                          ownerAdresse: userDatas.adresse,
-                                          ownerCompanyName:
-                                              userDatas.companyName,
-                                          ownerEmail: userDatas.email,
-                                          ownerFirstName: userDatas.firstName,
-                                          ownerName: userDatas.name,
-                                          ownerPhoneNumber: '07 00 00 00 00',
-                                          carBrand: carBrand,
-                                          carModel: carModel,
-                                          carRegistrationNumber:
-                                              carRegistrationNumber));
+                                  String contractUrl = await MyFunctions()
+                                      .generatorPdf(
+                                          contractDatas: CarContractModel(
+                                              rentEndMonth: _rentEndMonth,
+                                              rentEndYear: _rentEndYear,
+                                              renterName: _name,
+                                              renterFirstName: _firstName,
+                                              renterAdresse: _adresse,
+                                              renterCity: _city,
+                                              renterEmail: _email,
+                                              renterIdentityCardRecto:
+                                                  _identityCardRecto,
+                                              renterIdentityCardVerso:
+                                                  _identityCardVerso,
+                                              renterLicenseDriverVerso:
+                                                  _licenseDriververso,
+                                              renterLicenseDriverRecto:
+                                                  _licenseDriverRecto,
+                                              renterPhoneNumber: _phoneNumber,
+                                              renterPostalCode: _postalCode,
+                                              rentEndDay: _rentEndDay,
+                                              rentPrice: _price,
+                                              rentStartDay: _rentStartDay,
+                                              rentStartMonth: _rentStartMonth,
+                                              rentStartYear: _rentStartYear,
+                                              rentalDeposit: _caution,
+                                              numberOfRentDays: _daysOfLocation,
+                                              kilometerAllowed:
+                                                  _kilometerAllowed,
+                                              currentCarKilometer:
+                                                  _currentKilometer,
+                                              priceExceedKilometer:
+                                                  _exceedKilometer,
+                                              ownerAdresse: userDatas.adresse,
+                                              ownerCompanyName:
+                                                  userDatas.companyName,
+                                              ownerEmail: userDatas.email,
+                                              ownerFirstName:
+                                                  userDatas.firstName,
+                                              ownerName: userDatas.name,
+                                              ownerPhoneNumber:
+                                                  '07 00 00 00 00',
+                                              carBrand: carBrand,
+                                              carModel: carModel,
+                                              carRegistrationNumber:
+                                                  carRegistrationNumber));
+
+                                  await Database(userId: currentUserId)
+                                      .addNewContractToFirestore(
+                                          bddCarContractModel:
+                                              BddCarContractModel(
+                                                  idCar: carId,
+                                                  rentStartDay: _rentStartDay,
+                                                  rentStartMonth:
+                                                      _rentStartMonth,
+                                                  rentStartYear: _rentStartYear,
+                                                  rentEndDay: _rentEndDay,
+                                                  rentEndMonth: _rentEndMonth,
+                                                  rentEndYear: _rentEndYear,
+                                                  rentPrice: _price,
+                                                  renterName: _name,
+                                                  renterFirstName: _firstName,
+                                                  contractUrl: contractUrl));
                                 },
                                 child: const Text('Générer le contrat'));
                           } else if (snapshot.hasError) {

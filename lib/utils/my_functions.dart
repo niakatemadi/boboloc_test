@@ -1,6 +1,8 @@
 import 'dart:ffi';
 import 'dart:io';
 import 'package:boboloc/models/car_contract_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
@@ -24,6 +26,26 @@ class MyFunctions {
     return directory;
   }
 
+  Future<String> addContractToStorage(File file) async {
+    var randomNumber =
+        Timestamp.fromDate(DateTime.now()).microsecondsSinceEpoch.toString();
+    try {
+      await FirebaseStorage.instance
+          .ref('contracts/contract-$randomNumber.pdf')
+          .putFile(file);
+      String downloadUrl = await FirebaseStorage.instance
+          .ref('contracts/contract-$randomNumber.pdf')
+          .getDownloadURL();
+
+      print(downloadUrl);
+
+      return downloadUrl;
+    } catch (e) {
+      print(e);
+      return '';
+    }
+  }
+
   Future<Uint8List> pickImageFromgallery() async {
     final ImagePicker imagePicker = ImagePicker();
 
@@ -39,7 +61,7 @@ class MyFunctions {
     return await imagePickedPathConvertedToFile.readAsBytes();
   }
 
-  Future<void> generatorPdf({required CarContractModel contractDatas}) async {
+  Future<String> generatorPdf({required CarContractModel contractDatas}) async {
     String carBrand = contractDatas.carBrand;
 
     String carModel = contractDatas.carModel;
@@ -54,10 +76,10 @@ class MyFunctions {
     String ownerName = contractDatas.ownerName;
     String ownerPhoneNumber = contractDatas.ownerPhoneNumber;
     String priceExceedKilometer = contractDatas.priceExceedKilometer;
-    String rentEndDay = contractDatas.rentEndDay;
+    String rentEndDay = contractDatas.rentEndDay.toString();
 
     String rentPrice = contractDatas.rentPrice;
-    String rentStartDay = contractDatas.rentStartDay;
+    String rentStartDay = contractDatas.rentStartDay.toString();
     String rentalDeposit = contractDatas.rentalDeposit;
     String renterAdresse = contractDatas.renterAdresse;
     String renterCity = contractDatas.renterCity;
@@ -481,8 +503,82 @@ class MyFunctions {
     final output = await getDirectoryImage();
 
     if (output != null) {
-      final file = File("${output.path}/testImage9987.pdf");
+      final file = File("${output.path}/testImage7000.pdf");
       await file.writeAsBytes(await pdf.save());
+      String contractUrl = await addContractToStorage(file);
+
+      return contractUrl;
+    }
+    return '';
+  }
+
+  getLimitDay({required int monthPicked}) {
+    switch (monthPicked) {
+      case 1:
+        {
+          return 31;
+        }
+
+      case 2:
+        {
+          return 28;
+        }
+
+      case 3:
+        {
+          return 31;
+        }
+
+      case 4:
+        {
+          return 30;
+        }
+
+      case 5:
+        {
+          return 31;
+        }
+
+      case 6:
+        {
+          return 30;
+        }
+
+      case 7:
+        {
+          return 31;
+        }
+
+      case 8:
+        {
+          return 31;
+        }
+
+      case 9:
+        {
+          return 30;
+        }
+
+      case 10:
+        {
+          return 31;
+        }
+
+      case 11:
+        {
+          return 30;
+        }
+
+      case 12:
+        {
+          return 31;
+        }
+
+      default:
+        {
+          //statements;
+        }
+        break;
     }
   }
 }

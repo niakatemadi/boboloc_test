@@ -14,8 +14,12 @@ class CarContractModel {
   String? renterPhoneNumber;
   String? renterEmail;
 
-  String rentStartDay;
-  String rentEndDay;
+  int rentStartDay;
+  int rentStartMonth;
+  int rentStartYear;
+  int rentEndDay;
+  int rentEndMonth;
+  int rentEndYear;
   String numberOfRentDays;
   String rentPrice;
   String rentalDeposit;
@@ -49,8 +53,12 @@ class CarContractModel {
       required this.renterPhoneNumber,
       required this.renterPostalCode,
       required this.rentEndDay,
+      required this.rentEndMonth,
+      required this.rentEndYear,
       required this.rentPrice,
       required this.rentStartDay,
+      required this.rentStartMonth,
+      required this.rentStartYear,
       required this.rentalDeposit,
       required this.numberOfRentDays,
       required this.kilometerAllowed,
