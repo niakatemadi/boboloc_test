@@ -27,7 +27,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
   String _adresse = '';
   String _startLocationDate = '';
   String _endLocationDate = '';
-  String _daysOfLocation = '';
+  int _daysOfLocation = 0;
   String _price = '';
   String _currentKilometer = '';
   String _exceedKilometer = '';
@@ -251,37 +251,12 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       'Informations du véhicule',
                       style: TextStyle(fontSize: 20),
                     ),
-                    TextFormField(
-                        decoration: const InputDecoration(
-                            hintText: 'Début de location'),
-                        onChanged: (value) {
-                          _startLocationDate = value;
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Entrer une date de début de location";
-                          }
-                          return null;
-                        }),
-                    const SizedBox(height: 5),
-                    TextFormField(
-                        decoration:
-                            const InputDecoration(hintText: 'Fin de location'),
-                        onChanged: (value) {
-                          _endLocationDate = value;
-                        },
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return "Entrer une date de fin de  location";
-                          }
-                          return null;
-                        }),
                     const SizedBox(height: 5),
                     TextFormField(
                         decoration: const InputDecoration(
                             hintText: 'jours de location'),
                         onChanged: (value) {
-                          _daysOfLocation = value;
+                          _daysOfLocation = int.parse(value);
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -428,7 +403,9 @@ class _ContractFormPageState extends State<ContractFormPage> {
                                                   rentPrice: _price,
                                                   renterName: _name,
                                                   renterFirstName: _firstName,
-                                                  contractUrl: contractUrl));
+                                                  contractUrl: contractUrl,
+                                                  rentNumberDays:
+                                                      _daysOfLocation));
                                 },
                                 child: const Text('Générer le contrat'));
                           } else if (snapshot.hasError) {

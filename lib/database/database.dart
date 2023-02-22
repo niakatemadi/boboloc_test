@@ -1,12 +1,8 @@
-import 'dart:io';
-import 'dart:math';
-
+import 'dart:core';
 import 'package:boboloc/models/bdd_car_contract_model.dart';
-import 'package:boboloc/models/car_contract_model.dart';
 import 'package:boboloc/models/car_model.dart';
 import 'package:boboloc/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class Database {
   String userId;
@@ -24,11 +20,80 @@ class Database {
         print('DocumentSnapshot added with ID: ${doc.id}'));
   }
 
+  updateCarStats(
+      {required statsDocumentId,
+      required int newRentNumberDays,
+      required int currentRentNumberDays}) {
+    int rentNumberDays = currentRentNumberDays + newRentNumberDays;
+
+    print('new total number days : $rentNumberDays');
+    db
+        .collection("statistique")
+        .doc(userId)
+        .collection(userId)
+        .doc(statsDocumentId)
+        .update({
+      'rent_number_days': rentNumberDays,
+    });
+  }
+
+  addCarStats(
+      {required String idCar,
+      required int rentStartMonth,
+      required int rentStartYear,
+      required int rentNumberDays}) {
+    db.collection("statistique").doc(userId).collection(userId).add({
+      'id_car': idCar,
+      'rent_start_month': rentStartMonth,
+      'rent_start_year': rentStartYear,
+      'rent_number_days': rentNumberDays
+    }).then((DocumentReference doc) =>
+        print('Statistique added with ID: ${doc.id}'));
+  }
+
+  Future addOrUpdateCarMonthStats(
+      {required int rentStartMonth,
+      required int rentStartYear,
+      required String idCar,
+      required int rentNumberDays}) async {
+    final carMonthStats = await FirebaseFirestore.instance
+        .collection('statistique')
+        .doc(userId)
+        .collection(userId)
+        .where('id_car', isEqualTo: idCar)
+        .where('rent_start_month', isEqualTo: rentStartMonth)
+        .where('rent_start_year', isEqualTo: rentStartYear)
+        .get();
+
+    if (carMonthStats.size == 1) {
+      print('on a bien un document pour ce mois, annee et idcar');
+      print('ce document existe déja');
+      int currentRentNumberDays = carMonthStats.docs[0]['rent_number_days'];
+      print('current rent number days : $currentRentNumberDays');
+      for (var documentSnapshot in carMonthStats.docs) {
+        String documentId = documentSnapshot.id;
+        print("La clé du document est : $documentId");
+        updateCarStats(
+            statsDocumentId: documentId,
+            newRentNumberDays: rentNumberDays,
+            currentRentNumberDays: currentRentNumberDays);
+      }
+    } else {
+      print('Ce document existe pas encore');
+      addCarStats(
+          idCar: idCar,
+          rentStartMonth: rentStartMonth,
+          rentStartYear: rentStartYear,
+          rentNumberDays: rentNumberDays);
+    }
+  }
+
   addNewContractToFirestore(
-      {required BddCarContractModel bddCarContractModel}) {
+      {required BddCarContractModel bddCarContractModel}) async {
     print('mmmaaaddii');
-    db.collection("contracts").doc(userId).collection(userId).add({
+    await db.collection("contracts").doc(userId).collection(userId).add({
       'id_car': bddCarContractModel.idCar,
+      'rent_number_days': bddCarContractModel.rentNumberDays,
       'rent_start_day': bddCarContractModel.rentStartDay,
       'rent_start_month': bddCarContractModel.rentStartMonth,
       'rent_start_year': bddCarContractModel.rentStartYear,
@@ -42,6 +107,12 @@ class Database {
       'created_at': DateTime.now()
     }).then((DocumentReference doc) =>
         print('DocumentSnapshot contract added with ID: ${doc.id}'));
+
+    await addOrUpdateCarMonthStats(
+        rentStartMonth: bddCarContractModel.rentStartMonth,
+        rentStartYear: bddCarContractModel.rentStartYear,
+        idCar: bddCarContractModel.idCar,
+        rentNumberDays: bddCarContractModel.rentNumberDays);
   }
 
   Future getUserDetails() async {

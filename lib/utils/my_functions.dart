@@ -12,6 +12,76 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MyFunctions {
+  getLimitDay({required int monthPicked}) {
+    switch (monthPicked) {
+      case 1:
+        {
+          return 31;
+        }
+
+      case 2:
+        {
+          return 28;
+        }
+
+      case 3:
+        {
+          return 31;
+        }
+
+      case 4:
+        {
+          return 30;
+        }
+
+      case 5:
+        {
+          return 31;
+        }
+
+      case 6:
+        {
+          return 30;
+        }
+
+      case 7:
+        {
+          return 31;
+        }
+
+      case 8:
+        {
+          return 31;
+        }
+
+      case 9:
+        {
+          return 30;
+        }
+
+      case 10:
+        {
+          return 31;
+        }
+
+      case 11:
+        {
+          return 30;
+        }
+
+      case 12:
+        {
+          return 31;
+        }
+
+      default:
+        {
+          //statements;
+        }
+        break;
+    }
+  }
+
   Future<Directory?> getDirectoryImage() async {
     Directory? directory;
     if (Platform.isIOS) {
@@ -68,7 +138,7 @@ class MyFunctions {
     String carRegistrationNumber = contractDatas.carRegistrationNumber;
     String currentCarKilometer = contractDatas.currentCarKilometer;
     String kilometerAllowed = contractDatas.kilometerAllowed;
-    String numberOfRentDays = contractDatas.numberOfRentDays;
+    int numberOfRentDays = contractDatas.numberOfRentDays;
     String ownerAdresse = contractDatas.ownerAdresse;
     String ownerCompanyName = contractDatas.ownerCompanyName;
     String ownerEmail = contractDatas.ownerEmail;
@@ -510,75 +580,5 @@ class MyFunctions {
       return contractUrl;
     }
     return '';
-  }
-
-  getLimitDay({required int monthPicked}) {
-    switch (monthPicked) {
-      case 1:
-        {
-          return 31;
-        }
-
-      case 2:
-        {
-          return 28;
-        }
-
-      case 3:
-        {
-          return 31;
-        }
-
-      case 4:
-        {
-          return 30;
-        }
-
-      case 5:
-        {
-          return 31;
-        }
-
-      case 6:
-        {
-          return 30;
-        }
-
-      case 7:
-        {
-          return 31;
-        }
-
-      case 8:
-        {
-          return 31;
-        }
-
-      case 9:
-        {
-          return 30;
-        }
-
-      case 10:
-        {
-          return 31;
-        }
-
-      case 11:
-        {
-          return 30;
-        }
-
-      case 12:
-        {
-          return 31;
-        }
-
-      default:
-        {
-          //statements;
-        }
-        break;
-    }
   }
 }
