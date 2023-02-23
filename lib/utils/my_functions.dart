@@ -12,6 +12,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 
 class MyFunctions {
+  // this function return the last day of the monthPicked
   getLimitDay({required int monthPicked}) {
     switch (monthPicked) {
       case 1:
@@ -82,6 +83,7 @@ class MyFunctions {
     }
   }
 
+// This function return the path of the mobile's download folder
   Future<Directory?> getDirectoryImage() async {
     Directory? directory;
     if (Platform.isIOS) {
@@ -148,7 +150,7 @@ class MyFunctions {
     String priceExceedKilometer = contractDatas.priceExceedKilometer;
     String rentEndDay = contractDatas.rentEndDay.toString();
 
-    String rentPrice = contractDatas.rentPrice;
+    int rentPrice = contractDatas.rentPrice;
     String rentStartDay = contractDatas.rentStartDay.toString();
     String rentalDeposit = contractDatas.rentalDeposit;
     String renterAdresse = contractDatas.renterAdresse;
@@ -165,13 +167,10 @@ class MyFunctions {
     Uint8List? renterLicenseDriverVerso =
         contractDatas.renterLicenseDriverVerso;
 
-    print('kss');
     final font = await rootBundle.load("fonts/roboto-medium.ttf");
     final ttf = pw.Font.ttf(font);
 
     final pdf = pw.Document();
-
-    Uint8List imagePickedPathConvertedTobytes = await pickImageFromgallery();
 
     pw.TableRow tableRowCustomerName = pw.TableRow(children: [
       pw.Padding(

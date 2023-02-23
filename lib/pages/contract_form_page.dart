@@ -28,7 +28,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
   String _startLocationDate = '';
   String _endLocationDate = '';
   int _daysOfLocation = 0;
-  String _price = '';
+  int _price = 0;
   String _currentKilometer = '';
   String _exceedKilometer = '';
   late Uint8List _licenseDriverRecto;
@@ -268,7 +268,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                     TextFormField(
                         decoration: const InputDecoration(hintText: 'Tarif'),
                         onChanged: (value) {
-                          _price = value;
+                          _price = int.parse(value);
                         },
                         validator: (value) {
                           if (value == null || value.isEmpty) {

@@ -23,17 +23,22 @@ class Database {
   updateCarStats(
       {required statsDocumentId,
       required int newRentNumberDays,
-      required int currentRentNumberDays}) {
-    int rentNumberDays = currentRentNumberDays + newRentNumberDays;
+      required int currentRentNumberDays,
+      required int currentRentTotalPrice,
+      required int newRentPrice}) {
+    // currentRentTotalPrice is the actual total price of rent in bdd
+    // newRentPrice is the new price added to the actual total price of the bdd
+    int rentTotalNumberDays = currentRentNumberDays + newRentNumberDays;
+    int rentCarTotalPrice = currentRentTotalPrice + newRentPrice;
 
-    print('new total number days : $rentNumberDays');
     db
         .collection("statistique")
         .doc(userId)
         .collection(userId)
         .doc(statsDocumentId)
         .update({
-      'rent_number_days': rentNumberDays,
+      'rent_number_days': rentTotalNumberDays,
+      'rent_car_price': rentCarTotalPrice
     });
   }
 
@@ -41,21 +46,24 @@ class Database {
       {required String idCar,
       required int rentStartMonth,
       required int rentStartYear,
-      required int rentNumberDays}) {
+      required int rentNumberDays,
+      required int rentCarPrice}) {
     db.collection("statistique").doc(userId).collection(userId).add({
       'id_car': idCar,
       'rent_start_month': rentStartMonth,
       'rent_start_year': rentStartYear,
-      'rent_number_days': rentNumberDays
+      'rent_number_days': rentNumberDays,
+      'rent_car_price': rentCarPrice
     }).then((DocumentReference doc) =>
         print('Statistique added with ID: ${doc.id}'));
   }
 
-  Future addOrUpdateCarMonthStats(
+  Future triggerAddOrUpdateCarMonthStats(
       {required int rentStartMonth,
       required int rentStartYear,
       required String idCar,
-      required int rentNumberDays}) async {
+      required int rentNumberDays,
+      required int rentCarPrice}) async {
     final carMonthStats = await FirebaseFirestore.instance
         .collection('statistique')
         .doc(userId)
@@ -69,6 +77,8 @@ class Database {
       print('on a bien un document pour ce mois, annee et idcar');
       print('ce document existe déja');
       int currentRentNumberDays = carMonthStats.docs[0]['rent_number_days'];
+      int currentRentTotalPrice = carMonthStats.docs[0]['rent_car_price'];
+      print('$currentRentTotalPrice');
       print('current rent number days : $currentRentNumberDays');
       for (var documentSnapshot in carMonthStats.docs) {
         String documentId = documentSnapshot.id;
@@ -76,7 +86,9 @@ class Database {
         updateCarStats(
             statsDocumentId: documentId,
             newRentNumberDays: rentNumberDays,
-            currentRentNumberDays: currentRentNumberDays);
+            currentRentNumberDays: currentRentNumberDays,
+            currentRentTotalPrice: currentRentTotalPrice,
+            newRentPrice: rentCarPrice);
       }
     } else {
       print('Ce document existe pas encore');
@@ -84,7 +96,8 @@ class Database {
           idCar: idCar,
           rentStartMonth: rentStartMonth,
           rentStartYear: rentStartYear,
-          rentNumberDays: rentNumberDays);
+          rentNumberDays: rentNumberDays,
+          rentCarPrice: rentCarPrice);
     }
   }
 
@@ -108,11 +121,12 @@ class Database {
     }).then((DocumentReference doc) =>
         print('DocumentSnapshot contract added with ID: ${doc.id}'));
 
-    await addOrUpdateCarMonthStats(
+    await triggerAddOrUpdateCarMonthStats(
         rentStartMonth: bddCarContractModel.rentStartMonth,
         rentStartYear: bddCarContractModel.rentStartYear,
         idCar: bddCarContractModel.idCar,
-        rentNumberDays: bddCarContractModel.rentNumberDays);
+        rentNumberDays: bddCarContractModel.rentNumberDays,
+        rentCarPrice: bddCarContractModel.rentPrice);
   }
 
   Future getUserDetails() async {

@@ -21,7 +21,7 @@ class CarContractModel {
   int rentEndMonth;
   int rentEndYear;
   int numberOfRentDays;
-  String rentPrice;
+  int rentPrice;
   String rentalDeposit;
   String currentCarKilometer;
   String kilometerAllowed;

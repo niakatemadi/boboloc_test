@@ -8,7 +8,7 @@ class BddCarContractModel {
   int rentEndYear;
   String renterName;
   String renterFirstName;
-  String rentPrice;
+  int rentPrice;
   String contractUrl;
   int rentNumberDays;
 
