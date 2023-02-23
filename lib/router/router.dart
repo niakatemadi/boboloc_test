@@ -1,3 +1,4 @@
+import 'package:boboloc/pages/calendar_page.dart';
 import 'package:boboloc/pages/car_details_page.dart';
 import 'package:boboloc/pages/cars_list_page.dart';
 import 'package:boboloc/pages/contract_form_page.dart';
@@ -41,6 +42,14 @@ class MyRouter {
         builder: (BuildContext context, GoRouterState state) {
           Map<String, String> currentCarDatas = state.queryParams;
           return CarDetailsPage(carDatas: currentCarDatas);
+        },
+      ),
+      GoRoute(
+        path: '/calendar_page',
+        name: 'calendar_page',
+        builder: (BuildContext context, GoRouterState state) {
+          Map<String, String> currentCarDatas = state.queryParams;
+          return CalendarPage();
         },
       ),
       GoRoute(

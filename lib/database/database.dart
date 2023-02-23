@@ -106,6 +106,7 @@ class Database {
     print('mmmaaaddii');
     await db.collection("contracts").doc(userId).collection(userId).add({
       'id_car': bddCarContractModel.idCar,
+      'user_id': userId,
       'rent_number_days': bddCarContractModel.rentNumberDays,
       'rent_start_day': bddCarContractModel.rentStartDay,
       'rent_start_month': bddCarContractModel.rentStartMonth,
@@ -143,6 +144,14 @@ class Database {
   Stream<QuerySnapshot> get getUserCars {
     return FirebaseFirestore.instance
         .collection('cars')
+        .doc(userId)
+        .collection(userId)
+        .snapshots();
+  }
+
+  Stream<QuerySnapshot> get getMyReservations {
+    return FirebaseFirestore.instance
+        .collection('contracts')
         .doc(userId)
         .collection(userId)
         .snapshots();

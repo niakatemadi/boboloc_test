@@ -72,7 +72,7 @@ class _CarsListPageState extends State<CarsListPage> {
         ],
       ),
       bottomNavigationBar: FloatingActionButton(
-        onPressed: () => context.go('/add_new_car'),
+        onPressed: () => context.go('/calendar_page'),
         child: Icon(Icons.plus_one),
       ),
     );
