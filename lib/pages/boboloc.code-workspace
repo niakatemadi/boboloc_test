@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../../../../../../Bobovelo_mobile/mobile_bobovelo/appmobile_bobovelo"
+		},
+		{
+			"path": "../../../../../Formations/formations_perso/Experiences_dev/pdf_generator"
+		},
+		{
+			"path": "../../../../../../../../app_tms/my_app"
+		}
+	],
+	"settings": {
+		"java.configuration.updateBuildConfiguration": "automatic"
+	}
+}

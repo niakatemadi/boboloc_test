@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
       catchError: ((User, UserConnexionData) => null),
       initialData: null,
       child: MaterialApp.router(
+        debugShowCheckedModeBanner: false,
         routerConfig: MyRouter().routerDatas(),
       ),
     );
