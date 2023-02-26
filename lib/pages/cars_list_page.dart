@@ -26,9 +26,14 @@ class _CarsListPageState extends State<CarsListPage> {
       body: Column(
         children: [
           Container(
-            height: 175,
+            height: 125,
             color: Color.fromARGB(255, 227, 228, 230),
           ),
+          ElevatedButton(
+              onPressed: () async {
+                await FirebaseAuth.instance.signOut();
+              },
+              child: const Text('Deconnexion')),
           Container(
             color: Color.fromARGB(255, 227, 228, 230),
             height: 450,
