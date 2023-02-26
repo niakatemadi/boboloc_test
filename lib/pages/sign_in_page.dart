@@ -15,6 +15,8 @@ class _SignInPageState extends State<SignInPage> {
   String _email = '';
   String _password = '';
   bool _isFieldEmpty = false;
+
+  bool _isConnected = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -55,6 +57,7 @@ class _SignInPageState extends State<SignInPage> {
             height: MediaQuery.of(context).size.height - 390,
             width: MediaQuery.of(context).size.width,
             child: Column(children: [
+              _isConnected ? Text('Vous etes connecté') : Text(''),
               const SizedBox(height: 45),
               Form(
                   key: _formKey,
@@ -124,9 +127,10 @@ class _SignInPageState extends State<SignInPage> {
                                 print(_password);
                                 await Authentication()
                                     .signIn(email: _email, password: _password);
+                                setState(() {
+                                  _isConnected = true;
+                                });
                               }
-
-                              setState(() {});
                             },
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all<

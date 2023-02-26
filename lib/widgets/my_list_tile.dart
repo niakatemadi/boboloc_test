@@ -16,34 +16,49 @@ class MyListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 88,
+      width: MediaQuery.of(context).size.width - 50,
       margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20), color: Colors.white),
       child: Row(
         children: [
           Container(
-            height: 90,
-            width: 150,
-            decoration: BoxDecoration(
-                borderRadius: const BorderRadius.only(
+            height: 88,
+            width: 129,
+            decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(18),
                     bottomLeft: Radius.circular(18),
                     topRight: Radius.circular(0),
                     bottomRight: Radius.circular(0)),
                 color: Colors.black,
                 image: DecorationImage(
-                    image: NetworkImage(carImage), fit: BoxFit.cover)),
+                    image: AssetImage('assets/car1_list.png'),
+                    fit: BoxFit.fill)),
           ),
           Container(
-            height: 90,
+            height: 88,
             width: 80,
-            child: Column(children: [
-              SizedBox(
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              const SizedBox(
                 height: 5,
               ),
-              Text(carName,
-                  style: const TextStyle(fontWeight: FontWeight.bold)),
-              Text(carRegisterNumber)
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  carName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                child: Text(
+                  carRegisterNumber,
+                  style: TextStyle(fontWeight: FontWeight.normal),
+                ),
+              )
             ]),
           )
         ],

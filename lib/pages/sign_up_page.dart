@@ -195,6 +195,10 @@ class _SignUpPageState extends State<SignUpPage> {
                           height: 45,
                           width: MediaQuery.of(context).size.width - 120,
                           child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all<
+                                          Color>(
+                                      const Color.fromRGBO(113, 101, 227, 1))),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   print('New user signed up !');
