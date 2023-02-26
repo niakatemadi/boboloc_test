@@ -20,7 +20,7 @@ class MyListTile extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 50,
       margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20), color: Colors.white),
+          borderRadius: BorderRadius.circular(15), color: Colors.white),
       child: Row(
         children: [
           Container(
@@ -28,8 +28,8 @@ class MyListTile extends StatelessWidget {
             width: 129,
             decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(18),
-                    bottomLeft: Radius.circular(18),
+                    topLeft: Radius.circular(15),
+                    bottomLeft: Radius.circular(15),
                     topRight: Radius.circular(0),
                     bottomRight: Radius.circular(0)),
                 color: Colors.black,

@@ -4,7 +4,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:google_nav_bar/google_nav_bar.dart';
 
 class CarsListPage extends StatefulWidget {
   CarsListPage({super.key});
@@ -20,7 +19,7 @@ class _CarsListPageState extends State<CarsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color.fromRGBO(243, 243, 255, 0.2),
+        color: const Color.fromRGBO(243, 243, 255, 0.8),
         child: Column(
           children: [
             Container(
@@ -46,6 +45,11 @@ class _CarsListPageState extends State<CarsListPage> {
                         ],
                       ),
                     ),
+                    ElevatedButton(
+                        onPressed: () async {
+                          await FirebaseAuth.instance.signOut();
+                        },
+                        child: const Text('Log out')),
                     Container(
                       margin: EdgeInsets.fromLTRB(0, 0, 25, 0),
                       height: 50,
@@ -104,32 +108,6 @@ class _CarsListPageState extends State<CarsListPage> {
         backgroundColor: const Color.fromRGBO(113, 101, 227, 1),
         onPressed: () {},
         child: const Icon(Icons.add),
-      ),
-      bottomNavigationBar: GNav(
-        color: const Color.fromRGBO(133, 133, 133, 1),
-        activeColor: const Color.fromRGBO(113, 101, 227, 1),
-        gap: 4,
-        onTabChange: (index) {
-          print(index);
-        },
-        tabs: const [
-          GButton(
-            icon: Icons.home,
-            text: 'Accueil',
-          ),
-          GButton(
-            icon: Icons.calendar_month,
-            text: 'Calendrier',
-          ),
-          GButton(
-            icon: Icons.bar_chart,
-            text: 'Statistiques',
-          ),
-          GButton(
-            icon: Icons.person,
-            text: 'Profile',
-          ),
-        ],
       ),
     );
   }
