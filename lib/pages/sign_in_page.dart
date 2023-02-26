@@ -117,14 +117,16 @@ class _SignInPageState extends State<SignInPage> {
                           width: MediaQuery.of(context).size.width,
                           height: 45,
                           child: ElevatedButton(
-                            onPressed: () {
+                            onPressed: () async {
                               if (_formKey.currentState!.validate()) {
                                 print('user connected !');
                                 print(_email);
                                 print(_password);
-                                Authentication()
+                                await Authentication()
                                     .signIn(email: _email, password: _password);
                               }
+
+                              setState(() {});
                             },
                             style: ButtonStyle(
                                 backgroundColor: MaterialStateProperty.all<
@@ -143,11 +145,11 @@ class _SignInPageState extends State<SignInPage> {
                 width: MediaQuery.of(context).size.width - 120,
                 height: 45,
                 child: ElevatedButton(
-                  onPressed: () {},
-                  child: const Text("S'inscrire"),
+                  onPressed: () => context.go('/sign_up'),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
                           Color.fromRGBO(255, 99, 99, 1))),
+                  child: const Text("S'inscrire"),
                 ),
               )
             ]),
