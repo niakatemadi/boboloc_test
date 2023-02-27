@@ -1,5 +1,5 @@
+import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/database.dart';
-import 'package:boboloc/models/bdd_car_contract_model.dart';
 import 'package:boboloc/models/event.dart';
 import 'package:boboloc/widgets/cards/reservation_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -24,8 +24,7 @@ class _CalendarPageState extends State<CalendarPage> {
     String currentUserId = FirebaseAuth.instance.currentUser!.uid;
     return Scaffold(
       body: Container(
-        decoration:
-            const BoxDecoration(color: Color.fromRGBO(243, 243, 255, 0.8)),
+        decoration: BoxDecoration(color: MyColors(opacity: 0.8).secondary),
         child: Column(children: [
           StreamBuilder(
               stream: Database(userId: currentUserId).getMyReservations,
@@ -107,7 +106,7 @@ class _CalendarPageState extends State<CalendarPage> {
                     children: [
                       Container(
                         height: 100,
-                        padding: EdgeInsets.fromLTRB(20, 75, 0, 0),
+                        padding: const EdgeInsets.fromLTRB(20, 75, 0, 0),
                         width: MediaQuery.of(context).size.width,
                         child: const Text(
                           'Calendrier',
@@ -120,7 +119,8 @@ class _CalendarPageState extends State<CalendarPage> {
                       ),
                       Container(
                         margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                        decoration: const BoxDecoration(color: Colors.white),
+                        decoration:
+                            BoxDecoration(color: MyColors(opacity: 1).tertiary),
                         child: TableCalendar(
                           firstDay: DateTime.utc(2010, 10, 16),
                           lastDay: DateTime.utc(2030, 3, 14),

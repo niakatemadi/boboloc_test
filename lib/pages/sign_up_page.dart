@@ -1,3 +1,4 @@
+import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/authentication.dart';
 import 'package:boboloc/models/user_model.dart';
 import 'package:boboloc/utils/clipper.dart';
@@ -28,7 +29,7 @@ class _SignUpPageState extends State<SignUpPage> {
         extendBodyBehindAppBar: true,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: Color.fromRGBO(0, 0, 0, 0),
+          backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
           leading: IconButton(
               onPressed: () => context.go('/sign_in'),
               icon: const Icon(Icons.arrow_back)),
@@ -39,7 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
               Container(
                 height: 220,
                 width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(color: Colors.white),
+                decoration: BoxDecoration(color: MyColors(opacity: 1).tertiary),
                 child: const Image(
                   image: AssetImage('assets/car_background.png'),
                   fit: BoxFit.fill,
@@ -50,14 +51,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Container(
                   height: 217,
                   width: MediaQuery.of(context).size.width,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(113, 101, 227, 0.7),
+                  decoration: BoxDecoration(
+                    color: MyColors(opacity: 0.7).primary,
                   ),
-                  child: const Center(
+                  child: Center(
                     child: Text(
                       'Inscription',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: MyColors(opacity: 1).tertiary,
                           fontSize: 30,
                           fontWeight: FontWeight.bold),
                     ),
@@ -196,9 +197,9 @@ class _SignUpPageState extends State<SignUpPage> {
                           width: MediaQuery.of(context).size.width - 120,
                           child: ElevatedButton(
                               style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all<
-                                          Color>(
-                                      const Color.fromRGBO(113, 101, 227, 1))),
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          MyColors(opacity: 1).primary)),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   print('New user signed up !');
@@ -218,7 +219,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                 }
                               },
                               child: const Text("S'inscrire"))),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       )
                     ],

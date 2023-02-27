@@ -1,3 +1,4 @@
+import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/authentication.dart';
 import 'package:boboloc/utils/clipper.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,6 @@ class _SignInPageState extends State<SignInPage> {
   String _password = '';
   bool _isFieldEmpty = false;
 
-  bool _isConnected = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +27,7 @@ class _SignInPageState extends State<SignInPage> {
             Container(
               height: 390,
               width: MediaQuery.of(context).size.width,
-              decoration: const BoxDecoration(color: Colors.white),
+              decoration: BoxDecoration(color: MyColors(opacity: 1).tertiary),
               child: const Image(
                 image: AssetImage('assets/car_background.png'),
                 fit: BoxFit.fill,
@@ -38,14 +38,14 @@ class _SignInPageState extends State<SignInPage> {
               child: Container(
                 height: 390,
                 width: MediaQuery.of(context).size.width,
-                decoration: const BoxDecoration(
-                  color: Color.fromRGBO(113, 101, 227, 0.7),
+                decoration: BoxDecoration(
+                  color: MyColors(opacity: 0.7).primary,
                 ),
-                child: const Center(
+                child: Center(
                   child: Text(
                     'Connexion',
                     style: TextStyle(
-                        color: Colors.white,
+                        color: MyColors(opacity: 1).tertiary,
                         fontSize: 30,
                         fontWeight: FontWeight.bold),
                   ),
@@ -57,7 +57,6 @@ class _SignInPageState extends State<SignInPage> {
             height: MediaQuery.of(context).size.height - 390,
             width: MediaQuery.of(context).size.width,
             child: Column(children: [
-              _isConnected ? Text('Vous etes connecté') : Text(''),
               const SizedBox(height: 45),
               Form(
                   key: _formKey,
@@ -127,15 +126,12 @@ class _SignInPageState extends State<SignInPage> {
                                 print(_password);
                                 await Authentication()
                                     .signIn(email: _email, password: _password);
-                                setState(() {
-                                  _isConnected = true;
-                                });
                               }
                             },
                             style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all<
-                                        Color>(
-                                    const Color.fromRGBO(113, 101, 227, 1))),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                        MyColors(opacity: 1).primary)),
                             child: const Text('Se connecter'),
                           ),
                         )
@@ -152,7 +148,7 @@ class _SignInPageState extends State<SignInPage> {
                   onPressed: () => context.go('/sign_up'),
                   style: ButtonStyle(
                       backgroundColor: MaterialStateProperty.all<Color>(
-                          Color.fromRGBO(255, 99, 99, 1))),
+                          const Color.fromRGBO(255, 99, 99, 1))),
                   child: const Text("S'inscrire"),
                 ),
               )

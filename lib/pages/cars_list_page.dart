@@ -1,3 +1,4 @@
+import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/database.dart';
 import 'package:boboloc/widgets/my_list_tile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,10 +20,10 @@ class _CarsListPageState extends State<CarsListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        color: const Color.fromRGBO(243, 243, 255, 0.8),
+        color: MyColors(opacity: 0.8).secondary,
         child: Column(
           children: [
-            Container(
+            SizedBox(
               height: 130,
               child: Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
@@ -51,7 +52,7 @@ class _CarsListPageState extends State<CarsListPage> {
                         },
                         child: const Text('Log out')),
                     Container(
-                      margin: EdgeInsets.fromLTRB(0, 0, 25, 0),
+                      margin: const EdgeInsets.fromLTRB(0, 0, 25, 0),
                       height: 50,
                       width: 50,
                       child: const Image(
@@ -105,8 +106,8 @@ class _CarsListPageState extends State<CarsListPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: const Color.fromRGBO(113, 101, 227, 1),
-        onPressed: () {},
+        backgroundColor: MyColors(opacity: 1).primary,
+        onPressed: () => context.go('/add_new_car'),
         child: const Icon(Icons.add),
       ),
     );

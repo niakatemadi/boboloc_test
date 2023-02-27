@@ -26,16 +26,15 @@ class MyListTile extends StatelessWidget {
           Container(
             height: 88,
             width: 129,
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(15),
                     bottomLeft: Radius.circular(15),
                     topRight: Radius.circular(0),
                     bottomRight: Radius.circular(0)),
                 color: Colors.black,
                 image: DecorationImage(
-                    image: AssetImage('assets/car1_list.png'),
-                    fit: BoxFit.fill)),
+                    image: NetworkImage(carImage), fit: BoxFit.fill)),
           ),
           Container(
             height: 88,

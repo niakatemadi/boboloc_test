@@ -38,7 +38,7 @@ class MyRouter {
         },
       ),
       GoRoute(
-        path: '/home',
+        path: '/navigation_page',
         builder: (BuildContext context, GoRouterState state) {
           return NavigationPage();
         },
