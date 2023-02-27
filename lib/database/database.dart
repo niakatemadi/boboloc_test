@@ -15,7 +15,8 @@ class Database {
       'car_brand': newCar.carBrand,
       'car_kilometer': newCar.currentCarKilometer,
       'car_picture': newCar.carPicture,
-      'car_registration_number': newCar.carRegistrationNumber
+      'car_registration_number': newCar.carRegistrationNumber,
+      'id_car': newCar.carId
     }).then((DocumentReference doc) =>
         print('DocumentSnapshot added with ID: ${doc.id}'));
   }
@@ -154,6 +155,19 @@ class Database {
         .collection('contracts')
         .doc(userId)
         .collection(userId)
+        .snapshots();
+  }
+
+// return statistics of a car based on month, year and car id
+  getCarStatistics(
+      {required String idCar, required int month, required int year}) {
+    return FirebaseFirestore.instance
+        .collection('statistique')
+        .doc(userId)
+        .collection(userId)
+        .where('id_car', isEqualTo: idCar)
+        .where('rent_start_month', isEqualTo: month)
+        .where('rent_start_year', isEqualTo: year)
         .snapshots();
   }
 }

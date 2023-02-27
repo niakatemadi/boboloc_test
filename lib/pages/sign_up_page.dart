@@ -1,5 +1,7 @@
+import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/authentication.dart';
 import 'package:boboloc/models/user_model.dart';
+import 'package:boboloc/utils/clipper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -15,136 +17,215 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String _name = '';
   String _firstName = '';
-  String _mail = '';
+  String _email = '';
   String _password = '';
   String _adresse = '';
   String _city = '';
   String _companyName = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Page d'inscription"),
-        actions: [
-          IconButton(
+        extendBodyBehindAppBar: true,
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: const Color.fromRGBO(0, 0, 0, 0),
+          leading: IconButton(
               onPressed: () => context.go('/sign_in'),
-              icon: const Icon(Icons.arrow_back))
-        ],
-      ),
-      body: Center(
-        child: Container(
-            width: 300,
-            child: Form(
-              key: _formKey,
-              child: SingleChildScrollView(
-                child: Column(children: [
-                  const Text(
-                    'Inscription',
-                    style: TextStyle(fontSize: 30),
-                  ),
-                  const SizedBox(height: 15),
-                  TextFormField(
-                    decoration: const InputDecoration(hintText: 'Name'),
-                    onChanged: (value) {
-                      _name = value;
-                    },
-                    validator: (String? value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your name';
-                      }
-                      return null;
-                    },
-                  ),
-                  TextFormField(
-                      decoration: const InputDecoration(hintText: 'Prénom'),
-                      onChanged: (String value) {
-                        _firstName = value;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter some firstName';
-                        }
-                        return null;
-                      }),
-                  TextFormField(
-                      decoration: const InputDecoration(hintText: 'Email'),
-                      onChanged: (String value) {
-                        _mail = value;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your Email';
-                        }
-                        return null;
-                      }),
-                  TextFormField(
-                      decoration:
-                          const InputDecoration(hintText: 'Mot de passe'),
-                      onChanged: (String value) {
-                        _password = value;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your password';
-                        }
-                        return null;
-                      }),
-                  TextFormField(
-                      decoration: const InputDecoration(
-                          hintText: 'Nom de votre société'),
-                      onChanged: (String value) {
-                        _companyName = value;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your company name';
-                        }
-                        return null;
-                      }),
-                  TextFormField(
-                      decoration: const InputDecoration(hintText: 'Adresse'),
-                      onChanged: (String value) {
-                        _adresse = value;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your adresse';
-                        }
-                        return null;
-                      }),
-                  TextFormField(
-                      decoration: const InputDecoration(hintText: 'Ville'),
-                      onChanged: (String value) {
-                        _city = value;
-                      },
-                      validator: (String? value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter your city';
-                        }
-                        return null;
-                      }),
-                  ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          print('New user signed up !');
-                          print(_mail);
-                          print(_password);
-
-                          Authentication().signUp(UserModel(
-                              name: _name,
-                              firstName: _firstName,
-                              companyName: _companyName,
-                              password: _password,
-                              city: _city,
-                              email: _mail,
-                              adresse: _adresse));
-                        }
-                      },
-                      child: const Text("S'inscrire"))
-                ]),
+              icon: const Icon(Icons.arrow_back)),
+        ),
+        body: SingleChildScrollView(
+          child: Column(children: [
+            Stack(children: [
+              Container(
+                height: 220,
+                width: MediaQuery.of(context).size.width,
+                decoration: BoxDecoration(color: MyColors(opacity: 1).tertiary),
+                child: const Image(
+                  image: AssetImage('assets/car_background.png'),
+                  fit: BoxFit.fill,
+                ),
               ),
-            )),
-      ),
-    );
+              ClipPath(
+                clipper: WaveClipperSignUp(),
+                child: Container(
+                  height: 217,
+                  width: MediaQuery.of(context).size.width,
+                  decoration: BoxDecoration(
+                    color: MyColors(opacity: 0.7).primary,
+                  ),
+                  child: Center(
+                    child: Text(
+                      'Inscription',
+                      style: TextStyle(
+                          color: MyColors(opacity: 1).tertiary,
+                          fontSize: 30,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ),
+            ]),
+            Form(
+                key: _formKey,
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width - 120,
+                  child: Column(
+                    children: [
+                      const SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Nom'),
+                              onChanged: (value) {
+                                _name = value;
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty || value == null) {
+                                  return 'Entrer votre nom';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            width: MediaQuery.of(context).size.width / 3,
+                            child: TextFormField(
+                              decoration: const InputDecoration(
+                                  border: OutlineInputBorder(),
+                                  labelText: 'Prénom'),
+                              onChanged: (value) {
+                                _firstName = value;
+                              },
+                              validator: (value) {
+                                if (value!.isEmpty || value == null) {
+                                  return 'Entrer votre prénom';
+                                }
+
+                                return null;
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Nom de société'),
+                        onChanged: (value) {
+                          _companyName = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty || value == null) {
+                            return 'Entrer le nom de votre société';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Email'),
+                        onChanged: (value) {
+                          _email = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty || value == null) {
+                            return 'Entrer votre adresse email';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Adresse'),
+                        onChanged: (value) {
+                          _adresse = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty || value == null) {
+                            return 'Entrer votre adresse';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(), labelText: 'Ville'),
+                        onChanged: (value) {
+                          _city = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty || value == null) {
+                            return 'Entrer le nom de votre ville';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      TextFormField(
+                        decoration: const InputDecoration(
+                            border: OutlineInputBorder(),
+                            labelText: 'Mot de passe'),
+                        onChanged: (value) {
+                          _password = value;
+                        },
+                        validator: (value) {
+                          if (value!.isEmpty || value == null) {
+                            return 'Entrer un mot de passe';
+                          }
+
+                          return null;
+                        },
+                      ),
+                      const SizedBox(height: 20),
+                      SizedBox(
+                          height: 45,
+                          width: MediaQuery.of(context).size.width - 120,
+                          child: ElevatedButton(
+                              style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          MyColors(opacity: 1).primary)),
+                              onPressed: () async {
+                                if (_formKey.currentState!.validate()) {
+                                  print('New user signed up !');
+                                  print(_email);
+                                  print(_password);
+
+                                  await Authentication().signUp(UserModel(
+                                      name: _name,
+                                      firstName: _firstName,
+                                      companyName: _companyName,
+                                      password: _password,
+                                      city: _city,
+                                      email: _email,
+                                      adresse: _adresse));
+
+                                  context.go('/sign_in');
+                                }
+                              },
+                              child: const Text("S'inscrire"))),
+                      const SizedBox(
+                        height: 15,
+                      )
+                    ],
+                  ),
+                ))
+          ]),
+        ));
   }
 }

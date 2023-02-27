@@ -3,6 +3,7 @@ import 'package:boboloc/pages/car_details_page.dart';
 import 'package:boboloc/pages/cars_list_page.dart';
 import 'package:boboloc/pages/contract_form_page.dart';
 import 'package:boboloc/pages/create_new_car_page.dart';
+import 'package:boboloc/pages/navigation_page.dart';
 import 'package:boboloc/pages/sign_in_page.dart';
 import 'package:boboloc/pages/sign_up_page.dart';
 import 'package:boboloc/pages/wrapper/wrapper_page.dart';
@@ -34,6 +35,12 @@ class MyRouter {
         path: '/cars_list',
         builder: (BuildContext context, GoRouterState state) {
           return CarsListPage();
+        },
+      ),
+      GoRoute(
+        path: '/navigation_page',
+        builder: (BuildContext context, GoRouterState state) {
+          return NavigationPage();
         },
       ),
       GoRoute(
