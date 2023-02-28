@@ -46,11 +46,6 @@ class _CarsListPageState extends State<CarsListPage> {
                         ],
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
-                        },
-                        child: const Text('Log out')),
                     Container(
                       margin: const EdgeInsets.fromLTRB(0, 0, 25, 0),
                       height: 50,

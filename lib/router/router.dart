@@ -1,9 +1,11 @@
 import 'package:boboloc/pages/calendar_page.dart';
 import 'package:boboloc/pages/car_details_page.dart';
 import 'package:boboloc/pages/cars_list_page.dart';
+import 'package:boboloc/pages/contact_us_page.dart';
 import 'package:boboloc/pages/contract_form_page.dart';
 import 'package:boboloc/pages/create_new_car_page.dart';
 import 'package:boboloc/pages/navigation_page.dart';
+import 'package:boboloc/pages/profile_page.dart';
 import 'package:boboloc/pages/sign_in_page.dart';
 import 'package:boboloc/pages/sign_up_page.dart';
 import 'package:boboloc/pages/wrapper/wrapper_page.dart';
@@ -68,7 +70,21 @@ class MyRouter {
         },
       ),
       GoRoute(
-        path: '/wrapper',
+        path: '/profile_page',
+        name: 'profile_page',
+        builder: (BuildContext context, GoRouterState state) {
+          return const ProfilePage();
+        },
+      ),
+      GoRoute(
+        path: '/contact_page',
+        name: 'contact_page',
+        builder: (BuildContext context, GoRouterState state) {
+          return ContactUsPage();
+        },
+      ),
+      GoRoute(
+        path: '/wrapper_page',
         builder: (BuildContext context, GoRouterState state) {
           return WrapperPage();
         },

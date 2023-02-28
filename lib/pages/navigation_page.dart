@@ -2,6 +2,7 @@ import 'package:boboloc/models/car_model.dart';
 import 'package:boboloc/pages/calendar_page.dart';
 import 'package:boboloc/pages/car_details_page.dart';
 import 'package:boboloc/pages/cars_list_page.dart';
+import 'package:boboloc/pages/contact_us_page.dart';
 import 'package:boboloc/pages/create_new_car_page.dart';
 import 'package:boboloc/pages/profile_page.dart';
 import 'package:flutter/material.dart';

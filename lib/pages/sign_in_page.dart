@@ -1,6 +1,7 @@
 import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/authentication.dart';
 import 'package:boboloc/utils/clipper.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -13,9 +14,13 @@ class SignInPage extends StatefulWidget {
 
 class _SignInPageState extends State<SignInPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  String wrongEmailOrPassword = '';
   String _email = '';
   String _password = '';
   bool _isFieldEmpty = false;
+  goToWrapperPage() {
+    context.go('/wrapper_page');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +30,7 @@ class _SignInPageState extends State<SignInPage> {
         children: [
           Stack(children: [
             Container(
-              height: 390,
+              height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(color: MyColors(opacity: 1).tertiary),
               child: const Image(
@@ -36,7 +41,7 @@ class _SignInPageState extends State<SignInPage> {
             ClipPath(
               clipper: WaveClipper(),
               child: Container(
-                height: 390,
+                height: MediaQuery.of(context).size.height / 2,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
                   color: MyColors(opacity: 0.7).primary,
@@ -54,16 +59,23 @@ class _SignInPageState extends State<SignInPage> {
             ),
           ]),
           Container(
-            height: MediaQuery.of(context).size.height - 390,
+            height: MediaQuery.of(context).size.height / 2,
             width: MediaQuery.of(context).size.width,
             child: Column(children: [
-              const SizedBox(height: 45),
+              const SizedBox(height: 10),
               Form(
                   key: _formKey,
                   child: SizedBox(
                     width: MediaQuery.of(context).size.width - 120,
                     child: Column(
                       children: [
+                        Text(
+                          wrongEmailOrPassword,
+                          style: const TextStyle(color: Colors.red),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
                         SizedBox(
                           height: _isFieldEmpty ? 65 : 45,
                           child: TextFormField(
@@ -121,11 +133,17 @@ class _SignInPageState extends State<SignInPage> {
                           child: ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
-                                print('user connected !');
-                                print(_email);
-                                print(_password);
-                                await Authentication()
+                                var isLogged = await Authentication()
                                     .signIn(email: _email, password: _password);
+
+                                if (isLogged != null) {
+                                  goToWrapperPage();
+                                } else {
+                                  setState(() {
+                                    wrongEmailOrPassword =
+                                        'Email ou mot de passe incorrect !';
+                                  });
+                                }
                               }
                             },
                             style: ButtonStyle(

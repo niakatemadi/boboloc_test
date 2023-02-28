@@ -105,8 +105,8 @@ class _CalendarPageState extends State<CalendarPage> {
                   child: Column(
                     children: [
                       Container(
-                        height: 100,
-                        padding: const EdgeInsets.fromLTRB(20, 75, 0, 0),
+                        height: 20,
+                        margin: const EdgeInsets.fromLTRB(20, 34, 0, 0),
                         width: MediaQuery.of(context).size.width,
                         child: const Text(
                           'Calendrier',

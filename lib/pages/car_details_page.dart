@@ -1,5 +1,6 @@
 import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/database.dart';
+import 'package:boboloc/pages/contract_form_page.dart';
 import 'package:boboloc/utils/clipper.dart';
 import 'package:boboloc/utils/my_functions.dart';
 import 'package:boboloc/widgets/cards/stats_minicard.dart';
@@ -95,7 +96,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
           ClipPath(
             clipper: WaveClipper(),
             child: Container(
-              height: 430,
+              height: MediaQuery.of(context).size.height / 2,
               width: MediaQuery.of(context).size.width,
               decoration: BoxDecoration(
                   color: MyColors(opacity: 1).primary,
@@ -291,8 +292,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                         Map<String, dynamic> carStatistics =
                             document.data() as Map<String, dynamic>;
 
-                        return Container(
-                            child: Row(
+                        return Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             StatsMiniCard(
@@ -308,7 +308,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                                     .toString(),
                                 iconIndex: 2)
                           ],
-                        ));
+                        );
                       }).toList(),
                     ));
                   })),
@@ -340,8 +340,11 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                               backgroundColor: MaterialStatePropertyAll(
                                   MyColors(opacity: 1).primary)),
                           onPressed: () {
-                            return context.goNamed("car_contract_form",
-                                queryParams: widget.carDatas);
+                            Navigator.push(context, MaterialPageRoute<void>(
+                                builder: (BuildContext context) {
+                              return ContractFormPage(
+                                  carDatas: widget.carDatas);
+                            }));
                           },
                           child: const Text('Créer un contrat')),
                     )

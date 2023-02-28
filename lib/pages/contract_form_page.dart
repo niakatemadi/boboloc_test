@@ -82,11 +82,6 @@ class _ContractFormPageState extends State<ContractFormPage> {
     return Scaffold(
       appBar: AppBar(
           backgroundColor: MyColors(opacity: 1).primary,
-          leading: IconButton(
-              onPressed: () {
-                context.go('/cars_list');
-              },
-              icon: const Icon(Icons.arrow_back)),
           title: Text('Contrat de location : $carBrand')),
       body: Container(
         decoration: BoxDecoration(

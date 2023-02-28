@@ -1,14 +1,25 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-class LogoutButton extends StatelessWidget {
+class LogoutButton extends StatefulWidget {
   const LogoutButton({super.key});
+
+  @override
+  State<LogoutButton> createState() => _LogoutButtonState();
+}
+
+class _LogoutButtonState extends State<LogoutButton> {
+  goSignInPage() {
+    context.go('/sign_in');
+  }
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () async {
         await FirebaseAuth.instance.signOut();
+        goSignInPage();
       },
       child: Container(
         height: 40,

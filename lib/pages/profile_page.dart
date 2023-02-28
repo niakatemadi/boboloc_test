@@ -10,11 +10,12 @@ class ProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: MediaQuery.of(context).size.height,
         color: MyColors(opacity: 0.8).secondary,
         child: Column(
           children: [
-            const SizedBox(
-              height: 80,
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 10,
             ),
             SizedBox(
               width: MediaQuery.of(context).size.width - 50,
@@ -23,9 +24,7 @@ class ProfilePage extends StatelessWidget {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 25),
             Column(children: [
               Container(
                 height: 150,
@@ -47,18 +46,27 @@ class ProfilePage extends StatelessWidget {
               ),
               const Text('aitransport@gmail.com')
             ]),
-            const SizedBox(
-              height: 30,
-            ),
+            SizedBox(height: MediaQuery.of(context).size.height / 35),
             Column(children: const [
               ProfileCard(
                 cardIconIndex: 0,
                 cardText: 'Editer le profil',
+                navigationPath: 'contact_page',
               ),
-              ProfileCard(cardText: 'Liste des reservations', cardIconIndex: 1),
-              ProfileCard(cardText: 'Paramètres', cardIconIndex: 2),
-              ProfileCard(cardText: 'Contact', cardIconIndex: 3),
+              ProfileCard(
+                cardText: 'Liste des reservations',
+                cardIconIndex: 1,
+                navigationPath: 'contact_page',
+              ),
+              ProfileCard(
+                cardText: 'Contact',
+                cardIconIndex: 3,
+                navigationPath: 'contact_page',
+              ),
             ]),
+            SizedBox(
+              height: 10,
+            ),
             const LogoutButton()
           ],
         ),

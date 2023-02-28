@@ -1,13 +1,20 @@
+import 'package:boboloc/pages/contact_us_page.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfileCard extends StatelessWidget {
   final String cardText;
   final int cardIconIndex;
+  final String navigationPath;
   const ProfileCard(
-      {super.key, required this.cardText, required this.cardIconIndex});
+      {super.key,
+      required this.cardText,
+      required this.cardIconIndex,
+      required this.navigationPath});
 
   @override
   Widget build(BuildContext context) {
+    print('sss');
     List<Widget> cardIcons = const [
       Icon(
         Icons.person_2_outlined,
@@ -20,7 +27,10 @@ class ProfileCard extends StatelessWidget {
     ];
     return GestureDetector(
       onTap: () {
-        print('hh');
+        Navigator.push(context,
+            MaterialPageRoute<void>(builder: (BuildContext context) {
+          return ContactUsPage();
+        }));
       },
       child: Container(
         height: 45,

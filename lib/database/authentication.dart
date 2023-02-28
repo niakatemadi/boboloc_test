@@ -77,9 +77,8 @@ class Authentication {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: passwordCrypted);
 
-      var userDatas = credential.user;
-
-      print(userDatas);
+      var userId = credential.user!.uid;
+      return userId;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');
