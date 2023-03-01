@@ -10,6 +10,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datepicker_dropdown/datepicker_dropdown.dart';
 import 'package:go_router/go_router.dart';
+import 'package:signature/signature.dart';
 
 class ContractFormPage extends StatefulWidget {
   ContractFormPage({super.key, required this.carDatas});
@@ -65,7 +66,22 @@ class _ContractFormPageState extends State<ContractFormPage> {
   bool _isFieldDaysOfLocationEmpty = false;
   bool _isFieldDepositEmpty = false;
   bool _isFieldPriceEmpty = false;
-  //test
+  // signature
+
+  late Uint8List renterSignature;
+  late Uint8List ownerSignature;
+
+  final SignatureController renterSignatureController = SignatureController(
+    penStrokeWidth: 5,
+    penColor: Colors.red,
+    exportBackgroundColor: Colors.blue,
+  );
+
+  final SignatureController ownerSignatureController = SignatureController(
+    penStrokeWidth: 5,
+    penColor: Colors.red,
+    exportBackgroundColor: Colors.blue,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -637,6 +653,40 @@ class _ContractFormPageState extends State<ContractFormPage> {
                             },
                             child: const Text("Permis de conduire verso")),
                       ),
+                      const SizedBox(
+                        height: 5,
+                      ),
+                      Signature(
+                        controller: renterSignatureController,
+                        width: 300,
+                        height: 150,
+                        backgroundColor: Colors.lightBlueAccent,
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 300,
+                        child: IconButton(
+                            onPressed: () {
+                              renterSignatureController.clear();
+                            },
+                            icon: const Icon(Icons.clear)),
+                      ),
+                      const SizedBox(height: 20),
+                      Signature(
+                        controller: ownerSignatureController,
+                        width: 300,
+                        height: 150,
+                        backgroundColor: Colors.lightBlueAccent,
+                      ),
+                      const SizedBox(height: 5),
+                      SizedBox(
+                        width: 300,
+                        child: IconButton(
+                            onPressed: () {
+                              ownerSignatureController.clear();
+                            },
+                            icon: const Icon(Icons.clear)),
+                      ),
                       const SizedBox(height: 5),
                       FutureBuilder(
                         future:
@@ -657,9 +707,22 @@ class _ContractFormPageState extends State<ContractFormPage> {
                                                 MyColors(opacity: 1).primary)),
                                     onPressed: () async {
                                       if (formKey.currentState!.validate()) {
+                                        Uint8List renterSignature =
+                                            await MyFunctions().exportSignature(
+                                                mySignatureController:
+                                                    renterSignatureController);
+
+                                        Uint8List ownerSignature =
+                                            await MyFunctions().exportSignature(
+                                                mySignatureController:
+                                                    ownerSignatureController);
                                         String contractUrl = await MyFunctions()
                                             .generatorPdf(
                                                 contractDatas: CarContractModel(
+                                                    renterSignature:
+                                                        renterSignature,
+                                                    ownerSignature:
+                                                        ownerSignature,
                                                     rentEndMonth: _rentEndMonth,
                                                     rentEndYear: _rentEndYear,
                                                     renterName: _name,

@@ -2,6 +2,9 @@
 	"folders": [
 		{
 			"path": "../.."
+		},
+		{
+			"path": "../../../../../Formations/formations_perso/Experiences_dev/pdf_generator"
 		}
 	],
 	"settings": {

@@ -4,12 +4,14 @@ import 'package:boboloc/models/car_contract_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:signature/signature.dart';
 
 class MyFunctions {
   // this function return the last day of the monthPicked
@@ -133,6 +135,22 @@ class MyFunctions {
     return await imagePickedPathConvertedToFile.readAsBytes();
   }
 
+  //Signature
+
+  Future<Uint8List> exportSignature({mySignatureController}) async {
+    final exportController = SignatureController(
+        penStrokeWidth: 2,
+        penColor: Colors.black,
+        exportBackgroundColor: Colors.white,
+        points: mySignatureController.points);
+
+    final signature = await exportController.toPngBytes();
+
+    exportController.dispose();
+
+    return signature!;
+  }
+
   Future<String> generatorPdf({required CarContractModel contractDatas}) async {
     String carBrand = contractDatas.carBrand;
 
@@ -146,6 +164,7 @@ class MyFunctions {
     String ownerEmail = contractDatas.ownerEmail;
     String ownerFirstName = contractDatas.ownerFirstName;
     String ownerName = contractDatas.ownerName;
+    Uint8List ownerSignature = contractDatas.ownerSignature;
     String ownerPhoneNumber = contractDatas.ownerPhoneNumber;
     String priceExceedKilometer = contractDatas.priceExceedKilometer;
     String rentEndDay = contractDatas.rentEndDay.toString();
@@ -156,16 +175,16 @@ class MyFunctions {
     String renterAdresse = contractDatas.renterAdresse;
     String renterCity = contractDatas.renterCity;
 
+    Uint8List renterSignature = contractDatas.renterSignature;
     String? renterEmail = contractDatas.renterEmail;
     String renterFirstName = contractDatas.renterFirstName;
     String renterName = contractDatas.renterName;
     String? renterPhoneNumber = contractDatas.renterPhoneNumber;
     String renterPostalCode = contractDatas.renterPostalCode;
     Uint8List renterIdentityCardRecto = contractDatas.renterIdentityCardRecto;
-    Uint8List? renterIdentityCardVerso = contractDatas.renterIdentityCardVerso;
+    Uint8List renterIdentityCardVerso = contractDatas.renterIdentityCardVerso;
     Uint8List renterLicenseDriverRecto = contractDatas.renterLicenseDriverRecto;
-    Uint8List? renterLicenseDriverVerso =
-        contractDatas.renterLicenseDriverVerso;
+    Uint8List renterLicenseDriverVerso = contractDatas.renterLicenseDriverVerso;
 
     final font = await rootBundle.load("fonts/roboto-medium.ttf");
     final ttf = pw.Font.ttf(font);
@@ -335,22 +354,28 @@ class MyFunctions {
           child: pw.Text('$currentCarKilometer Km')),
     ]);
 
-    pw.TableRow tableRowCustomerSignature = pw.TableRow(children: [
+    pw.TableRow tableRowSignature = pw.TableRow(children: [
       pw.Padding(
         padding: const pw.EdgeInsets.all(10.0),
         child: pw.Text('Signature du locataire :',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
       ),
-      pw.Padding(padding: const pw.EdgeInsets.all(10.0), child: pw.Text('')),
-    ]);
-
-    pw.TableRow tableRowOwnerSignature = pw.TableRow(children: [
       pw.Padding(
         padding: const pw.EdgeInsets.all(10.0),
         child: pw.Text('Signature du loueur :',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
       ),
-      pw.Padding(padding: const pw.EdgeInsets.all(10.0), child: pw.Text('')),
+    ]);
+
+    pw.TableRow tableRowSignatureSigned = pw.TableRow(children: [
+      pw.Container(
+          height: 60,
+          width: 60,
+          child: pw.Image(pw.MemoryImage(renterSignature))),
+      pw.Container(
+          height: 60,
+          width: 60,
+          child: pw.Image(pw.MemoryImage(ownerSignature)))
     ]);
 
     pw.TableRow tableRowCarKilometerAllowed = pw.TableRow(children: [
@@ -423,6 +448,28 @@ class MyFunctions {
                           ])
                         ])
                       ]),
+                  pw.SizedBox(height: 20),
+                  pw.Container(
+                      child: pw.Text(
+                          "Le présent contrat est établie au moment de la prise en charge du véhicule. Il est indissociable du contrat de location. Ce dernier fait foi entre les deux parties.")),
+                  pw.Container(
+                    child: pw.Text(
+                        "Le loueur met à disposition le véhicule mentionné ci-dessus au locataire préalablement identifié. Les parties conviennent expressément que tout litige pouvant naître de l'exécution du présent contrat relèvera de la compétence d'un tribunal de commerce.Ce contrat est fait en deux exemplaires originaux remis à chacune des parties."),
+                  ),
+                  pw.SizedBox(
+                    height: 5,
+                  ),
+                  pw.Container(
+                      width: 482,
+                      child: pw.Column(children: [
+                        pw.Row(children: [
+                          pw.Text('Le loueur : '),
+                          pw.Text('$ownerName '),
+                          pw.Text('$ownerFirstName '),
+                          pw.Text('Demeurant à '),
+                          pw.Text('$ownerAdresse .'),
+                        ]),
+                      ])),
                   pw.Row(
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                       children: [
@@ -465,7 +512,7 @@ class MyFunctions {
                         ]),
                       ])
                 ])),
-                pw.SizedBox(height: 20),
+                pw.SizedBox(height: 10),
                 pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                     children: [
@@ -482,44 +529,19 @@ class MyFunctions {
                               tableRowCarBrand,
                               tableRowCarRegistrationNumber,
                             ]),
-                        pw.SizedBox(height: 15),
-                        pw.Container(
-                            width: 200,
-                            child: pw.Text(
-                                "Le présent contrat est établie au moment de la prise en charge du véhicule. Il est indissociable du contrat de location. Ce dernier fait foi entre les deux parties.")),
                       ]),
-                      pw.Container(
-                          height: 220,
-                          width: 275,
-                          decoration:
-                              const pw.BoxDecoration(color: PdfColors.grey))
                     ]),
+                pw.SizedBox(height: 20),
                 pw.Container(
-                    width: 482,
-                    height: 83,
-                    child: pw.Column(children: [
-                      pw.Text(
-                          "Le loueur met à disposition le véhicule mentionné ci-dessus au locataire préalablement identifié. Les parties conviennent expressément que tout litige pouvant naître de l'exécution du présent contrat relèvera de la compétence d'un tribunal de commerce.Ce contrat est fait en deux exemplaires originaux remis à chacune des parties."),
-                      pw.Row(children: [
-                        pw.Text('Le loueur : '),
-                        pw.Text('$ownerName '),
-                        pw.Text('$ownerFirstName '),
-                        pw.Text('Demeurant à '),
-                        pw.Text('$ownerAdresse .'),
+                  child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Table(children: [
+                          tableRowSignature,
+                          tableRowSignatureSigned
+                        ]),
                       ]),
-                    ])),
-                pw.Row(children: [
-                  pw.Text('Loueur mandaté par la société : '),
-                  pw.Text('$ownerCompanyName.')
-                ]),
-                pw.Row(
-                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
-                    children: [
-                      pw.Table(children: [
-                        tableRowOwnerSignature,
-                      ]),
-                      pw.Table(children: [tableRowCustomerSignature])
-                    ]),
+                ),
                 pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                     children: [
@@ -537,7 +559,7 @@ class MyFunctions {
                           decoration:
                               const pw.BoxDecoration(color: PdfColors.grey),
                           child: pw.Image(
-                            pw.MemoryImage(renterIdentityCardVerso!),
+                            pw.MemoryImage(renterIdentityCardVerso),
                           ))
                     ]),
                 pw.SizedBox(height: 20),
@@ -559,8 +581,19 @@ class MyFunctions {
                               const pw.BoxDecoration(color: PdfColors.grey),
                           child: pw.Image(
                             pw.MemoryImage(renterLicenseDriverVerso!),
-                          ))
-                    ])
+                          )),
+                    ]),
+                pw.SizedBox(height: 20),
+                pw.Container(
+                  child: pw.Row(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Table(children: [
+                          tableRowSignature,
+                          tableRowSignatureSigned
+                        ]),
+                      ]),
+                ),
               ]),
     );
 
