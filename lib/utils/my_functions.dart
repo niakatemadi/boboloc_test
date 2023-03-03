@@ -615,6 +615,10 @@ class MyFunctions {
   }
 
   downloadPdf({pdfBytes}) async {
+    PermissionStatus status = await Permission.storage.status;
+    if (!status.isGranted) {
+      await Permission.storage.request();
+    }
     final output = await getDirectoryImage();
 
     if (output != null) {

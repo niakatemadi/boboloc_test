@@ -11,6 +11,7 @@ class Event {
   int numberOfRentDays;
   String contractId;
   String carId;
+  String contractUrl;
 
   Event(
       {required this.renterName,
@@ -24,5 +25,6 @@ class Event {
       required this.rentStartYear,
       required this.contractId,
       required this.carId,
-      required this.numberOfRentDays});
+      required this.numberOfRentDays,
+      required this.contractUrl});
 }
