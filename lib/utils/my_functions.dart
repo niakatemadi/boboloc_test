@@ -613,4 +613,16 @@ class MyFunctions {
     }
     return '';
   }
+
+  downloadPdf({pdfBytes}) async {
+    final output = await getDirectoryImage();
+
+    if (output != null) {
+      String randomFileName =
+          Timestamp.fromDate(DateTime.now()).microsecondsSinceEpoch.toString();
+
+      final file = File("${output.path}/boboloc-$randomFileName.pdf");
+      await file.writeAsBytes(await pdfBytes);
+    }
+  }
 }

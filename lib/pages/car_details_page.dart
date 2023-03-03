@@ -1,5 +1,6 @@
 import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/database.dart';
+import 'package:boboloc/pages/car_reservations.dart';
 import 'package:boboloc/pages/contract_form_page.dart';
 import 'package:boboloc/utils/clipper.dart';
 import 'package:boboloc/utils/my_functions.dart';
@@ -321,16 +322,24 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Container(
-                      height: 45,
-                      width: 90,
-                      decoration: BoxDecoration(
-                          border:
-                              Border.all(color: MyColors(opacity: 1).primary),
-                          borderRadius: BorderRadius.circular(5)),
-                      child: const Image(
-                          image:
-                              AssetImage('assets/icon_calendar_regular.png')),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(context, MaterialPageRoute<void>(
+                            builder: (BuildContext context) {
+                          return CarReservations(carDatas: widget.carDatas);
+                        }));
+                      },
+                      child: Container(
+                        height: 45,
+                        width: 90,
+                        decoration: BoxDecoration(
+                            border:
+                                Border.all(color: MyColors(opacity: 1).primary),
+                            borderRadius: BorderRadius.circular(5)),
+                        child: const Image(
+                            image:
+                                AssetImage('assets/icon_calendar_regular.png')),
+                      ),
                     ),
                     Container(
                       height: 45,

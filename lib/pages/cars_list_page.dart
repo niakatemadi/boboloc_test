@@ -101,6 +101,7 @@ class _CarsListPageState extends State<CarsListPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 1,
         backgroundColor: MyColors(opacity: 1).primary,
         onPressed: () => context.go('/add_new_car'),
         child: const Icon(Icons.add),

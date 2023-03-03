@@ -119,9 +119,18 @@ class Database {
       'renter_firstname': bddCarContractModel.renterFirstName,
       'rent_price': bddCarContractModel.rentPrice,
       'contract_url': bddCarContractModel.contractUrl,
-      'created_at': DateTime.now()
-    }).then((DocumentReference doc) =>
-        print('DocumentSnapshot contract added with ID: ${doc.id}'));
+      'created_at': DateTime.now(),
+    }).then((DocumentReference doc) {
+      // Je récupère l'id du document et je créer un nouveau champ 'contract_id' dans
+      // le document pour l'insérer
+      db
+          .collection('contracts')
+          .doc(userId)
+          .collection(userId)
+          .doc(doc.id)
+          .update({'contract_id': doc.id});
+      print('DocumentSnapshot contract added with ID: ${doc.id}');
+    });
 
     await triggerAddOrUpdateCarMonthStats(
         rentStartMonth: bddCarContractModel.rentStartMonth,
@@ -169,5 +178,67 @@ class Database {
         .where('rent_start_month', isEqualTo: month)
         .where('rent_start_year', isEqualTo: year)
         .snapshots();
+  }
+
+  // return all reservations of a specific car
+
+  getAllCarReservations({idCar}) {
+    return FirebaseFirestore.instance
+        .collection('contracts')
+        .doc(userId)
+        .collection(userId)
+        .where('id_car', isEqualTo: idCar)
+        .snapshots();
+  }
+
+// delete a specific reservation by his id
+
+  deleteContract({contractId}) {
+    print('contract : $contractId deleted');
+    FirebaseFirestore.instance
+        .collection('contracts')
+        .doc(userId)
+        .collection(userId)
+        .doc(contractId)
+        .delete();
+  }
+
+//Cette fonction permet de mettre à jour le document statistique qui contient le prix et
+// le nbre de jrs de location de ce contrat
+// En gros ça remet la stats à jour en ne prenant plus en compte ce contrat
+  updateStats(
+      {carId,
+      rentStartMonth,
+      rentStartYear,
+      rentCarPrice,
+      numberOfRentDays}) async {
+    // Je récupère le document statistique qui contient les données du
+    // contrat que je m'apprete à supprimer
+    var statistiquePicked = await db
+        .collection('statistique')
+        .doc(userId)
+        .collection(userId)
+        .where('id_car', isEqualTo: carId)
+        .where('rent_start_month', isEqualTo: rentStartMonth)
+        .where('rent_start_year', isEqualTo: rentStartYear)
+        .get();
+    // Je stocke la ref du document statistique que j'ai récupérer
+    var statsPickedRef = statistiquePicked.docs.first.reference;
+
+    // Je stocke le prix et nombre de jours de location du document statistique que
+    //j'ai récupérer
+    int statsPickedTotalPrice =
+        statistiquePicked.docs[0].data()['rent_car_price'];
+    int statsPickedTotalRentDays =
+        statistiquePicked.docs[0].data()['rent_number_days'];
+    print(statsPickedTotalPrice);
+
+    // Je retire le prix et le nombre de jours de location du contrat que je m'apprete
+    // à supprimer au document statistique qui le contient
+    var newStatsPrice = statsPickedTotalPrice - rentCarPrice;
+    var newTotalRentDays = statsPickedTotalRentDays - numberOfRentDays;
+// Je met à jour avec les nouvelles données
+    statsPickedRef.update({'rent_car_price': newStatsPrice});
+    statsPickedRef.update({'rent_number_days': newTotalRentDays});
   }
 }

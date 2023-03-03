@@ -62,7 +62,11 @@ class _CalendarPageState extends State<CalendarPage> {
                           rentPrice: contract['rent_price'],
                           rentStartDay: contract['rent_start_day'],
                           rentStartMonth: contract['rent_start_month'],
-                          rentStartYear: contract['rent_start_year']));
+                          rentStartYear: contract['rent_start_year'],
+                          contractId: contract['contract_id'],
+                          carId: contract['id_car'],
+                          numberOfRentDays: contract['rent_number_days'],
+                          contractUrl: contract['contract_url']));
                     } else {
                       events[date] = [];
                       events[date]!.add(Event(
@@ -74,7 +78,11 @@ class _CalendarPageState extends State<CalendarPage> {
                           rentPrice: contract['rent_price'],
                           rentStartDay: contract['rent_start_day'],
                           rentStartMonth: contract['rent_start_month'],
-                          rentStartYear: contract['rent_start_year']));
+                          rentStartYear: contract['rent_start_year'],
+                          contractId: contract['contract_id'],
+                          carId: contract['id_car'],
+                          numberOfRentDays: contract['rent_number_days'],
+                          contractUrl: contract['contract_url']));
                     }
                   });
 
@@ -139,7 +147,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(20, 10, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(10, 10, 0, 0),
                         width: MediaQuery.of(context).size.width,
                         child: const Text(
                           'Reservations',
@@ -147,9 +155,12 @@ class _CalendarPageState extends State<CalendarPage> {
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      SizedBox(
-                        height: 169,
-                        width: MediaQuery.of(context).size.width - 40,
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 240,
+                        width: MediaQuery.of(context).size.width - 20,
                         child: ValueListenableBuilder<List<Event>>(
                           valueListenable: _selectedEvents,
                           builder: (context, value, _) {
@@ -171,7 +182,12 @@ class _CalendarPageState extends State<CalendarPage> {
                                         rentStartMonth:
                                             value[index].rentStartMonth,
                                         rentStartYear:
-                                            value[index].rentStartYear),
+                                            value[index].rentStartYear,
+                                        contractId: value[index].contractId,
+                                        carId: value[index].carId,
+                                        numberOfRentDays:
+                                            value[index].numberOfRentDays,
+                                        contractUrl: value[index].contractUrl),
                                   );
                                 });
                           },

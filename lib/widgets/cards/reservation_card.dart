@@ -1,4 +1,10 @@
+import 'dart:typed_data';
+
+import 'package:boboloc/database/database.dart';
 import 'package:boboloc/models/event.dart';
+import 'package:boboloc/utils/my_functions.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 class ReservationCard extends StatelessWidget {
@@ -7,9 +13,11 @@ class ReservationCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
     return Container(
       height: 90,
-      margin: const EdgeInsets.fromLTRB(0, 4, 0, 4),
+      margin: const EdgeInsets.fromLTRB(0, 6, 0, 4),
       color: Colors.white,
       child: Column(children: [
         SizedBox(
@@ -34,13 +42,27 @@ class ReservationCard extends StatelessWidget {
                       ))
                 ]),
                 Container(
-                  margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
-                  height: 35,
-                  child: Text(
-                    "${event.rentStartDay}/${event.rentStartMonth}/${event.rentStartYear}",
-                    style: TextStyle(color: Color.fromARGB(255, 163, 163, 163)),
-                  ),
-                )
+                    margin: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                    height: 35,
+                    child: IconButton(
+                      onPressed: () async {
+                        //Je remet à jour le document stats qui contient les données de ce contrat
+                        await Database(userId: currentUserId).updateStats(
+                            carId: event.carId,
+                            rentStartMonth: event.rentStartMonth,
+                            rentStartYear: event.rentStartYear,
+                            rentCarPrice: event.rentPrice,
+                            numberOfRentDays: event.numberOfRentDays);
+
+                        // Je supprime le contrat de la bdd
+                        await Database(userId: currentUserId)
+                            .deleteContract(contractId: event.contractId);
+                      },
+                      icon: const Icon(
+                        Icons.delete,
+                        color: Colors.red,
+                      ),
+                    ))
               ],
             )),
         SizedBox(
@@ -93,7 +115,13 @@ class ReservationCard extends StatelessWidget {
                   ]),
                 ),
                 IconButton(
-                    onPressed: () {},
+                    onPressed: () async {
+                      Uint8List? pdfBytes = await FirebaseStorage.instance
+                          .refFromURL(event.contractUrl)
+                          .getData();
+
+                      MyFunctions().downloadPdf(pdfBytes: pdfBytes);
+                    },
                     icon: const Icon(Icons.file_copy_outlined))
               ],
             ))
