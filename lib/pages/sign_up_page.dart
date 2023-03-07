@@ -213,7 +213,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       password: _password,
                                       city: _city,
                                       email: _email,
-                                      adresse: _adresse));
+                                      adresse: _adresse,
+                                      subscribmentStatus: "free"));
 
                                   context.go('/sign_in');
                                 }

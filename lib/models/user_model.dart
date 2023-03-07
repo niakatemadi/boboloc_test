@@ -9,6 +9,8 @@ class UserModel {
   String email;
   String city;
   String adresse;
+  String? subscribmentId;
+  String subscribmentStatus;
 
   UserModel(
       {required this.name,
@@ -18,7 +20,9 @@ class UserModel {
       required this.city,
       required this.email,
       required this.adresse,
-      this.uid});
+      this.uid,
+      this.subscribmentId,
+      required this.subscribmentStatus});
 
   factory UserModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -32,6 +36,8 @@ class UserModel {
         city: data["city"],
         email: data["mail"],
         adresse: data["adresse"],
-        uid: document.id);
+        uid: document.id,
+        subscribmentId: data["subscribment_id"],
+        subscribmentStatus: data["subscribment_status"]);
   }
 }

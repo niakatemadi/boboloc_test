@@ -8,6 +8,7 @@ import 'package:boboloc/pages/navigation_page.dart';
 import 'package:boboloc/pages/profile_page.dart';
 import 'package:boboloc/pages/sign_in_page.dart';
 import 'package:boboloc/pages/sign_up_page.dart';
+import 'package:boboloc/pages/subscribments_page.dart';
 import 'package:boboloc/pages/wrapper/wrapper_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -87,6 +88,12 @@ class MyRouter {
         path: '/wrapper_page',
         builder: (BuildContext context, GoRouterState state) {
           return WrapperPage();
+        },
+      ),
+      GoRoute(
+        path: '/subscribment_page',
+        builder: (BuildContext context, GoRouterState state) {
+          return SubscribmentsPage();
         },
       ),
       GoRoute(

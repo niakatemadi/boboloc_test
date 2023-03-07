@@ -64,7 +64,7 @@ class ProfilePage extends StatelessWidget {
                 navigationPath: 'contact_page',
               ),
             ]),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             const LogoutButton()

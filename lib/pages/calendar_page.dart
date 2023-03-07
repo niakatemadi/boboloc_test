@@ -5,6 +5,7 @@ import 'package:boboloc/widgets/cards/reservation_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -35,8 +36,9 @@ class _CalendarPageState extends State<CalendarPage> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: Text("Loading"),
+                  return Center(
+                    child: LoadingAnimationWidget.waveDots(
+                        color: MyColors(opacity: 1).primary, size: 50),
                   );
                 }
 
@@ -126,10 +128,12 @@ class _CalendarPageState extends State<CalendarPage> {
                         thickness: 2,
                       ),
                       Container(
+                        height: MediaQuery.of(context).size.height / 2.7,
                         margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         decoration:
                             BoxDecoration(color: MyColors(opacity: 1).tertiary),
                         child: TableCalendar(
+                          shouldFillViewport: true,
                           firstDay: DateTime.utc(2010, 10, 16),
                           lastDay: DateTime.utc(2030, 3, 14),
                           focusedDay: _focusedDay,

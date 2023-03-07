@@ -6,6 +6,7 @@ import 'package:boboloc/widgets/cards/reservation_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CarReservations extends StatefulWidget {
   var carDatas;
@@ -69,8 +70,9 @@ class _CarReservationsState extends State<CarReservations> {
                     }
 
                     if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: Text("Loading"),
+                      return Center(
+                        child: LoadingAnimationWidget.waveDots(
+                            color: MyColors(opacity: 1).primary, size: 50),
                       );
                     }
 

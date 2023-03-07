@@ -3,13 +3,12 @@ import 'package:boboloc/database/database.dart';
 import 'package:boboloc/pages/car_reservations.dart';
 import 'package:boboloc/pages/contract_form_page.dart';
 import 'package:boboloc/utils/clipper.dart';
-import 'package:boboloc/utils/my_functions.dart';
 import 'package:boboloc/widgets/cards/stats_minicard.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:month_year_picker/month_year_picker.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CarDetailsPage extends StatefulWidget {
   Map<String, String> carDatas;
@@ -109,14 +108,15 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
             ),
           ),
           Container(
+            height: MediaQuery.of(context).size.height / 2.1,
             width: MediaQuery.of(context).size.width - 50,
             child: Column(children: [
-              Container(
+              SizedBox(
                   width: MediaQuery.of(context).size.width - 50,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       ),
                       Text(
@@ -263,62 +263,66 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                 ]),
               ),
               const SizedBox(
-                height: 35,
+                height: 25,
               ),
-              StreamBuilder(
-                  stream: Database(userId: currentUserId).getCarStatistics(
-                      idCar: widget.carDatas['id_car']!,
-                      month: isYearAndMonthPicked() == true
-                          ? monthPicked
-                          : initialMonth(),
-                      year: isYearAndMonthPicked() == true
-                          ? yearPicked
-                          : initialYear()),
-                  builder: ((BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (snapshot.hasError) {
-                      return const Text('Something went wrong');
-                    }
+              Container(
+                height: MediaQuery.of(context).size.height / 8,
+                child: StreamBuilder(
+                    stream: Database(userId: currentUserId).getCarStatistics(
+                        idCar: widget.carDatas['id_car']!,
+                        month: isYearAndMonthPicked() == true
+                            ? monthPicked
+                            : initialMonth(),
+                        year: isYearAndMonthPicked() == true
+                            ? yearPicked
+                            : initialYear()),
+                    builder: ((BuildContext context,
+                        AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
 
-                    if (snapshot.connectionState == ConnectionState.waiting) {
-                      return const Center(
-                        child: Text("Loading"),
-                      );
-                    }
-
-                    return Container(
-                        child: Column(
-                      children:
-                          snapshot.data!.docs.map((DocumentSnapshot document) {
-                        Map<String, dynamic> carStatistics =
-                            document.data() as Map<String, dynamic>;
-
-                        return Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            StatsMiniCard(
-                                myStatValue:
-                                    carStatistics['rent_car_price'].toString(),
-                                iconIndex: 0),
-                            StatsMiniCard(
-                                myStatValue: carStatistics['rent_number_days']
-                                    .toString(),
-                                iconIndex: 1),
-                            StatsMiniCard(
-                                myStatValue: carStatistics['rent_number_days']
-                                    .toString(),
-                                iconIndex: 2)
-                          ],
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return Center(
+                          child: LoadingAnimationWidget.waveDots(
+                              color: MyColors(opacity: 1).primary, size: 50),
                         );
-                      }).toList(),
-                    ));
-                  })),
-              const SizedBox(height: 25),
+                      }
+
+                      return Column(
+                        children: snapshot.data!.docs
+                            .map((DocumentSnapshot document) {
+                          Map<String, dynamic> carStatistics =
+                              document.data() as Map<String, dynamic>;
+
+                          return Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              StatsMiniCard(
+                                  myStatValue: carStatistics['rent_car_price']
+                                      .toString(),
+                                  iconIndex: 0),
+                              StatsMiniCard(
+                                  myStatValue: carStatistics['rent_number_days']
+                                      .toString(),
+                                  iconIndex: 1),
+                              StatsMiniCard(
+                                  myStatValue: carStatistics['rent_number_days']
+                                      .toString(),
+                                  iconIndex: 2)
+                            ],
+                          );
+                        }).toList(),
+                      );
+                    })),
+              ),
+              const SizedBox(height: 12),
               const Divider(thickness: 1),
               const SizedBox(height: 10),
               Container(
                 width: MediaQuery.of(context).size.width - 50,
                 height: 45,
+                margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [

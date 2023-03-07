@@ -151,6 +151,18 @@ class Database {
     return userDatas;
   }
 
+  Future getCarsNumber() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('cars')
+        .doc(userId)
+        .collection(userId)
+        .get();
+
+    var length = snapshot.docs.length;
+
+    return length;
+  }
+
   Stream<QuerySnapshot> get getUserCars {
     return FirebaseFirestore.instance
         .collection('cars')
@@ -188,6 +200,16 @@ class Database {
         .doc(userId)
         .collection(userId)
         .where('id_car', isEqualTo: idCar)
+        .snapshots();
+  }
+
+  // return all statistics of a specific user
+
+  getAllStatistics() {
+    return FirebaseFirestore.instance
+        .collection('statistique')
+        .doc(userId)
+        .collection(userId)
         .snapshots();
   }
 
