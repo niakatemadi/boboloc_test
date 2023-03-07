@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class MyListTile extends StatelessWidget {
   String carImage;
-  String carName;
+  String carBrand;
+  String carModel;
   String carRegisterNumber;
   MyListTile(
       {super.key,
       required this.carImage,
-      required this.carName,
+      required this.carBrand,
+      required this.carModel,
       required this.carRegisterNumber});
 
   @override
@@ -44,7 +46,7 @@ class MyListTile extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  carName,
+                  carBrand,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),

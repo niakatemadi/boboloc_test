@@ -20,6 +20,7 @@ class _CarReservationsState extends State<CarReservations> {
   @override
   Widget build(BuildContext context) {
     String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+
     return Scaffold(
         extendBodyBehindAppBar: true,
         appBar: AppBar(

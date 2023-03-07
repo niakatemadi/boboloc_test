@@ -85,7 +85,8 @@ class _CarsListPageState extends State<CarsListPage> {
                       return GestureDetector(
                         child: MyListTile(
                           carImage: cars['car_picture'],
-                          carName: cars['car_brand'],
+                          carBrand: cars['car_brand'],
+                          carModel: cars['car_model'],
                           carRegisterNumber: cars['car_registration_number'],
                         ),
                         onTap: () {

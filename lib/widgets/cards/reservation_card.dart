@@ -15,6 +15,42 @@ class ReservationCard extends StatelessWidget {
   Widget build(BuildContext context) {
     String currentUserId = FirebaseAuth.instance.currentUser!.uid;
 
+    void _showAlertDeleteReservation() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Colors.pinkAccent,
+              title: const Text('Supppresion de reservation'),
+              content: const Text(
+                  'Voulez vous vraiment supprimer cette reservation ?'),
+              actions: [
+                ElevatedButton(
+                    onPressed: () async {
+                      await Database(userId: currentUserId).updateStats(
+                          carId: event.carId,
+                          rentStartMonth: event.rentStartMonth,
+                          rentStartYear: event.rentStartYear,
+                          rentCarPrice: event.rentPrice,
+                          numberOfRentDays: event.numberOfRentDays);
+
+                      // Je supprime le contrat de la bdd
+                      await Database(userId: currentUserId)
+                          .deleteContract(contractId: event.contractId);
+
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Supprimer')),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Annuler'))
+              ],
+            );
+          });
+    }
+
     return Container(
       height: 90,
       margin: const EdgeInsets.fromLTRB(0, 6, 0, 4),
@@ -46,17 +82,7 @@ class ReservationCard extends StatelessWidget {
                     height: 35,
                     child: IconButton(
                       onPressed: () async {
-                        //Je remet à jour le document stats qui contient les données de ce contrat
-                        await Database(userId: currentUserId).updateStats(
-                            carId: event.carId,
-                            rentStartMonth: event.rentStartMonth,
-                            rentStartYear: event.rentStartYear,
-                            rentCarPrice: event.rentPrice,
-                            numberOfRentDays: event.numberOfRentDays);
-
-                        // Je supprime le contrat de la bdd
-                        await Database(userId: currentUserId)
-                            .deleteContract(contractId: event.contractId);
+                        _showAlertDeleteReservation();
                       },
                       icon: const Icon(
                         Icons.delete,

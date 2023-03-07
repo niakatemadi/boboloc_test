@@ -138,8 +138,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           _email = value;
                         },
                         validator: (value) {
-                          if (value!.isEmpty || value == null) {
+                          if (value!.isEmpty) {
                             return 'Entrer votre adresse email';
+                          }
+
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(value)) {
+                            return 'Entrer une adresse email correct';
                           }
 
                           return null;

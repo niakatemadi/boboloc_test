@@ -104,6 +104,7 @@ class _SignInPageState extends State<SignInPage> {
                         SizedBox(
                           height: _isFieldEmpty ? 65 : 45,
                           child: TextFormField(
+                            obscureText: true,
                             decoration: const InputDecoration(
                                 border: OutlineInputBorder(),
                                 labelText: 'Mot de passe'),

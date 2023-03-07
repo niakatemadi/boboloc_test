@@ -9,6 +9,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:datepicker_dropdown/datepicker_dropdown.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:signature/signature.dart';
 
@@ -91,7 +92,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
     print('sssstttt');
 
     String carBrand = widget.carDatas['car_brand']!;
-    String carModel = 'modelss';
+    String carModel = widget.carDatas['car_model']!;
     String carRegistrationNumber = widget.carDatas['car_registration_number']!;
     String carId = widget.carDatas['id_car']!;
     var currentUserId = FirebaseAuth.instance.currentUser!.uid;
@@ -220,6 +221,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldDaysOfLocationEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Jours de location',
@@ -247,6 +252,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldPriceEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Tarif',
@@ -274,6 +283,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldDepositEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Caution',
@@ -301,6 +314,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldCurrentKilometerEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Kilomètre actuel',
@@ -328,6 +345,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldKilometerAllowedEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Kilomètres autorisé',
@@ -355,6 +376,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldExceedKilometerEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Tarif kilomètre dépassé',
@@ -450,6 +475,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldPhoneNumberEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Numéro de telephone',
@@ -459,11 +488,17 @@ class _ContractFormPageState extends State<ContractFormPage> {
                             _phoneNumber = value;
                           },
                           validator: (value) {
-                            if (value!.isEmpty || value == null) {
+                            if (value!.isEmpty) {
                               setState(() {
                                 _isFieldPhoneNumberEmpty = true;
                               });
                               return 'Entrer un numéro de téléphone';
+                            }
+
+                            if (!RegExp(
+                                    r'^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\s\./0-9]*$')
+                                .hasMatch(value)) {
+                              return 'Entrer un numéro de téléphone valide';
                             }
                             setState(() {
                               _isFieldPhoneNumberEmpty = false;
@@ -531,6 +566,10 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       SizedBox(
                         height: _isFieldPostalCodeEmpty ? 65 : 45,
                         child: TextFormField(
+                          keyboardType: TextInputType.number,
+                          inputFormatters: [
+                            FilteringTextInputFormatter.digitsOnly
+                          ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
                               labelText: 'Code postal',
@@ -796,7 +835,12 @@ class _ContractFormPageState extends State<ContractFormPage> {
                                                         contractUrl:
                                                             contractUrl,
                                                         rentNumberDays:
-                                                            _daysOfLocation));
+                                                            _daysOfLocation,
+                                                        rentCarBrand: carBrand,
+                                                        rentCarModel:
+                                                            carModel));
+
+                                        context.go('/navigation_page');
                                       }
                                     },
                                     child: const Text('Générer le contrat')),

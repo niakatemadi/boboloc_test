@@ -1,13 +1,40 @@
 import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/widgets/buttons/logout_button.dart';
 import 'package:boboloc/widgets/cards/profile_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    void _showAlertLogout() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: Colors.pinkAccent,
+              title: const Text('Déconnexion'),
+              content: const Text('Voulez vous vraiment vous déconnecter ?'),
+              actions: [
+                ElevatedButton(
+                    onPressed: () async {
+                      context.go('/sign_in');
+                      await FirebaseAuth.instance.signOut();
+                    },
+                    child: const Text('Oui')),
+                ElevatedButton(
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                    child: const Text('Annuler'))
+              ],
+            );
+          });
+    }
+
     return Scaffold(
       body: Container(
         height: MediaQuery.of(context).size.height,
@@ -67,7 +94,44 @@ class ProfilePage extends StatelessWidget {
             const SizedBox(
               height: 10,
             ),
-            const LogoutButton()
+            GestureDetector(
+              onTap: () {
+                _showAlertLogout();
+              },
+              child: Container(
+                height: 40,
+                width: 140,
+                margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Color.fromARGB(255, 237, 33, 19)),
+                child: Row(
+                  children: [
+                    Container(
+                      height: 40,
+                      width: 35,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            bottomLeft: Radius.circular(5),
+                            topRight: Radius.circular(0),
+                            bottomRight: Radius.circular(0)),
+                      ),
+                      child: const Icon(Icons.logout, color: Colors.white),
+                    ),
+                    Container(
+                      height: 40,
+                      width: 100,
+                      padding: const EdgeInsets.fromLTRB(10, 12, 0, 0),
+                      child: const Text(
+                        'Déconnexion',
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            )
           ],
         ),
       ),

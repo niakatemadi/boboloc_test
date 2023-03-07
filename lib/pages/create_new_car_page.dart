@@ -35,6 +35,7 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
 
   bool _isFieldEmpty = false;
   String _carBrand = '';
+  String _carModel = '';
   String _carPicture = '';
   String _carRegistrationNumber = '';
   String _carCurrentKilometer = '';
@@ -64,6 +65,7 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
 
       Database(userId: currentUserId).addNewCar(NewCar(
           carBrand: _carBrand,
+          carModel: _carModel,
           currentCarKilometer: _carCurrentKilometer,
           carPicture: getStorageCarsRefUrl,
           carRegistrationNumber: _carRegistrationNumber,
@@ -173,7 +175,7 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
                                       borderSide:
                                           BorderSide(color: Colors.black))),
                               onChanged: (value) {
-                                _carCurrentKilometer = value;
+                                _carModel = value;
                               },
                               validator: (value) {
                                 if (value == null || value.isEmpty) {
@@ -261,12 +263,14 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
                                     backgroundColor:
                                         MaterialStatePropertyAll<Color>(
                                             MyColors(opacity: 1).primary)),
-                                onPressed: () {
+                                onPressed: () async {
                                   if (_formKey.currentState!.validate()) {
                                     print('new car added !');
-                                    uploadGalleryPicture(
+                                    await uploadGalleryPicture(
                                         imagePicked:
                                             _imagePickedPathConvertedToBytes);
+
+                                    context.go('/navigation_page');
                                   }
                                 },
                                 child: const Text('Ajouter')),

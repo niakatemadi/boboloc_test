@@ -23,8 +23,8 @@ class _NavigationPageState extends State<NavigationPage> {
   List<Widget> navigationMainPages = [
     CarsListPage(),
     CalendarPage(),
+    StatisticsPage(),
     ProfilePage(),
-    StatisticsPage()
   ];
   @override
   Widget build(BuildContext context) {
@@ -47,6 +47,10 @@ class _NavigationPageState extends State<NavigationPage> {
           GButton(
             icon: Icons.calendar_month,
             text: 'Calendrier',
+          ),
+          GButton(
+            icon: Icons.analytics,
+            text: 'Statistiques',
           ),
           GButton(
             icon: Icons.person,
