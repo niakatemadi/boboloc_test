@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CarsListPage extends StatefulWidget {
   CarsListPage({super.key});
@@ -47,9 +48,9 @@ class _CarsListPageState extends State<CarsListPage> {
                       ),
                     ),
                     Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 25, 0),
-                      height: 50,
-                      width: 50,
+                      margin: const EdgeInsets.fromLTRB(0, 10, 20, 0),
+                      height: 60,
+                      width: 60,
                       child: const Image(
                         image: AssetImage('assets/logo_boboloc.png'),
                         fit: BoxFit.cover,
@@ -69,9 +70,9 @@ class _CarsListPageState extends State<CarsListPage> {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: Text("Loading"),
-                    );
+                    return Center(
+                        child: LoadingAnimationWidget.waveDots(
+                            color: MyColors(opacity: 1).primary, size: 50));
                   }
 
                   return SingleChildScrollView(
@@ -84,7 +85,8 @@ class _CarsListPageState extends State<CarsListPage> {
                       return GestureDetector(
                         child: MyListTile(
                           carImage: cars['car_picture'],
-                          carName: cars['car_brand'],
+                          carBrand: cars['car_brand'],
+                          carModel: cars['car_model'],
                           carRegisterNumber: cars['car_registration_number'],
                         ),
                         onTap: () {
@@ -103,7 +105,32 @@ class _CarsListPageState extends State<CarsListPage> {
       floatingActionButton: FloatingActionButton(
         elevation: 1,
         backgroundColor: MyColors(opacity: 1).primary,
-        onPressed: () => context.go('/add_new_car'),
+        onPressed: () async {
+          var currentUserDetails =
+              await Database(userId: currentUserId).getUserDetails();
+
+          if (currentUserDetails.subscribmentStatus == 'gold') {
+            context.go('/add_new_car');
+
+            return;
+          }
+
+          var carsNumber =
+              await Database(userId: currentUserId).getCarsNumber();
+          if ((currentUserDetails.subscribmentStatus == 'silver' &&
+                  carsNumber < 5) ||
+              (currentUserDetails.subscribmentStatus == "free" &&
+                  carsNumber < 1)) {
+            context.go('/add_new_car');
+
+            return;
+          } else {
+            context.go("/subscribment_page");
+          }
+
+          print(currentUserDetails.subscribmentStatus);
+          //context.go('/add_new_car');
+        },
         child: const Icon(Icons.add),
       ),
     );

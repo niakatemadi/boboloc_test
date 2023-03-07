@@ -138,8 +138,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           _email = value;
                         },
                         validator: (value) {
-                          if (value!.isEmpty || value == null) {
+                          if (value!.isEmpty) {
                             return 'Entrer votre adresse email';
+                          }
+
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(value)) {
+                            return 'Entrer une adresse email correct';
                           }
 
                           return null;
@@ -213,7 +218,8 @@ class _SignUpPageState extends State<SignUpPage> {
                                       password: _password,
                                       city: _city,
                                       email: _email,
-                                      adresse: _adresse));
+                                      adresse: _adresse,
+                                      subscribmentStatus: "free"));
 
                                   context.go('/sign_in');
                                 }

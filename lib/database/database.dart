@@ -13,6 +13,7 @@ class Database {
   addNewCar(NewCar newCar) {
     db.collection("cars").doc(userId).collection(userId).add({
       'car_brand': newCar.carBrand,
+      'car_model': newCar.carModel,
       'car_kilometer': newCar.currentCarKilometer,
       'car_picture': newCar.carPicture,
       'car_registration_number': newCar.carRegistrationNumber,
@@ -48,13 +49,16 @@ class Database {
       required int rentStartMonth,
       required int rentStartYear,
       required int rentNumberDays,
-      required int rentCarPrice}) {
+      required int rentCarPrice,
+      required String rentCarBrand,
+      required String rentCarModel}) {
     db.collection("statistique").doc(userId).collection(userId).add({
       'id_car': idCar,
       'rent_start_month': rentStartMonth,
       'rent_start_year': rentStartYear,
       'rent_number_days': rentNumberDays,
-      'rent_car_price': rentCarPrice
+      'rent_car_price': rentCarPrice,
+      'rent_car_brand': rentCarBrand
     }).then((DocumentReference doc) =>
         print('Statistique added with ID: ${doc.id}'));
   }
@@ -64,7 +68,9 @@ class Database {
       required int rentStartYear,
       required String idCar,
       required int rentNumberDays,
-      required int rentCarPrice}) async {
+      required int rentCarPrice,
+      required String rentCarBrand,
+      required String rentCarModel}) async {
     final carMonthStats = await FirebaseFirestore.instance
         .collection('statistique')
         .doc(userId)
@@ -98,7 +104,9 @@ class Database {
           rentStartMonth: rentStartMonth,
           rentStartYear: rentStartYear,
           rentNumberDays: rentNumberDays,
-          rentCarPrice: rentCarPrice);
+          rentCarPrice: rentCarPrice,
+          rentCarBrand: rentCarBrand,
+          rentCarModel: rentCarModel);
     }
   }
 
@@ -137,7 +145,9 @@ class Database {
         rentStartYear: bddCarContractModel.rentStartYear,
         idCar: bddCarContractModel.idCar,
         rentNumberDays: bddCarContractModel.rentNumberDays,
-        rentCarPrice: bddCarContractModel.rentPrice);
+        rentCarPrice: bddCarContractModel.rentPrice,
+        rentCarBrand: bddCarContractModel.rentCarBrand,
+        rentCarModel: bddCarContractModel.rentCarModel);
   }
 
   Future getUserDetails() async {
@@ -149,6 +159,18 @@ class Database {
     final userDatas =
         snapshot.docs.map((e) => UserModel.fromSnapshot(e)).single;
     return userDatas;
+  }
+
+  Future getCarsNumber() async {
+    final snapshot = await FirebaseFirestore.instance
+        .collection('cars')
+        .doc(userId)
+        .collection(userId)
+        .get();
+
+    var length = snapshot.docs.length;
+
+    return length;
   }
 
   Stream<QuerySnapshot> get getUserCars {
@@ -188,6 +210,18 @@ class Database {
         .doc(userId)
         .collection(userId)
         .where('id_car', isEqualTo: idCar)
+        .snapshots();
+  }
+
+  // return all statistics of a specific user
+
+  getAllStatistics({required month, required year}) {
+    return FirebaseFirestore.instance
+        .collection('statistique')
+        .doc(userId)
+        .collection(userId)
+        .where('rent_start_month', isEqualTo: month)
+        .where('rent_start_year', isEqualTo: year)
         .snapshots();
   }
 
