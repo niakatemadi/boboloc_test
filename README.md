@@ -1,20 +1,18 @@
-Stripe settlements explanations : 
+I need to settle three subscribments package to my flutter firebase mobile application.
 
-No subscribment : Renter can add just one car.
-Silver subscribment : Renter can add until 5 cars.
-Gold subscribment : Renter can add illimity cars.
+Theses 3 packages are :
 
-When the renter signIn he is redirected to cars_list_page.
-At the bottom of cars_list_page we have a floatButton who allow renters to add a new car.
+- Free (can add only 1 car)
+- Silver (can add max 5 cars)
+- Gold (can add unlimited cars)
 
-When the renter click on the floatButton he is redirected according to his current subscribment and his current cars number.
+What I need is that every customer who sign up can sign in and add just one car by clicking on the floatButton at the bottom of the cars list page(It's the page where cars are listed).
 
-If his current subscribment don't allow him to add a new car he is redirected on a subscribment page with the subscribments who can allow him to add more cars.
+ When a customer want to add car by clicking on the floatbutton at the bottom of "cars_list_page", a function check if his current subscribment allow him to have one more car . If his current subscribment don't allow him to have more cars we have to redirect him to a subscribment page which shows the susbcribments which allows him to add more cars. When he is on subscribment page he should see either one car called gold if his current subscribment is silver or he should see silver and gold card subscribment if he doesn't have any subscribment. Here he should be able to subscribe and when he subscribe to silver or gold he should be able to add the number of cars allowed by the subscribment he choosed
 
-For example :
+- Also We need to create a new button in profile page which redirect to a page which allow customers to manage their subscribments. They can upgrade their subscribments, cancel and unsubscribe.
 
-- if he doesn't have any subscribment and he wants to add the second car, he is automaticly redirected to a subscribment with two options : Silver subscribment or Gold subscribment.
+- If the customer subscribment allow him to add a new car he is redirected to a page which allows him to create a new car when he clicks on the floatbutton at the bottom of "cars_list_page".
 
-- If his current subscribment is silver and he already added 5 cars he is automaticly redirected to subscribment page with 1 option which is gold subscribment.(That happen when he clicks on the floatButton which allow to add a new car)
 
-I already created a function in Database folder called getCarsNumber who return the number of cars of the current user.
+- These subscribments should renew automatically and settled up with stripe
