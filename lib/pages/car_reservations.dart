@@ -83,9 +83,6 @@ class _CarReservationsState extends State<CarReservations> {
                               .map((DocumentSnapshot document) {
                         Map<String, dynamic> contract =
                             document.data() as Map<String, dynamic>;
-                        print('jjjj');
-                        print(contract);
-                        print('iiiii');
 
                         return ReservationCard(
                           event: Event(

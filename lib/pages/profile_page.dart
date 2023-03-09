@@ -15,21 +15,45 @@ class ProfilePage extends StatelessWidget {
           context: context,
           builder: (context) {
             return AlertDialog(
-              backgroundColor: Colors.pinkAccent,
-              title: const Text('Déconnexion'),
-              content: const Text('Voulez vous vraiment vous déconnecter ?'),
+              backgroundColor: MyColors(opacity: 1).tertiary,
+              title: const Text(
+                'Déconnexion',
+                textAlign: TextAlign.center,
+              ),
+              content: const Text(
+                'Voulez vous vraiment vous déconnecter ?',
+                textAlign: TextAlign.center,
+              ),
               actions: [
-                ElevatedButton(
-                    onPressed: () async {
-                      context.go('/sign_in');
-                      await FirebaseAuth.instance.signOut();
-                    },
-                    child: const Text('Oui')),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Annuler'))
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  MyColors(opacity: 1).primary)),
+                          onPressed: () async {
+                            context.go('/sign_in');
+                            await FirebaseAuth.instance.signOut();
+                          },
+                          child: const Text('Oui')),
+                    ),
+                    Container(
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  MyColors(opacity: 1).secondary),
+                              foregroundColor: MaterialStatePropertyAll<Color>(
+                                  Colors.black)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Annuler')),
+                    )
+                  ],
+                ),
               ],
             );
           });

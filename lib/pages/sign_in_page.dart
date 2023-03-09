@@ -1,5 +1,6 @@
 import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/authentication.dart';
+import 'package:boboloc/pages/forgot_password_page.dart';
 import 'package:boboloc/utils/clipper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -158,7 +159,15 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   )),
               const SizedBox(height: 20),
-              const Text('Mot de passe oublié'),
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => ForgotPasswordPage()),
+                    );
+                  },
+                  child: const Text('Mot de passe oublié')),
               const SizedBox(height: 45),
               SizedBox(
                 width: MediaQuery.of(context).size.width - 120,

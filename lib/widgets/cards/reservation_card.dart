@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/database.dart';
 import 'package:boboloc/models/event.dart';
 import 'package:boboloc/utils/my_functions.dart';
@@ -14,38 +15,65 @@ class ReservationCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+    const snackBar = SnackBar(
+      content: Text('Fichier téléchargé'),
+    );
 
     void _showAlertDeleteReservation() {
       showDialog(
           context: context,
           builder: (context) {
             return AlertDialog(
-              backgroundColor: Colors.pinkAccent,
-              title: const Text('Supppresion de reservation'),
+              backgroundColor: MyColors(opacity: 1).tertiary,
+              title: const Text(
+                'Supppresion de reservation',
+                textAlign: TextAlign.center,
+              ),
               content: const Text(
-                  'Voulez vous vraiment supprimer cette reservation ?'),
+                'Voulez vous vraiment supprimer cette reservation ?',
+                textAlign: TextAlign.center,
+              ),
               actions: [
-                ElevatedButton(
-                    onPressed: () async {
-                      await Database(userId: currentUserId).updateStats(
-                          carId: event.carId,
-                          rentStartMonth: event.rentStartMonth,
-                          rentStartYear: event.rentStartYear,
-                          rentCarPrice: event.rentPrice,
-                          numberOfRentDays: event.numberOfRentDays);
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  MyColors(opacity: 1).primary)),
+                          onPressed: () async {
+                            await Database(userId: currentUserId).updateStats(
+                                carId: event.carId,
+                                rentStartMonth: event.rentStartMonth,
+                                rentStartYear: event.rentStartYear,
+                                rentCarPrice: event.rentPrice,
+                                numberOfRentDays: event.numberOfRentDays);
 
-                      // Je supprime le contrat de la bdd
-                      await Database(userId: currentUserId)
-                          .deleteContract(contractId: event.contractId);
+                            // Je supprime le contrat de la bdd
+                            await Database(userId: currentUserId)
+                                .deleteContract(contractId: event.contractId);
 
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Supprimer')),
-                ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
-                    child: const Text('Annuler'))
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Supprimer')),
+                    ),
+                    Container(
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  MyColors(opacity: 1).secondary),
+                              foregroundColor:
+                                  const MaterialStatePropertyAll<Color>(
+                                      Colors.black)),
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text('Annuler')),
+                    )
+                  ],
+                )
               ],
             );
           });
@@ -78,7 +106,7 @@ class ReservationCard extends StatelessWidget {
                       ))
                 ]),
                 Container(
-                    margin: const EdgeInsets.fromLTRB(0, 0, 12, 0),
+                    margin: const EdgeInsets.fromLTRB(0, 0, 5, 0),
                     height: 35,
                     child: IconButton(
                       onPressed: () async {
@@ -146,7 +174,8 @@ class ReservationCard extends StatelessWidget {
                           .refFromURL(event.contractUrl)
                           .getData();
 
-                      MyFunctions().downloadPdf(pdfBytes: pdfBytes);
+                      await MyFunctions().downloadPdf(pdfBytes: pdfBytes);
+                      ScaffoldMessenger.of(context).showSnackBar(snackBar);
                     },
                     icon: const Icon(Icons.file_copy_outlined))
               ],

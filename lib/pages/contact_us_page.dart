@@ -16,7 +16,7 @@ class _ContactUsPageState extends State<ContactUsPage> {
   bool _isFieldNameEmpty = false;
   bool _isFieldEmailEmpty = false;
   bool _isFieldMessageEmpty = false;
-  String name = '';
+  String sujet = '';
   String message = '';
   String email = '';
 
@@ -63,11 +63,11 @@ class _ContactUsPageState extends State<ContactUsPage> {
                           child: TextFormField(
                             decoration: InputDecoration(
                                 border: OutlineInputBorder(),
-                                labelText: 'Nom',
+                                labelText: 'Sujet',
                                 filled: true,
                                 fillColor: MyColors(opacity: 1).tertiary),
                             onChanged: (value) {
-                              name = value;
+                              sujet = value;
                             },
                             validator: (value) {
                               if (value!.isEmpty || value == null) {
