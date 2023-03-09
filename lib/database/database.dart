@@ -58,7 +58,8 @@ class Database {
       'rent_start_year': rentStartYear,
       'rent_number_days': rentNumberDays,
       'rent_car_price': rentCarPrice,
-      'rent_car_brand': rentCarBrand
+      'rent_car_brand': rentCarBrand,
+      'rent_car_model': rentCarModel
     }).then((DocumentReference doc) =>
         print('Statistique added with ID: ${doc.id}'));
   }

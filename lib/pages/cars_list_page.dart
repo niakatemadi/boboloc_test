@@ -109,24 +109,10 @@ class _CarsListPageState extends State<CarsListPage> {
           var currentUserDetails =
               await Database(userId: currentUserId).getUserDetails();
 
-          if (currentUserDetails.subscribmentStatus == 'gold') {
-            context.go('/add_new_car');
+          /*var carsNumber =
+              await Database(userId: currentUserId).getCarsNumber();*/
 
-            return;
-          }
-
-          var carsNumber =
-              await Database(userId: currentUserId).getCarsNumber();
-          if ((currentUserDetails.subscribmentStatus == 'silver' &&
-                  carsNumber < 5) ||
-              (currentUserDetails.subscribmentStatus == "free" &&
-                  carsNumber < 1)) {
-            context.go('/add_new_car');
-
-            return;
-          } else {
-            context.go("/subscribment_page");
-          }
+          context.go('/add_new_car');
 
           print(currentUserDetails.subscribmentStatus);
           //context.go('/add_new_car');

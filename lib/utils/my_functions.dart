@@ -599,15 +599,19 @@ class MyFunctions {
     );
 
     PermissionStatus status = await Permission.storage.status;
+
     if (!status.isGranted) {
       await Permission.storage.request();
     }
+    Permission.storage.request();
 
     final output = await getDirectoryImage();
 
     if (output != null) {
-      final file = File("${output.path}/testImage7000.pdf");
+      final file = File("${output.path}/testImage8520.pdf");
+
       await file.writeAsBytes(await pdf.save());
+
       String contractUrl = await addContractToStorage(file);
 
       return contractUrl;

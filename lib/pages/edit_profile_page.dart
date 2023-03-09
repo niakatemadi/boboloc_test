@@ -1,28 +1,24 @@
 import 'package:boboloc/constants/colors/colors.dart';
-import 'package:boboloc/database/authentication.dart';
-import 'package:boboloc/models/user_model.dart';
 import 'package:boboloc/utils/clipper.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({super.key});
+class EditProfilePage extends StatefulWidget {
+  const EditProfilePage({super.key});
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<EditProfilePage> createState() => _EditProfilePageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _EditProfilePageState extends State<EditProfilePage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String _name = '';
   String _firstName = '';
-  String _email = '';
   String _password = '';
   String _adresse = '';
   String _city = '';
   String _companyName = '';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -133,26 +129,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       const SizedBox(height: 20),
                       TextFormField(
                         decoration: const InputDecoration(
-                            border: OutlineInputBorder(), labelText: 'Email'),
-                        onChanged: (value) {
-                          _email = value;
-                        },
-                        validator: (value) {
-                          if (value!.isEmpty) {
-                            return 'Entrer votre adresse email';
-                          }
-
-                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
-                              .hasMatch(value)) {
-                            return 'Entrer une adresse email correct';
-                          }
-
-                          return null;
-                        },
-                      ),
-                      const SizedBox(height: 20),
-                      TextFormField(
-                        decoration: const InputDecoration(
                             border: OutlineInputBorder(), labelText: 'Adresse'),
                         onChanged: (value) {
                           _adresse = value;
@@ -206,23 +182,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                       MaterialStateProperty.all<Color>(
                                           MyColors(opacity: 1).primary)),
                               onPressed: () async {
-                                if (_formKey.currentState!.validate()) {
-                                  print('New user signed up !');
-                                  print(_email);
-                                  print(_password);
-
-                                  await Authentication().signUp(UserModel(
-                                    name: _name,
-                                    firstName: _firstName,
-                                    companyName: _companyName,
-                                    password: _password,
-                                    city: _city,
-                                    email: _email,
-                                    adresse: _adresse,
-                                  ));
-
-                                  context.go('/sign_in');
-                                }
+                                if (_formKey.currentState!.validate()) {}
                               },
                               child: const Text("S'inscrire"))),
                       const SizedBox(
@@ -233,5 +193,6 @@ class _SignUpPageState extends State<SignUpPage> {
                 ))
           ]),
         ));
+    ;
   }
 }
