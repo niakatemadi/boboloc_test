@@ -1,18 +1,15 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:boboloc/models/car_contract_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:signature/signature.dart';
-import 'package:http/http.dart' as http;
 
 class MyFunctions {
   // this function return the last day of the monthPicked
@@ -153,6 +150,8 @@ class MyFunctions {
   }
 
   Future<String> generatorPdf({required CarContractModel contractDatas}) async {
+    var contractNumber =
+        Timestamp.fromDate(DateTime.now()).microsecondsSinceEpoch.toString();
     String carBrand = contractDatas.carBrand;
 
     String carModel = contractDatas.carModel;
@@ -169,15 +168,19 @@ class MyFunctions {
     String ownerPhoneNumber = contractDatas.ownerPhoneNumber;
     String priceExceedKilometer = contractDatas.priceExceedKilometer;
     String rentEndDay = contractDatas.rentEndDay.toString();
+    int rentEndMonth = contractDatas.rentEndMonth;
+    String rentEndYear = contractDatas.rentEndYear.toString();
 
     int rentPrice = contractDatas.rentPrice;
     String rentStartDay = contractDatas.rentStartDay.toString();
+    int rentStartMonth = contractDatas.rentStartMonth;
+    String rentStartYear = contractDatas.rentStartYear.toString();
     String rentalDeposit = contractDatas.rentalDeposit;
     String renterAdresse = contractDatas.renterAdresse;
     String renterCity = contractDatas.renterCity;
 
     Uint8List renterSignature = contractDatas.renterSignature;
-    String? renterEmail = contractDatas.renterEmail;
+    String renterEmail = contractDatas.renterEmail;
     String renterFirstName = contractDatas.renterFirstName;
     String renterName = contractDatas.renterName;
     String? renterPhoneNumber = contractDatas.renterPhoneNumber;
@@ -186,6 +189,22 @@ class MyFunctions {
     Uint8List renterIdentityCardVerso = contractDatas.renterIdentityCardVerso;
     Uint8List renterLicenseDriverRecto = contractDatas.renterLicenseDriverRecto;
     Uint8List renterLicenseDriverVerso = contractDatas.renterLicenseDriverVerso;
+
+    List monthsName = [
+      '0',
+      'janvier',
+      'fevrier',
+      'mars',
+      'avril',
+      'mai',
+      'juin',
+      'juillet',
+      'aout',
+      'septembre',
+      'octobre',
+      'novembre',
+      'décembre'
+    ];
 
     final font = await rootBundle.load("fonts/roboto-medium.ttf");
     final ttf = pw.Font.ttf(font);
@@ -322,7 +341,8 @@ class MyFunctions {
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
       ),
       pw.Padding(
-          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(rentStartDay)),
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text("$rentStartDay/$rentStartMonth/$rentStartYear")),
     ]);
 
     pw.TableRow tableRowRetour = pw.TableRow(children: [
@@ -332,7 +352,8 @@ class MyFunctions {
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
       ),
       pw.Padding(
-          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(rentEndDay)),
+          padding: const pw.EdgeInsets.all(10.0),
+          child: pw.Text("$rentEndDay/$rentEndMonth/$rentEndYear")),
     ]);
     pw.TableRow tableRowPrice = pw.TableRow(children: [
       pw.Padding(
@@ -415,11 +436,11 @@ class MyFunctions {
     pw.TableRow tableRowCustomerLicenseDriverNumber = pw.TableRow(children: [
       pw.Padding(
         padding: const pw.EdgeInsets.all(10.0),
-        child: pw.Text('N° de permis :',
+        child: pw.Text('Email :',
             style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
       ),
       pw.Padding(
-          padding: const pw.EdgeInsets.all(10.0), child: pw.Text('75524456')),
+          padding: const pw.EdgeInsets.all(10.0), child: pw.Text(renterEmail)),
     ]);
 
     print('pdf created');
@@ -445,7 +466,7 @@ class MyFunctions {
                             pw.Text(
                               'N° de contrat : ',
                             ),
-                            pw.Container(child: pw.Text('875269'))
+                            pw.Container(child: pw.Text(contractNumber))
                           ])
                         ])
                       ]),
@@ -468,7 +489,7 @@ class MyFunctions {
                           pw.Text('$ownerName '),
                           pw.Text('$ownerFirstName '),
                           pw.Text('Demeurant à '),
-                          pw.Text('$ownerAdresse .'),
+                          pw.Text('$ownerAdresse.'),
                         ]),
                       ])),
                   pw.Row(

@@ -10,6 +10,7 @@ class ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var currentUser = FirebaseAuth.instance.currentUser;
     void _showAlertLogout() {
       showDialog(
           context: context,
@@ -88,14 +89,14 @@ class ProfilePage extends StatelessWidget {
               const SizedBox(
                 height: 15,
               ),
-              const Text(
-                'AI Transport',
+              Text(
+                currentUser!.displayName ?? "",
                 style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17),
               ),
               const SizedBox(
                 height: 5,
               ),
-              const Text('aitransport@gmail.com')
+              Text(currentUser.email ?? "")
             ]),
             SizedBox(height: MediaQuery.of(context).size.height / 35),
             Column(children: const [

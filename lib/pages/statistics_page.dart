@@ -265,11 +265,11 @@ class _StatisticsPageState extends State<StatisticsPage> {
                           monthPicked == 0
                               ? monthsName[dateTime.month]
                               : monthsName[monthPicked],
-                          style: TextStyle(fontSize: 20)),
+                          style: const TextStyle(fontSize: 20)),
                       const SizedBox(
                         width: 5,
                       ),
-                      Text(dateTime.year.toString(),
+                      Text(yearPicked.toString() ?? dateTime.year.toString(),
                           style: const TextStyle(fontSize: 20))
                     ],
                   ),
@@ -319,24 +319,29 @@ class _StatisticsPageState extends State<StatisticsPage> {
 
                                   return TableRow(children: [
                                     Container(
-                                      height: 25,
+                                      height: 40,
                                       color: MyColors(opacity: 1).tertiary,
                                       child: Center(
-                                        child: Row(
+                                        child: Column(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
                                           children: [
                                             Text(
-                                              "${statistics['rent_car_brand'].toString()} ${statistics['rent_car_model'].toString()} ",
+                                              "${statistics['rent_car_brand'].toString()} ",
                                               style: const TextStyle(
                                                   fontSize: 15.0),
+                                            ),
+                                            Text(
+                                              " ${statistics['rent_car_model'].toString()} ",
+                                              style: const TextStyle(
+                                                  fontSize: 13.0),
                                             ),
                                           ],
                                         ),
                                       ),
                                     ),
                                     Container(
-                                      height: 25,
+                                      height: 45,
                                       color: MyColors(opacity: 1).tertiary,
                                       child: Center(
                                         child: Text(
@@ -347,6 +352,7 @@ class _StatisticsPageState extends State<StatisticsPage> {
                                       ),
                                     ),
                                     Container(
+                                      height: 45,
                                       color: MyColors(opacity: 1).tertiary,
                                       child: Center(
                                         child: Text(

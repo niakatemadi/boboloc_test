@@ -13,7 +13,7 @@ class CarContractModel {
   String renterCity;
   String renterPostalCode;
   String? renterPhoneNumber;
-  String? renterEmail;
+  String renterEmail;
 
   int rentStartDay;
   int rentStartMonth;

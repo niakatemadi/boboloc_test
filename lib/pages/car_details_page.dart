@@ -307,8 +307,9 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                                       .toString(),
                                   iconIndex: 1),
                               StatsMiniCard(
-                                  myStatValue: carStatistics['rent_number_days']
-                                      .toString(),
+                                  myStatValue:
+                                      carStatistics['current_car_kilometer']
+                                          .toString(),
                                   iconIndex: 2)
                             ],
                           );

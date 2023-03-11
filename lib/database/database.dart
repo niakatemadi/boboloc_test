@@ -27,7 +27,8 @@ class Database {
       required int newRentNumberDays,
       required int currentRentNumberDays,
       required int currentRentTotalPrice,
-      required int newRentPrice}) {
+      required int newRentPrice,
+      required String currentKilometer}) {
     // currentRentTotalPrice is the actual total price of rent in bdd
     // newRentPrice is the new price added to the actual total price of the bdd
     int rentTotalNumberDays = currentRentNumberDays + newRentNumberDays;
@@ -40,7 +41,8 @@ class Database {
         .doc(statsDocumentId)
         .update({
       'rent_number_days': rentTotalNumberDays,
-      'rent_car_price': rentCarTotalPrice
+      'rent_car_price': rentCarTotalPrice,
+      'current_car_kilometer': currentKilometer
     });
   }
 
@@ -51,7 +53,8 @@ class Database {
       required int rentNumberDays,
       required int rentCarPrice,
       required String rentCarBrand,
-      required String rentCarModel}) {
+      required String rentCarModel,
+      required String currentKilometer}) {
     db.collection("statistique").doc(userId).collection(userId).add({
       'id_car': idCar,
       'rent_start_month': rentStartMonth,
@@ -59,7 +62,8 @@ class Database {
       'rent_number_days': rentNumberDays,
       'rent_car_price': rentCarPrice,
       'rent_car_brand': rentCarBrand,
-      'rent_car_model': rentCarModel
+      'rent_car_model': rentCarModel,
+      'current_car_kilometer': currentKilometer
     }).then((DocumentReference doc) =>
         print('Statistique added with ID: ${doc.id}'));
   }
@@ -71,7 +75,8 @@ class Database {
       required int rentNumberDays,
       required int rentCarPrice,
       required String rentCarBrand,
-      required String rentCarModel}) async {
+      required String rentCarModel,
+      required String currentKilometer}) async {
     final carMonthStats = await FirebaseFirestore.instance
         .collection('statistique')
         .doc(userId)
@@ -96,7 +101,8 @@ class Database {
             newRentNumberDays: rentNumberDays,
             currentRentNumberDays: currentRentNumberDays,
             currentRentTotalPrice: currentRentTotalPrice,
-            newRentPrice: rentCarPrice);
+            newRentPrice: rentCarPrice,
+            currentKilometer: currentKilometer);
       }
     } else {
       print('Ce document existe pas encore');
@@ -107,7 +113,8 @@ class Database {
           rentNumberDays: rentNumberDays,
           rentCarPrice: rentCarPrice,
           rentCarBrand: rentCarBrand,
-          rentCarModel: rentCarModel);
+          rentCarModel: rentCarModel,
+          currentKilometer: currentKilometer);
     }
   }
 
@@ -129,6 +136,7 @@ class Database {
       'rent_price': bddCarContractModel.rentPrice,
       'contract_url': bddCarContractModel.contractUrl,
       'created_at': DateTime.now(),
+      'current_kilometer': bddCarContractModel.currentCarKilometer
     }).then((DocumentReference doc) {
       // Je récupère l'id du document et je créer un nouveau champ 'contract_id' dans
       // le document pour l'insérer
@@ -148,7 +156,8 @@ class Database {
         rentNumberDays: bddCarContractModel.rentNumberDays,
         rentCarPrice: bddCarContractModel.rentPrice,
         rentCarBrand: bddCarContractModel.rentCarBrand,
-        rentCarModel: bddCarContractModel.rentCarModel);
+        rentCarModel: bddCarContractModel.rentCarModel,
+        currentKilometer: bddCarContractModel.currentCarKilometer);
   }
 
   Future getUserDetails() async {

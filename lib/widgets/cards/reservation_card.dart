@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:boboloc/constants/colors/colors.dart';
 import 'package:boboloc/database/database.dart';
 import 'package:boboloc/models/event.dart';
@@ -95,14 +94,14 @@ class ReservationCard extends StatelessWidget {
                       margin: const EdgeInsets.fromLTRB(5, 3, 0, 0),
                       child: Text(
                         "${event.renterName} ${event.renterFirstName} ",
-                        style: TextStyle(fontWeight: FontWeight.bold),
+                        style: const TextStyle(fontWeight: FontWeight.bold),
                       )),
                   Container(
                       margin: const EdgeInsets.fromLTRB(5, 3, 0, 0),
-                      child: const Text(
-                        'ID: 345678',
-                        style: TextStyle(
-                            color: Color.fromARGB(255, 163, 163, 163)),
+                      child: Text(
+                        "Départ: ${event.currentKilometer} Km",
+                        style: const TextStyle(
+                            color: Color.fromARGB(255, 106, 106, 106)),
                       ))
                 ]),
                 Container(
@@ -131,7 +130,7 @@ class ReservationCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Début'),
+                        const Text('Départ'),
                         const SizedBox(
                           height: 2,
                         ),
@@ -145,7 +144,7 @@ class ReservationCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text('Fin'),
+                        const Text('Arrivée'),
                         const SizedBox(
                           height: 2,
                         ),

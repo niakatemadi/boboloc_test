@@ -17,6 +17,7 @@ class BddCarContractModel {
   int rentNumberDays;
   String rentCarBrand;
   String rentCarModel;
+  String currentCarKilometer;
 
   BddCarContractModel(
       {required this.idCar,
@@ -32,5 +33,6 @@ class BddCarContractModel {
       required this.contractUrl,
       required this.rentNumberDays,
       required this.rentCarBrand,
-      required this.rentCarModel});
+      required this.rentCarModel,
+      required this.currentCarKilometer});
 }

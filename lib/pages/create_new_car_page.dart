@@ -170,7 +170,7 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
                               decoration: const InputDecoration(
                                   filled: true,
                                   fillColor: Colors.white,
-                                  labelText: 'Modèle---',
+                                  labelText: 'Modèle',
                                   border: OutlineInputBorder(
                                       borderSide:
                                           BorderSide(color: Colors.black))),

@@ -16,9 +16,12 @@ class CarsListPage extends StatefulWidget {
 
 class _CarsListPageState extends State<CarsListPage> {
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  var currentUserName = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
+    print(currentUserId);
+    print('jjjjggfg');
     return Scaffold(
       body: Container(
         color: MyColors(opacity: 0.8).secondary,
@@ -36,12 +39,12 @@ class _CarsListPageState extends State<CarsListPage> {
                       width: 110,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Bienvenue,',
                           ),
                           Text(
-                            'Company_name',
+                            currentUserName!.displayName ?? "",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],

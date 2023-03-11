@@ -68,7 +68,8 @@ class _CalendarPageState extends State<CalendarPage> {
                           contractId: contract['contract_id'],
                           carId: contract['id_car'],
                           numberOfRentDays: contract['rent_number_days'],
-                          contractUrl: contract['contract_url']));
+                          contractUrl: contract['contract_url'],
+                          currentKilometer: contract['current_kilometer']));
                     } else {
                       events[date] = [];
                       events[date]!.add(Event(
@@ -84,7 +85,8 @@ class _CalendarPageState extends State<CalendarPage> {
                           contractId: contract['contract_id'],
                           carId: contract['id_car'],
                           numberOfRentDays: contract['rent_number_days'],
-                          contractUrl: contract['contract_url']));
+                          contractUrl: contract['contract_url'],
+                          currentKilometer: contract['current_kilometer']));
                     }
                   });
 
@@ -175,23 +177,25 @@ class _CalendarPageState extends State<CalendarPage> {
                                 itemBuilder: (context, index) {
                                   return ReservationCard(
                                     event: Event(
-                                        renterName: value[index].renterName,
-                                        renterFirstName:
-                                            value[index].renterFirstName,
-                                        rentEndDay: value[index].rentEndDay,
-                                        rentEndMonth: value[index].rentEndMonth,
-                                        rentEndYear: value[index].rentEndYear,
-                                        rentPrice: value[index].rentPrice,
-                                        rentStartDay: value[index].rentStartDay,
-                                        rentStartMonth:
-                                            value[index].rentStartMonth,
-                                        rentStartYear:
-                                            value[index].rentStartYear,
-                                        contractId: value[index].contractId,
-                                        carId: value[index].carId,
-                                        numberOfRentDays:
-                                            value[index].numberOfRentDays,
-                                        contractUrl: value[index].contractUrl),
+                                      renterName: value[index].renterName,
+                                      renterFirstName:
+                                          value[index].renterFirstName,
+                                      rentEndDay: value[index].rentEndDay,
+                                      rentEndMonth: value[index].rentEndMonth,
+                                      rentEndYear: value[index].rentEndYear,
+                                      rentPrice: value[index].rentPrice,
+                                      rentStartDay: value[index].rentStartDay,
+                                      rentStartMonth:
+                                          value[index].rentStartMonth,
+                                      rentStartYear: value[index].rentStartYear,
+                                      contractId: value[index].contractId,
+                                      carId: value[index].carId,
+                                      numberOfRentDays:
+                                          value[index].numberOfRentDays,
+                                      contractUrl: value[index].contractUrl,
+                                      currentKilometer:
+                                          value[index].currentKilometer,
+                                    ),
                                   );
                                 });
                           },

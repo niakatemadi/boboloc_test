@@ -54,7 +54,6 @@ class _CarReservationsState extends State<CarReservations> {
                     height: 150,
                     color: Colors.white,
                     width: MediaQuery.of(context).size.width,
-                    child: Text(widget.carDatas['id_car']),
                   ),
                 ),
               ]),
@@ -98,7 +97,8 @@ class _CarReservationsState extends State<CarReservations> {
                               contractId: contract['contract_id'],
                               carId: contract['id_car'],
                               numberOfRentDays: contract['rent_number_days'],
-                              contractUrl: contract['contract_url']),
+                              contractUrl: contract['contract_url'],
+                              currentKilometer: contract['current_kilometer']),
                         );
                       }).toList()),
                     );
