@@ -5,6 +5,7 @@ import 'package:boboloc/widgets/cards/reservation_card.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class CalendarPage extends StatefulWidget {
@@ -35,8 +36,9 @@ class _CalendarPageState extends State<CalendarPage> {
                 }
 
                 if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: Text("Loading"),
+                  return Center(
+                    child: LoadingAnimationWidget.waveDots(
+                        color: MyColors(opacity: 1).primary, size: 50),
                   );
                 }
 
@@ -62,7 +64,12 @@ class _CalendarPageState extends State<CalendarPage> {
                           rentPrice: contract['rent_price'],
                           rentStartDay: contract['rent_start_day'],
                           rentStartMonth: contract['rent_start_month'],
-                          rentStartYear: contract['rent_start_year']));
+                          rentStartYear: contract['rent_start_year'],
+                          contractId: contract['contract_id'],
+                          carId: contract['id_car'],
+                          numberOfRentDays: contract['rent_number_days'],
+                          contractUrl: contract['contract_url'],
+                          currentKilometer: contract['current_kilometer']));
                     } else {
                       events[date] = [];
                       events[date]!.add(Event(
@@ -74,7 +81,12 @@ class _CalendarPageState extends State<CalendarPage> {
                           rentPrice: contract['rent_price'],
                           rentStartDay: contract['rent_start_day'],
                           rentStartMonth: contract['rent_start_month'],
-                          rentStartYear: contract['rent_start_year']));
+                          rentStartYear: contract['rent_start_year'],
+                          contractId: contract['contract_id'],
+                          carId: contract['id_car'],
+                          numberOfRentDays: contract['rent_number_days'],
+                          contractUrl: contract['contract_url'],
+                          currentKilometer: contract['current_kilometer']));
                     }
                   });
 
@@ -105,8 +117,8 @@ class _CalendarPageState extends State<CalendarPage> {
                   child: Column(
                     children: [
                       Container(
-                        height: 100,
-                        padding: const EdgeInsets.fromLTRB(20, 75, 0, 0),
+                        height: 20,
+                        margin: const EdgeInsets.fromLTRB(20, 34, 0, 0),
                         width: MediaQuery.of(context).size.width,
                         child: const Text(
                           'Calendrier',
@@ -118,10 +130,12 @@ class _CalendarPageState extends State<CalendarPage> {
                         thickness: 2,
                       ),
                       Container(
+                        height: MediaQuery.of(context).size.height / 2.7,
                         margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                         decoration:
                             BoxDecoration(color: MyColors(opacity: 1).tertiary),
                         child: TableCalendar(
+                          shouldFillViewport: true,
                           firstDay: DateTime.utc(2010, 10, 16),
                           lastDay: DateTime.utc(2030, 3, 14),
                           focusedDay: _focusedDay,
@@ -139,7 +153,7 @@ class _CalendarPageState extends State<CalendarPage> {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.fromLTRB(20, 10, 0, 0),
+                        margin: const EdgeInsets.fromLTRB(10, 10, 0, 0),
                         width: MediaQuery.of(context).size.width,
                         child: const Text(
                           'Reservations',
@@ -147,9 +161,12 @@ class _CalendarPageState extends State<CalendarPage> {
                               fontSize: 17, fontWeight: FontWeight.bold),
                         ),
                       ),
-                      SizedBox(
-                        height: 169,
-                        width: MediaQuery.of(context).size.width - 40,
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                        height: 240,
+                        width: MediaQuery.of(context).size.width - 20,
                         child: ValueListenableBuilder<List<Event>>(
                           valueListenable: _selectedEvents,
                           builder: (context, value, _) {
@@ -160,18 +177,25 @@ class _CalendarPageState extends State<CalendarPage> {
                                 itemBuilder: (context, index) {
                                   return ReservationCard(
                                     event: Event(
-                                        renterName: value[index].renterName,
-                                        renterFirstName:
-                                            value[index].renterFirstName,
-                                        rentEndDay: value[index].rentEndDay,
-                                        rentEndMonth: value[index].rentEndMonth,
-                                        rentEndYear: value[index].rentEndYear,
-                                        rentPrice: value[index].rentPrice,
-                                        rentStartDay: value[index].rentStartDay,
-                                        rentStartMonth:
-                                            value[index].rentStartMonth,
-                                        rentStartYear:
-                                            value[index].rentStartYear),
+                                      renterName: value[index].renterName,
+                                      renterFirstName:
+                                          value[index].renterFirstName,
+                                      rentEndDay: value[index].rentEndDay,
+                                      rentEndMonth: value[index].rentEndMonth,
+                                      rentEndYear: value[index].rentEndYear,
+                                      rentPrice: value[index].rentPrice,
+                                      rentStartDay: value[index].rentStartDay,
+                                      rentStartMonth:
+                                          value[index].rentStartMonth,
+                                      rentStartYear: value[index].rentStartYear,
+                                      contractId: value[index].contractId,
+                                      carId: value[index].carId,
+                                      numberOfRentDays:
+                                          value[index].numberOfRentDays,
+                                      contractUrl: value[index].contractUrl,
+                                      currentKilometer:
+                                          value[index].currentKilometer,
+                                    ),
                                   );
                                 });
                           },

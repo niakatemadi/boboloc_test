@@ -2,17 +2,18 @@ import 'package:flutter/foundation.dart';
 
 class CarContractModel {
   // renter datas
+  Uint8List renterSignature;
   String renterName;
   String renterFirstName;
   Uint8List renterIdentityCardRecto;
-  Uint8List? renterIdentityCardVerso;
+  Uint8List renterIdentityCardVerso;
   Uint8List renterLicenseDriverRecto;
-  Uint8List? renterLicenseDriverVerso;
+  Uint8List renterLicenseDriverVerso;
   String renterAdresse;
   String renterCity;
   String renterPostalCode;
   String? renterPhoneNumber;
-  String? renterEmail;
+  String renterEmail;
 
   int rentStartDay;
   int rentStartMonth;
@@ -34,6 +35,7 @@ class CarContractModel {
   String ownerCompanyName;
   String ownerEmail;
   String ownerPhoneNumber;
+  Uint8List ownerSignature;
 
   // Car datas
   String carBrand;
@@ -41,15 +43,16 @@ class CarContractModel {
   String carRegistrationNumber;
 
   CarContractModel(
-      {required this.renterName,
+      {required this.renterSignature,
+      required this.renterName,
       required this.renterFirstName,
       required this.renterAdresse,
       required this.renterCity,
       required this.renterEmail,
       required this.renterIdentityCardRecto,
-      this.renterIdentityCardVerso,
+      required this.renterIdentityCardVerso,
       required this.renterLicenseDriverRecto,
-      this.renterLicenseDriverVerso,
+      required this.renterLicenseDriverVerso,
       required this.renterPhoneNumber,
       required this.renterPostalCode,
       required this.rentEndDay,
@@ -72,5 +75,6 @@ class CarContractModel {
       required this.ownerPhoneNumber,
       required this.carBrand,
       required this.carModel,
-      required this.carRegistrationNumber});
+      required this.carRegistrationNumber,
+      required this.ownerSignature});
 }

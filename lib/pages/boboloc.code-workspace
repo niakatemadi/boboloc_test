@@ -2,9 +2,13 @@
 	"folders": [
 		{
 			"path": "../.."
+		},
+		{
+			"path": "../../../../../Formations/formations_perso/Experiences_dev/pdf_generator"
 		}
 	],
 	"settings": {
-		"java.configuration.updateBuildConfiguration": "automatic"
+		"java.configuration.updateBuildConfiguration": "automatic",
+		"liveServer.settings.multiRootWorkspaceName": "boboloc"
 	}
 }

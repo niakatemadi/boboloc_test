@@ -1,9 +1,12 @@
 import 'package:boboloc/models/car_model.dart';
 import 'package:boboloc/pages/calendar_page.dart';
 import 'package:boboloc/pages/car_details_page.dart';
+import 'package:boboloc/pages/car_reservations.dart';
 import 'package:boboloc/pages/cars_list_page.dart';
+import 'package:boboloc/pages/contact_us_page.dart';
 import 'package:boboloc/pages/create_new_car_page.dart';
 import 'package:boboloc/pages/profile_page.dart';
+import 'package:boboloc/pages/statistics_page.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
@@ -20,6 +23,7 @@ class _NavigationPageState extends State<NavigationPage> {
   List<Widget> navigationMainPages = [
     CarsListPage(),
     CalendarPage(),
+    StatisticsPage(),
     ProfilePage(),
   ];
   @override
@@ -43,6 +47,10 @@ class _NavigationPageState extends State<NavigationPage> {
           GButton(
             icon: Icons.calendar_month,
             text: 'Calendrier',
+          ),
+          GButton(
+            icon: Icons.analytics,
+            text: 'Statistiques',
           ),
           GButton(
             icon: Icons.person,

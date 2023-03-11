@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class CarsListPage extends StatefulWidget {
   CarsListPage({super.key});
@@ -15,9 +16,12 @@ class CarsListPage extends StatefulWidget {
 
 class _CarsListPageState extends State<CarsListPage> {
   String currentUserId = FirebaseAuth.instance.currentUser!.uid;
+  var currentUserName = FirebaseAuth.instance.currentUser;
 
   @override
   Widget build(BuildContext context) {
+    print(currentUserId);
+    print('jjjjggfg');
     return Scaffold(
       body: Container(
         color: MyColors(opacity: 0.8).secondary,
@@ -35,26 +39,21 @@ class _CarsListPageState extends State<CarsListPage> {
                       width: 110,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
+                        children: [
+                          const Text(
                             'Bienvenue,',
                           ),
                           Text(
-                            'Company_name',
+                            currentUserName!.displayName ?? "",
                             style: TextStyle(fontWeight: FontWeight.bold),
                           )
                         ],
                       ),
                     ),
-                    ElevatedButton(
-                        onPressed: () async {
-                          await FirebaseAuth.instance.signOut();
-                        },
-                        child: const Text('Log out')),
                     Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 25, 0),
-                      height: 50,
-                      width: 50,
+                      margin: const EdgeInsets.fromLTRB(0, 10, 20, 0),
+                      height: 60,
+                      width: 60,
                       child: const Image(
                         image: AssetImage('assets/logo_boboloc.png'),
                         fit: BoxFit.cover,
@@ -74,9 +73,9 @@ class _CarsListPageState extends State<CarsListPage> {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(
-                      child: Text("Loading"),
-                    );
+                    return Center(
+                        child: LoadingAnimationWidget.waveDots(
+                            color: MyColors(opacity: 1).primary, size: 50));
                   }
 
                   return SingleChildScrollView(
@@ -89,7 +88,8 @@ class _CarsListPageState extends State<CarsListPage> {
                       return GestureDetector(
                         child: MyListTile(
                           carImage: cars['car_picture'],
-                          carName: cars['car_brand'],
+                          carBrand: cars['car_brand'],
+                          carModel: cars['car_model'],
                           carRegisterNumber: cars['car_registration_number'],
                         ),
                         onTap: () {
@@ -106,8 +106,20 @@ class _CarsListPageState extends State<CarsListPage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
+        elevation: 1,
         backgroundColor: MyColors(opacity: 1).primary,
-        onPressed: () => context.go('/add_new_car'),
+        onPressed: () async {
+          var currentUserDetails =
+              await Database(userId: currentUserId).getUserDetails();
+
+          /*var carsNumber =
+              await Database(userId: currentUserId).getCarsNumber();*/
+
+          context.go('/add_new_car');
+
+          print(currentUserDetails.subscribmentStatus);
+          //context.go('/add_new_car');
+        },
         child: const Icon(Icons.add),
       ),
     );

@@ -1,16 +1,16 @@
-import 'package:flutter/cupertino.dart';
+import 'package:boboloc/constants/colors/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class MyListTile extends StatelessWidget {
   String carImage;
-  String carName;
+  String carBrand;
+  String carModel;
   String carRegisterNumber;
   MyListTile(
       {super.key,
       required this.carImage,
-      required this.carName,
+      required this.carBrand,
+      required this.carModel,
       required this.carRegisterNumber});
 
   @override
@@ -25,37 +25,52 @@ class MyListTile extends StatelessWidget {
         children: [
           Container(
             height: 88,
-            width: 129,
+            width: 100,
             decoration: BoxDecoration(
                 borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(15),
                     bottomLeft: Radius.circular(15),
                     topRight: Radius.circular(0),
                     bottomRight: Radius.circular(0)),
-                color: Colors.black,
+                color: MyColors(opacity: 1).primary,
                 image: DecorationImage(
                     image: NetworkImage(carImage), fit: BoxFit.fill)),
           ),
           Container(
             height: 88,
-            width: 80,
+            width: 200,
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               const SizedBox(
                 height: 5,
               ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text(
-                  carName,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                width: MediaQuery.of(context).size.width,
+                child: Row(
+                  children: [
+                    Text(
+                      carBrand,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      carModel,
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+              Container(
+                margin: const EdgeInsets.symmetric(horizontal: 8),
+                width: MediaQuery.of(context).size.width,
                 child: Text(
                   carRegisterNumber,
-                  style: TextStyle(fontWeight: FontWeight.normal),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.normal,
+                      color: Color.fromARGB(255, 104, 104, 104)),
                 ),
               )
             ]),

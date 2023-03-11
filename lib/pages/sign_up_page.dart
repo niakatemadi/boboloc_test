@@ -138,8 +138,13 @@ class _SignUpPageState extends State<SignUpPage> {
                           _email = value;
                         },
                         validator: (value) {
-                          if (value!.isEmpty || value == null) {
+                          if (value!.isEmpty) {
                             return 'Entrer votre adresse email';
+                          }
+
+                          if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                              .hasMatch(value)) {
+                            return 'Entrer une adresse email correct';
                           }
 
                           return null;
@@ -207,13 +212,14 @@ class _SignUpPageState extends State<SignUpPage> {
                                   print(_password);
 
                                   await Authentication().signUp(UserModel(
-                                      name: _name,
-                                      firstName: _firstName,
-                                      companyName: _companyName,
-                                      password: _password,
-                                      city: _city,
-                                      email: _email,
-                                      adresse: _adresse));
+                                    name: _name,
+                                    firstName: _firstName,
+                                    companyName: _companyName,
+                                    password: _password,
+                                    city: _city,
+                                    email: _email,
+                                    adresse: _adresse,
+                                  ));
 
                                   context.go('/sign_in');
                                 }

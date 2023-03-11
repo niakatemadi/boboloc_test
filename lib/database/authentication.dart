@@ -21,9 +21,9 @@ class Authentication {
   }
 
   // This function add user in "users" collection of firestore firebase database
-  createUser(UserModel user) async {
+  createUser({required UserModel user, required currentUserId}) async {
     db.collection("users").add({
-      'userId': user.uid,
+      'userId': currentUserId,
       'name': user.name,
       'firstName': user.firstName,
       'mail': user.email,
@@ -37,23 +37,22 @@ class Authentication {
 
   signUp(UserModel user) async {
     try {
-      print('mdp in signUp');
-      print(user.password);
       final passwordCrypted = Crypt.sha256(user.password,
               rounds: 10000, salt: 'crypterparniakatemadi')
           .toString();
-      print('inscription mdp');
-      print(passwordCrypted);
+
       final credential =
           await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: user.email,
         password: passwordCrypted,
       );
 
-      user.uid = credential.user!.uid;
+      var currentUserDatas = credential.user;
       user.password = passwordCrypted;
 
-      createUser(user);
+      await currentUserDatas!.updateDisplayName(user.firstName);
+
+      await createUser(user: user, currentUserId: currentUserDatas.uid);
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         print('The password provided is too weak.');
@@ -77,9 +76,8 @@ class Authentication {
       final credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: passwordCrypted);
 
-      var userDatas = credential.user;
-
-      print(userDatas);
+      var userId = credential.user!.uid;
+      return userId;
     } on FirebaseAuthException catch (e) {
       if (e.code == 'user-not-found') {
         print('No user found for that email.');

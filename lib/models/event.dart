@@ -8,6 +8,11 @@ class Event {
   int rentEndMonth;
   int rentEndYear;
   int rentPrice;
+  int numberOfRentDays;
+  String contractId;
+  String carId;
+  String contractUrl;
+  String currentKilometer;
 
   Event(
       {required this.renterName,
@@ -18,5 +23,10 @@ class Event {
       required this.rentPrice,
       required this.rentStartDay,
       required this.rentStartMonth,
-      required this.rentStartYear});
+      required this.rentStartYear,
+      required this.contractId,
+      required this.carId,
+      required this.numberOfRentDays,
+      required this.contractUrl,
+      required this.currentKilometer});
 }

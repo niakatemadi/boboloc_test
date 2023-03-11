@@ -10,28 +10,30 @@ class UserModel {
   String city;
   String adresse;
 
-  UserModel(
-      {required this.name,
-      required this.firstName,
-      required this.companyName,
-      required this.password,
-      required this.city,
-      required this.email,
-      required this.adresse,
-      this.uid});
+  UserModel({
+    required this.name,
+    required this.firstName,
+    required this.companyName,
+    required this.password,
+    required this.city,
+    required this.email,
+    required this.adresse,
+    this.uid,
+  });
 
   factory UserModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
 
     return UserModel(
-        name: data['name'],
-        firstName: data["firstName"],
-        companyName: data["company_name"],
-        password: data["password"],
-        city: data["city"],
-        email: data["mail"],
-        adresse: data["adresse"],
-        uid: document.id);
+      name: data['name'],
+      firstName: data["firstName"],
+      companyName: data["company_name"],
+      password: data["password"],
+      city: data["city"],
+      email: data["mail"],
+      adresse: data["adresse"],
+      uid: document.id,
+    );
   }
 }
