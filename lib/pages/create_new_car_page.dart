@@ -34,6 +34,7 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
   }
 
   bool _isFieldEmpty = false;
+  bool _isFieldCarPicked = false;
   String _carBrand = '';
   String _carModel = '';
   String _carPicture = '';
@@ -229,11 +230,15 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
                               height: 45,
                               width: MediaQuery.of(context).size.width - 80,
                               child: OutlinedButton(
-                                style: const ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStatePropertyAll<Color>(
-                                          Colors.black),
-                                ),
+                                style: ButtonStyle(
+                                    foregroundColor:
+                                        const MaterialStatePropertyAll<Color>(
+                                            Colors.black),
+                                    backgroundColor: _isFieldCarPicked == true
+                                        ? MaterialStatePropertyAll<Color>(
+                                            MyColors(opacity: 0.5).primary)
+                                        : const MaterialStatePropertyAll<Color>(
+                                            Colors.white)),
                                 onPressed: () async {
                                   final ImagePicker _picker = ImagePicker();
                                   // Pick an image
@@ -249,6 +254,10 @@ class _CreateNewCarPageState extends State<CreateNewCarPage> {
                                           .readAsBytesSync();
                                   _imagePickedPathConvertedToBytes =
                                       imagePickedPathConvertedToBytes;
+
+                                  setState(() {
+                                    _isFieldCarPicked = true;
+                                  });
                                 },
                                 child: Text('Choisir une photo..'),
                               )),

@@ -129,7 +129,7 @@ class ProfilePage extends StatelessWidget {
                 margin: const EdgeInsets.fromLTRB(30, 20, 30, 0),
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(5),
-                    color: Color.fromARGB(255, 237, 33, 19)),
+                    color: const Color.fromARGB(255, 237, 33, 19)),
                 child: Row(
                   children: [
                     Container(

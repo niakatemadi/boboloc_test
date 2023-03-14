@@ -16,7 +16,7 @@ class StatsMiniCard extends StatelessWidget {
   ];
 
   String myEndText({required endTextIndex}) {
-    final List myEndTextValues = <String>['€', 'Jours', 'Km'];
+    final List myEndTextValues = <String>['€', 'Jours', ''];
 
     return myEndTextValues[endTextIndex];
   }

@@ -23,6 +23,46 @@ class _SignUpPageState extends State<SignUpPage> {
   String _city = '';
   String _companyName = '';
 
+//debut
+  void _ShowAlertSignUpSucceed() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: MyColors(opacity: 1).tertiary,
+            title: const Text(
+              '',
+              textAlign: TextAlign.center,
+            ),
+            content: const Text(
+              'Félicitations vous etes inscrit !',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.green, fontSize: 20),
+            ),
+            actions: [
+              Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                MyColors(opacity: 1).primary)),
+                        onPressed: () async {
+                          context.go('/sign_in');
+                        },
+                        child: const Text('Ok')),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
+  //fin
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -176,7 +216,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           if (value!.isEmpty || value == null) {
                             return 'Entrer le nom de votre ville';
                           }
-
                           return null;
                         },
                       ),
@@ -221,7 +260,7 @@ class _SignUpPageState extends State<SignUpPage> {
                                     adresse: _adresse,
                                   ));
 
-                                  context.go('/sign_in');
+                                  _ShowAlertSignUpSucceed();
                                 }
                               },
                               child: const Text("S'inscrire"))),

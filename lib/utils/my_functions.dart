@@ -189,6 +189,11 @@ class MyFunctions {
     Uint8List renterIdentityCardVerso = contractDatas.renterIdentityCardVerso;
     Uint8List renterLicenseDriverRecto = contractDatas.renterLicenseDriverRecto;
     Uint8List renterLicenseDriverVerso = contractDatas.renterLicenseDriverVerso;
+    Uint8List fieldCarCheck1 = contractDatas.fieldCarCheck1;
+    Uint8List fieldCarCheck2 = contractDatas.fieldCarCheck2;
+    Uint8List? fieldCarCheck3 = contractDatas.fieldCarCheck3;
+    Uint8List? fieldCarCheck4 = contractDatas.fieldCarCheck4;
+    Uint8List? fieldCarCheck5 = contractDatas.fieldCarCheck5;
 
     List monthsName = [
       '0',
@@ -564,6 +569,7 @@ class MyFunctions {
                         ]),
                       ]),
                 ),
+                pw.Text("Documents du loueur et etats des lieux du véhicule"),
                 pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                     children: [
@@ -571,7 +577,7 @@ class MyFunctions {
                           height: 200,
                           width: 220,
                           decoration:
-                              const pw.BoxDecoration(color: PdfColors.grey),
+                              const pw.BoxDecoration(color: PdfColors.white),
                           child: pw.Image(
                             pw.MemoryImage(renterIdentityCardRecto),
                           )),
@@ -579,12 +585,20 @@ class MyFunctions {
                           height: 200,
                           width: 220,
                           decoration:
-                              const pw.BoxDecoration(color: PdfColors.grey),
+                              const pw.BoxDecoration(color: PdfColors.white),
                           child: pw.Image(
                             pw.MemoryImage(renterIdentityCardVerso),
-                          ))
+                          )),
+                      pw.Container(
+                          height: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.white),
+                          child: pw.Image(
+                            pw.MemoryImage(renterLicenseDriverRecto),
+                          )),
                     ]),
-                pw.SizedBox(height: 20),
+                pw.SizedBox(height: 5),
                 pw.Row(
                     mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
                     children: [
@@ -592,20 +606,52 @@ class MyFunctions {
                           height: 200,
                           width: 220,
                           decoration:
-                              const pw.BoxDecoration(color: PdfColors.grey),
+                              const pw.BoxDecoration(color: PdfColors.white),
                           child: pw.Image(
-                            pw.MemoryImage(renterLicenseDriverRecto),
+                            pw.MemoryImage(renterLicenseDriverVerso),
                           )),
                       pw.Container(
                           height: 200,
                           width: 220,
                           decoration:
-                              const pw.BoxDecoration(color: PdfColors.grey),
-                          child: pw.Image(
-                            pw.MemoryImage(renterLicenseDriverVerso!),
-                          )),
+                              const pw.BoxDecoration(color: PdfColors.white),
+                          child: pw.Image(pw.MemoryImage(fieldCarCheck1))),
+                      pw.Container(
+                          height: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.white),
+                          child: pw.Image(pw.MemoryImage(fieldCarCheck2))),
                     ]),
-                pw.SizedBox(height: 20),
+                pw.SizedBox(height: 5),
+                pw.Row(
+                    mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
+                    children: [
+                      pw.Container(
+                          height: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.white),
+                          child: fieldCarCheck3 != null
+                              ? pw.Image(pw.MemoryImage(fieldCarCheck3))
+                              : pw.Container()),
+                      pw.Container(
+                          height: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.white),
+                          child: fieldCarCheck4 != null
+                              ? pw.Image(pw.MemoryImage(fieldCarCheck4))
+                              : pw.Container()),
+                      pw.Container(
+                          height: 200,
+                          width: 220,
+                          decoration:
+                              const pw.BoxDecoration(color: PdfColors.white),
+                          child: fieldCarCheck5 != null
+                              ? pw.Image(pw.MemoryImage(fieldCarCheck5))
+                              : pw.Container())
+                    ]),
                 pw.Container(
                   child: pw.Row(
                       mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,

@@ -28,11 +28,13 @@ class Database {
       required int currentRentNumberDays,
       required int currentRentTotalPrice,
       required int newRentPrice,
-      required String currentKilometer}) {
+      required String currentKilometer,
+      required int currentNumberOfContracts}) {
     // currentRentTotalPrice is the actual total price of rent in bdd
     // newRentPrice is the new price added to the actual total price of the bdd
     int rentTotalNumberDays = currentRentNumberDays + newRentNumberDays;
     int rentCarTotalPrice = currentRentTotalPrice + newRentPrice;
+    int totalNumberOfContracts = currentNumberOfContracts + 1;
 
     db
         .collection("statistique")
@@ -42,19 +44,21 @@ class Database {
         .update({
       'rent_number_days': rentTotalNumberDays,
       'rent_car_price': rentCarTotalPrice,
-      'current_car_kilometer': currentKilometer
+      'current_car_kilometer': currentKilometer,
+      'number_of_contracts': totalNumberOfContracts
     });
   }
 
-  addCarStats(
-      {required String idCar,
-      required int rentStartMonth,
-      required int rentStartYear,
-      required int rentNumberDays,
-      required int rentCarPrice,
-      required String rentCarBrand,
-      required String rentCarModel,
-      required String currentKilometer}) {
+  addCarStats({
+    required String idCar,
+    required int rentStartMonth,
+    required int rentStartYear,
+    required int rentNumberDays,
+    required int rentCarPrice,
+    required String rentCarBrand,
+    required String rentCarModel,
+    required String currentKilometer,
+  }) {
     db.collection("statistique").doc(userId).collection(userId).add({
       'id_car': idCar,
       'rent_start_month': rentStartMonth,
@@ -63,7 +67,8 @@ class Database {
       'rent_car_price': rentCarPrice,
       'rent_car_brand': rentCarBrand,
       'rent_car_model': rentCarModel,
-      'current_car_kilometer': currentKilometer
+      'current_car_kilometer': currentKilometer,
+      'number_of_contracts': 1
     }).then((DocumentReference doc) =>
         print('Statistique added with ID: ${doc.id}'));
   }
@@ -91,6 +96,9 @@ class Database {
       print('ce document existe déja');
       int currentRentNumberDays = carMonthStats.docs[0]['rent_number_days'];
       int currentRentTotalPrice = carMonthStats.docs[0]['rent_car_price'];
+      int currentNumberOfContracts =
+          carMonthStats.docs[0]['number_of_contracts'];
+
       print('$currentRentTotalPrice');
       print('current rent number days : $currentRentNumberDays');
       for (var documentSnapshot in carMonthStats.docs) {
@@ -102,7 +110,8 @@ class Database {
             currentRentNumberDays: currentRentNumberDays,
             currentRentTotalPrice: currentRentTotalPrice,
             newRentPrice: rentCarPrice,
-            currentKilometer: currentKilometer);
+            currentKilometer: currentKilometer,
+            currentNumberOfContracts: currentNumberOfContracts);
       }
     } else {
       print('Ce document existe pas encore');
@@ -275,14 +284,18 @@ class Database {
         statistiquePicked.docs[0].data()['rent_car_price'];
     int statsPickedTotalRentDays =
         statistiquePicked.docs[0].data()['rent_number_days'];
+    int statsPickedTotalNumberContracts =
+        statistiquePicked.docs[0].data()['number_of_contracts'];
     print(statsPickedTotalPrice);
 
     // Je retire le prix et le nombre de jours de location du contrat que je m'apprete
     // à supprimer au document statistique qui le contient
     var newStatsPrice = statsPickedTotalPrice - rentCarPrice;
     var newTotalRentDays = statsPickedTotalRentDays - numberOfRentDays;
+    var newNumberOfContracts = statsPickedTotalNumberContracts - 1;
 // Je met à jour avec les nouvelles données
     statsPickedRef.update({'rent_car_price': newStatsPrice});
     statsPickedRef.update({'rent_number_days': newTotalRentDays});
+    statsPickedRef.update({'number_of_contracts': newNumberOfContracts});
   }
 }

@@ -41,6 +41,11 @@ class _ContractFormPageState extends State<ContractFormPage> {
   late Uint8List _licenseDriververso;
   late Uint8List _identityCardRecto;
   late Uint8List _identityCardVerso;
+  late Uint8List _fieldCarCheck1;
+  late Uint8List _fieldCarCheck2;
+  Uint8List? _fieldCarCheck3;
+  Uint8List? _fieldCarCheck4;
+  Uint8List? _fieldCarCheck5;
   String _kilometerAllowed = '';
 
   var _rentEndDay = 0;
@@ -67,10 +72,15 @@ class _ContractFormPageState extends State<ContractFormPage> {
   bool _isFieldDaysOfLocationEmpty = false;
   bool _isFieldDepositEmpty = false;
   bool _isFieldPriceEmpty = false;
-  bool _isFieldLicenseDriveRecto = false;
-  bool _isFieldLicenseDriveVerso = false;
-  bool _isFieldCarCheck1 = false;
-  bool _isFieldCarCheck2 = false;
+  bool _isFieldLicenseDriveRectoEmpty = false;
+  bool _isFieldLicenseDriveVersoEmpty = false;
+  bool _isFieldIdentityCardRectoEmpty = false;
+  bool _isFieldIdentityCardVersoEmpty = false;
+  bool _isFieldCarCheck1Empty = false;
+  bool _isFieldCarCheck2Empty = false;
+  bool _isFieldCarCheck3Empty = false;
+  bool _isFieldCarCheck4Empty = false;
+  bool _isFieldCarCheck5Empty = false;
   // signature
 
   late Uint8List renterSignature;
@@ -78,23 +88,57 @@ class _ContractFormPageState extends State<ContractFormPage> {
 
   final SignatureController renterSignatureController = SignatureController(
     penStrokeWidth: 5,
-    penColor: Colors.red,
-    exportBackgroundColor: Colors.blue,
+    penColor: Colors.black,
+    exportBackgroundColor: Colors.white,
   );
 
   final SignatureController ownerSignatureController = SignatureController(
     penStrokeWidth: 5,
-    penColor: Colors.red,
-    exportBackgroundColor: Colors.blue,
+    penColor: Colors.black,
+    exportBackgroundColor: Colors.white,
   );
+// debut
+  void _ShowAlertContractCreated() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            backgroundColor: MyColors(opacity: 1).tertiary,
+            title: const Text(
+              '',
+              textAlign: TextAlign.center,
+            ),
+            content: const Text(
+              'Contrat crée avec succès !',
+              textAlign: TextAlign.center,
+              style: TextStyle(color: Colors.green, fontSize: 20),
+            ),
+            actions: [
+              Column(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 25),
+                    width: MediaQuery.of(context).size.width,
+                    child: ElevatedButton(
+                        style: ButtonStyle(
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                MyColors(opacity: 1).primary)),
+                        onPressed: () async {
+                          context.go('/navigation_page');
+                        },
+                        child: const Text('Ok')),
+                  ),
+                ],
+              ),
+            ],
+          );
+        });
+  }
+
+  //fin
 
   @override
   Widget build(BuildContext context) {
-    print('ssss');
-    print(pseudo);
-    print(isFieldEmpty);
-    print('sssstttt');
-
     String carBrand = widget.carDatas['car_brand']!;
     String carModel = widget.carDatas['car_model']!;
     String carRegistrationNumber = widget.carDatas['car_registration_number']!;
@@ -231,7 +275,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Jours de location',
+                              labelText: 'Jours de location*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -262,7 +306,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Tarif',
+                              labelText: 'Tarif*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -293,7 +337,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Caution',
+                              labelText: 'Caution*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -324,7 +368,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Kilomètre actuel',
+                              labelText: 'Kilomètre actuel*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -355,7 +399,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Kilomètres autorisé',
+                              labelText: 'Kilomètres autorisé*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -386,7 +430,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Tarif kilomètre dépassé',
+                              labelText: 'Tarif kilomètre dépassé*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -411,7 +455,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                         height: 20,
                       ),
                       const Text(
-                        'Informations du loueur',
+                        'Informations du locataire',
                         style: TextStyle(fontSize: 20),
                       ),
                       const SizedBox(height: 15),
@@ -424,7 +468,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                             child: TextFormField(
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Nom',
+                                  labelText: 'Nom*',
                                   filled: true,
                                   fillColor: MyColors(opacity: 1).tertiary),
                               onChanged: (value) {
@@ -452,7 +496,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                             child: TextFormField(
                               decoration: InputDecoration(
                                   border: OutlineInputBorder(),
-                                  labelText: 'Prénom',
+                                  labelText: 'Prénom*',
                                   filled: true,
                                   fillColor: MyColors(opacity: 1).tertiary),
                               onChanged: (value) {
@@ -485,7 +529,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Numéro de telephone',
+                              labelText: 'Numéro de telephone*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -518,7 +562,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                         child: TextFormField(
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Email',
+                              labelText: 'Email*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -545,7 +589,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                         child: TextFormField(
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Ville',
+                              labelText: 'Ville*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -576,7 +620,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           ],
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Code postal',
+                              labelText: 'Code postal*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -603,7 +647,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                         child: TextFormField(
                           decoration: InputDecoration(
                               border: OutlineInputBorder(),
-                              labelText: 'Adresse',
+                              labelText: 'Adresse*',
                               filled: true,
                               fillColor: MyColors(opacity: 1).tertiary),
                           onChanged: (value) {
@@ -626,7 +670,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                       ),
                       const SizedBox(height: 20),
                       const Text(
-                        'Documents du loueur',
+                        'Documents du locataire',
                         style: TextStyle(fontSize: 20),
                       ),
                       const SizedBox(
@@ -636,11 +680,11 @@ class _ContractFormPageState extends State<ContractFormPage> {
                         width: 300,
                         child: OutlinedButton(
                             style: ButtonStyle(
-                              foregroundColor: _isFieldLicenseDriveRecto
+                              foregroundColor: _isFieldIdentityCardRectoEmpty
                                   ? MaterialStatePropertyAll(Colors.white)
                                   : MaterialStatePropertyAll(Colors.black),
                               backgroundColor: MaterialStatePropertyAll(
-                                  _isFieldLicenseDriveRecto
+                                  _isFieldIdentityCardRectoEmpty
                                       ? MyColors(opacity: 0.6).primary
                                       : MyColors(opacity: 1).tertiary),
                             ),
@@ -651,22 +695,22 @@ class _ContractFormPageState extends State<ContractFormPage> {
                               _identityCardRecto = identityCardRectoPicked;
 
                               setState(() {
-                                _isFieldLicenseDriveRecto = true;
+                                _isFieldIdentityCardRectoEmpty = true;
                               });
                             },
-                            child: const Text("Carte d'identité recto")),
+                            child: const Text("Carte d'identité recto*")),
                       ),
                       SizedBox(
                         width: 300,
                         child: OutlinedButton(
                             style: ButtonStyle(
-                                foregroundColor: _isFieldLicenseDriveVerso
+                                foregroundColor: _isFieldIdentityCardVersoEmpty
                                     ? const MaterialStatePropertyAll(
                                         Colors.white)
                                     : const MaterialStatePropertyAll(
                                         Colors.black),
                                 backgroundColor: MaterialStatePropertyAll(
-                                    _isFieldLicenseDriveVerso
+                                    _isFieldIdentityCardVersoEmpty
                                         ? MyColors(opacity: 0.6).primary
                                         : MyColors(opacity: 1).tertiary)),
                             onPressed: () async {
@@ -675,22 +719,22 @@ class _ContractFormPageState extends State<ContractFormPage> {
 
                               _identityCardVerso = identityCardVersoPicked;
                               setState(() {
-                                _isFieldLicenseDriveVerso = true;
+                                _isFieldIdentityCardVersoEmpty = true;
                               });
                             },
-                            child: const Text("Carte d'identité verso")),
+                            child: const Text("Carte d'identité verso*")),
                       ),
                       SizedBox(
                         width: 300,
                         child: OutlinedButton(
                             style: ButtonStyle(
-                                foregroundColor: _isFieldCarCheck1
+                                foregroundColor: _isFieldLicenseDriveRectoEmpty
                                     ? const MaterialStatePropertyAll(
                                         Colors.white)
                                     : const MaterialStatePropertyAll(
                                         Colors.black),
                                 backgroundColor: MaterialStatePropertyAll(
-                                    _isFieldCarCheck1
+                                    _isFieldLicenseDriveRectoEmpty
                                         ? MyColors(opacity: 0.6).primary
                                         : MyColors(opacity: 1).tertiary)),
                             onPressed: () async {
@@ -699,22 +743,22 @@ class _ContractFormPageState extends State<ContractFormPage> {
 
                               _licenseDriverRecto = licenseDriverRectoPicked;
                               setState(() {
-                                _isFieldCarCheck1 = true;
+                                _isFieldLicenseDriveRectoEmpty = true;
                               });
                             },
-                            child: const Text("vérification voiture 1")),
+                            child: const Text("Permis de conduire recto*")),
                       ),
                       SizedBox(
                         width: 300,
                         child: OutlinedButton(
                             style: ButtonStyle(
-                                foregroundColor: _isFieldCarCheck2
+                                foregroundColor: _isFieldLicenseDriveVersoEmpty
                                     ? const MaterialStatePropertyAll(
                                         Colors.white)
                                     : const MaterialStatePropertyAll(
                                         Colors.black),
                                 backgroundColor: MaterialStatePropertyAll(
-                                    _isFieldCarCheck2
+                                    _isFieldLicenseDriveVersoEmpty
                                         ? MyColors(opacity: 0.6).primary
                                         : MyColors(opacity: 1).tertiary)),
                             onPressed: () async {
@@ -724,46 +768,178 @@ class _ContractFormPageState extends State<ContractFormPage> {
                               _licenseDriververso = licenseDriverversoPicked;
 
                               setState(() {
-                                _isFieldCarCheck2 = true;
+                                _isFieldLicenseDriveVersoEmpty = true;
                               });
                             },
-                            child: const Text("Vérification voiture 2")),
+                            child: const Text("Permis de conduire verso*")),
                       ),
                       const SizedBox(
-                        height: 5,
+                        height: 20,
                       ),
+                      const Text(
+                        'Etats des lieux',
+                        style: TextStyle(fontSize: 20),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: OutlinedButton(
+                            style: ButtonStyle(
+                                foregroundColor: _isFieldCarCheck1Empty
+                                    ? const MaterialStatePropertyAll(
+                                        Colors.white)
+                                    : const MaterialStatePropertyAll(
+                                        Colors.black),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    _isFieldCarCheck1Empty
+                                        ? MyColors(opacity: 0.6).primary
+                                        : MyColors(opacity: 1).tertiary)),
+                            onPressed: () async {
+                              Uint8List pictureCarCheckPicked =
+                                  await MyFunctions().pickImageFromgallery();
+
+                              _fieldCarCheck1 = pictureCarCheckPicked;
+                              setState(() {
+                                _isFieldCarCheck1Empty = true;
+                              });
+                            },
+                            child: const Text("Photo du véhicule 1*")),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: OutlinedButton(
+                            style: ButtonStyle(
+                                foregroundColor: _isFieldCarCheck2Empty
+                                    ? const MaterialStatePropertyAll(
+                                        Colors.white)
+                                    : const MaterialStatePropertyAll(
+                                        Colors.black),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    _isFieldCarCheck2Empty
+                                        ? MyColors(opacity: 0.6).primary
+                                        : MyColors(opacity: 1).tertiary)),
+                            onPressed: () async {
+                              Uint8List pictureCarCheckPicked =
+                                  await MyFunctions().pickImageFromgallery();
+
+                              _fieldCarCheck2 = pictureCarCheckPicked;
+                              setState(() {
+                                _isFieldCarCheck2Empty = true;
+                              });
+                            },
+                            child: const Text("Photo du véhicule 2*")),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: OutlinedButton(
+                            style: ButtonStyle(
+                                foregroundColor: _isFieldCarCheck3Empty
+                                    ? const MaterialStatePropertyAll(
+                                        Colors.white)
+                                    : const MaterialStatePropertyAll(
+                                        Colors.black),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    _isFieldCarCheck3Empty
+                                        ? MyColors(opacity: 0.6).primary
+                                        : MyColors(opacity: 1).tertiary)),
+                            onPressed: () async {
+                              Uint8List pictureCarCheckPicked =
+                                  await MyFunctions().pickImageFromgallery();
+
+                              _fieldCarCheck3 = pictureCarCheckPicked;
+                              setState(() {
+                                _isFieldCarCheck3Empty = true;
+                              });
+                            },
+                            child: const Text("Photo du véhicule 3")),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: OutlinedButton(
+                            style: ButtonStyle(
+                                foregroundColor: _isFieldCarCheck4Empty
+                                    ? const MaterialStatePropertyAll(
+                                        Colors.white)
+                                    : const MaterialStatePropertyAll(
+                                        Colors.black),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    _isFieldCarCheck4Empty
+                                        ? MyColors(opacity: 0.6).primary
+                                        : MyColors(opacity: 1).tertiary)),
+                            onPressed: () async {
+                              Uint8List pictureCarCheckPicked =
+                                  await MyFunctions().pickImageFromgallery();
+
+                              _fieldCarCheck4 = pictureCarCheckPicked;
+                              setState(() {
+                                _isFieldCarCheck4Empty = true;
+                              });
+                            },
+                            child: const Text("Photo du véhicule 4")),
+                      ),
+                      SizedBox(
+                        width: 300,
+                        child: OutlinedButton(
+                            style: ButtonStyle(
+                                foregroundColor: _isFieldCarCheck5Empty
+                                    ? const MaterialStatePropertyAll(
+                                        Colors.white)
+                                    : const MaterialStatePropertyAll(
+                                        Colors.black),
+                                backgroundColor: MaterialStatePropertyAll(
+                                    _isFieldCarCheck5Empty
+                                        ? MyColors(opacity: 0.6).primary
+                                        : MyColors(opacity: 1).tertiary)),
+                            onPressed: () async {
+                              Uint8List pictureCarCheckPicked =
+                                  await MyFunctions().pickImageFromgallery();
+
+                              _fieldCarCheck5 = pictureCarCheckPicked;
+                              setState(() {
+                                _isFieldCarCheck5Empty = true;
+                              });
+                            },
+                            child: const Text("Photo du véhicule 5")),
+                      ),
+                      const Text("Signature du locataire* :"),
                       Signature(
                         controller: renterSignatureController,
                         width: 300,
-                        height: 150,
+                        height: 200,
                         backgroundColor: Colors.lightBlueAccent,
                       ),
-                      const SizedBox(height: 5),
-                      SizedBox(
+                      Container(
                         width: 300,
-                        child: IconButton(
+                        color: Color.fromARGB(255, 205, 22, 9),
+                        child: TextButton(
                             onPressed: () {
                               renterSignatureController.clear();
                             },
-                            icon: const Icon(Icons.clear)),
+                            child: const Text(
+                              "Effacer",
+                              style: TextStyle(color: Colors.white),
+                            )),
                       ),
                       const SizedBox(height: 20),
+                      const Text("Signature du propriétaire* :"),
                       Signature(
                         controller: ownerSignatureController,
                         width: 300,
-                        height: 150,
+                        height: 200,
                         backgroundColor: Colors.lightBlueAccent,
                       ),
-                      const SizedBox(height: 5),
-                      SizedBox(
+                      Container(
                         width: 300,
-                        child: IconButton(
+                        color: Color.fromARGB(255, 205, 22, 9),
+                        child: TextButton(
                             onPressed: () {
                               ownerSignatureController.clear();
                             },
-                            icon: const Icon(Icons.clear)),
+                            child: const Text(
+                              "Effacer",
+                              style: TextStyle(color: Colors.white),
+                            )),
                       ),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 30),
                       FutureBuilder(
                         future:
                             Database(userId: currentUserId).getUserDetails(),
@@ -792,62 +968,57 @@ class _ContractFormPageState extends State<ContractFormPage> {
                                             await MyFunctions().exportSignature(
                                                 mySignatureController:
                                                     ownerSignatureController);
-                                        String contractUrl = await MyFunctions()
-                                            .generatorPdf(
+                                        String contractUrl =
+                                            await MyFunctions().generatorPdf(
                                                 contractDatas: CarContractModel(
-                                                    renterSignature:
-                                                        renterSignature,
-                                                    ownerSignature:
-                                                        ownerSignature,
-                                                    rentEndMonth: _rentEndMonth,
-                                                    rentEndYear: _rentEndYear,
-                                                    renterName: _name,
-                                                    renterFirstName: _firstName,
-                                                    renterAdresse: _adresse,
-                                                    renterCity: _city,
-                                                    renterEmail: _email,
-                                                    renterIdentityCardRecto:
-                                                        _identityCardRecto,
-                                                    renterIdentityCardVerso:
-                                                        _identityCardVerso,
-                                                    renterLicenseDriverVerso:
-                                                        _licenseDriververso,
-                                                    renterLicenseDriverRecto:
-                                                        _licenseDriverRecto,
-                                                    renterPhoneNumber:
-                                                        _phoneNumber,
-                                                    renterPostalCode:
-                                                        _postalCode,
-                                                    rentEndDay: _rentEndDay,
-                                                    rentPrice: _price,
-                                                    rentStartDay: _rentStartDay,
-                                                    rentStartMonth:
-                                                        _rentStartMonth,
-                                                    rentStartYear:
-                                                        _rentStartYear,
-                                                    rentalDeposit: _caution,
-                                                    numberOfRentDays:
-                                                        _daysOfLocation,
-                                                    kilometerAllowed:
-                                                        _kilometerAllowed,
-                                                    currentCarKilometer:
-                                                        _currentKilometer,
-                                                    priceExceedKilometer:
-                                                        _exceedKilometer,
-                                                    ownerAdresse:
-                                                        userDatas.adresse,
-                                                    ownerCompanyName:
-                                                        userDatas.companyName,
-                                                    ownerEmail: userDatas.email,
-                                                    ownerFirstName:
-                                                        userDatas.firstName,
-                                                    ownerName: userDatas.name,
-                                                    ownerPhoneNumber:
-                                                        '07 00 00 00 00',
-                                                    carBrand: carBrand,
-                                                    carModel: carModel,
-                                                    carRegistrationNumber:
-                                                        carRegistrationNumber));
+                                          renterSignature: renterSignature,
+                                          ownerSignature: ownerSignature,
+                                          rentEndMonth: _rentEndMonth,
+                                          rentEndYear: _rentEndYear,
+                                          renterName: _name,
+                                          renterFirstName: _firstName,
+                                          renterAdresse: _adresse,
+                                          renterCity: _city,
+                                          renterEmail: _email,
+                                          renterIdentityCardRecto:
+                                              _identityCardRecto,
+                                          renterIdentityCardVerso:
+                                              _identityCardVerso,
+                                          renterLicenseDriverVerso:
+                                              _licenseDriververso,
+                                          renterLicenseDriverRecto:
+                                              _licenseDriverRecto,
+                                          renterPhoneNumber: _phoneNumber,
+                                          renterPostalCode: _postalCode,
+                                          rentEndDay: _rentEndDay,
+                                          rentPrice: _price,
+                                          rentStartDay: _rentStartDay,
+                                          rentStartMonth: _rentStartMonth,
+                                          rentStartYear: _rentStartYear,
+                                          rentalDeposit: _caution,
+                                          numberOfRentDays: _daysOfLocation,
+                                          kilometerAllowed: _kilometerAllowed,
+                                          currentCarKilometer:
+                                              _currentKilometer,
+                                          priceExceedKilometer:
+                                              _exceedKilometer,
+                                          ownerAdresse: userDatas.adresse,
+                                          ownerCompanyName:
+                                              userDatas.companyName,
+                                          ownerEmail: userDatas.email,
+                                          ownerFirstName: userDatas.firstName,
+                                          ownerName: userDatas.name,
+                                          ownerPhoneNumber: '07 00 00 00 00',
+                                          carBrand: carBrand,
+                                          carModel: carModel,
+                                          carRegistrationNumber:
+                                              carRegistrationNumber,
+                                          fieldCarCheck1: _fieldCarCheck1,
+                                          fieldCarCheck2: _fieldCarCheck2,
+                                          fieldCarCheck3: _fieldCarCheck3,
+                                          fieldCarCheck4: _fieldCarCheck4,
+                                          fieldCarCheck5: _fieldCarCheck5,
+                                        ));
 
                                         await Database(userId: currentUserId)
                                             .addNewContractToFirestore(
@@ -878,7 +1049,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                                                         currentCarKilometer:
                                                             _currentKilometer));
 
-                                        context.go('/navigation_page');
+                                        _ShowAlertContractCreated();
                                       }
                                     },
                                     child: const Text('Générer le contrat')),
@@ -896,7 +1067,7 @@ class _ContractFormPageState extends State<ContractFormPage> {
                           }
                         }),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 15,
                       )
                     ]),

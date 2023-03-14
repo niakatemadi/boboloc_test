@@ -21,7 +21,7 @@ class CarDetailsPage extends StatefulWidget {
 class _CarDetailsPageState extends State<CarDetailsPage> {
   DateTime dateTime = DateTime.now();
 
-  int monthPicked = 2;
+  int monthPicked = 0;
   bool isMonthPicked = false;
   int yearPicked = 2023;
 
@@ -171,7 +171,9 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                                 child: DropdownButton(
                                   isExpanded: true,
                                   hint: Text(
-                                    monthPicked.toString(),
+                                    monthPicked == 0
+                                        ? initialMonth().toString()
+                                        : monthPicked.toString(),
                                     style: const TextStyle(
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),
@@ -308,7 +310,7 @@ class _CarDetailsPageState extends State<CarDetailsPage> {
                                   iconIndex: 1),
                               StatsMiniCard(
                                   myStatValue:
-                                      carStatistics['current_car_kilometer']
+                                      carStatistics['number_of_contracts']
                                           .toString(),
                                   iconIndex: 2)
                             ],

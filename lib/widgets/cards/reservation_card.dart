@@ -81,7 +81,10 @@ class ReservationCard extends StatelessWidget {
     return Container(
       height: 90,
       margin: const EdgeInsets.fromLTRB(0, 6, 0, 4),
-      color: Colors.white,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10),
+        color: Colors.white,
+      ),
       child: Column(children: [
         SizedBox(
             height: 40,

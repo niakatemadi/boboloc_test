@@ -1,5 +1,6 @@
 import 'package:boboloc/constants/colors/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class MyListTile extends StatelessWidget {
   String carImage;
@@ -15,6 +16,45 @@ class MyListTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    //debut
+    void _ShowAlertSignUpSucceed() {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              backgroundColor: MyColors(opacity: 1).tertiary,
+              title: const Text(
+                'Suppresion',
+                textAlign: TextAlign.center,
+              ),
+              content: const Text(
+                'Voulez vous vraiment supprimer ce véhicule ?',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.green, fontSize: 20),
+              ),
+              actions: [
+                Column(
+                  children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 25),
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                          style: ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  MyColors(opacity: 1).primary)),
+                          onPressed: () async {
+                            print('Voiture supprimé !');
+                          },
+                          child: const Text('Oui')),
+                    ),
+                  ],
+                ),
+              ],
+            );
+          });
+    }
+
+    //fin
     return Container(
       height: 88,
       width: MediaQuery.of(context).size.width - 50,
@@ -74,6 +114,16 @@ class MyListTile extends StatelessWidget {
                 ),
               )
             ]),
+          ),
+          Container(
+            height: 50,
+            width: 30,
+            color: Colors.red,
+            child: IconButton(
+                onPressed: () {
+                  _ShowAlertSignUpSucceed();
+                },
+                icon: Icon(Icons.more_vert)),
           )
         ],
       ),

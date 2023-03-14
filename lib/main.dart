@@ -5,10 +5,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
   Stripe.publishableKey =
       "pk_test_51MhL6PF3c6zQiIn4WC9W4j2pnwZ16bOZoMtI2InAkzOj2E7lw450J5rPlDH4jqpf4jrqJP3k1EEmIGqayGuPY1IX00YcJ9NrYz";
